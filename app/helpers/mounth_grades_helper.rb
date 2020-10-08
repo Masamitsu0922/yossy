@@ -1,0 +1,2 @@
+module MounthGradesHelper
+end

@@ -1,0 +1,2 @@
+module TodayGradesHelper
+end

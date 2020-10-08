@@ -1,0 +1,2 @@
+class TodayGradesController < ApplicationController
+end
