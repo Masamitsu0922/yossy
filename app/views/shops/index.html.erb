@@ -1,0 +1,6 @@
+<h1>店舗一覧</h1>
+<%= link_to '新規登録', new_shop_path %>
+<% @owner.owner_shops.each do |owner_shop| %>
+	<%= link_to owner_shop.shop.name,shop_top_path(owner_shop.shop_id) %>
+<% end %>
+<%= link_to '既存の店舗の追加',add_shop_path %>

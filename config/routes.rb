@@ -4,18 +4,20 @@ Rails.application.routes.draw do
   	sessions: 'staffs/sessions'
   }
   devise_for :owners,controllers:{
-  	sessions: 'owners/sessions'
+  	sessions: 'owners/sessions',
+    registrations: 'owners/registrations'
   }
 
   root :to => "tops#about"
 
   concern :today do
-	  resources :todays, only:[:new,:creat,:index,:edit,:update,:destroy]
+	  resource :todays, only:[:new,:create,:edit,:update,:destroy]
 	  get 'todays/thanks' => "todays#thanks"
+    get 'todays/index' => "todays#index"
   end
 
   concern :payment do
-	  resources :payments, only:[:index,:new,:creat]
+	  resources :payments, only:[:index,:new,:create]
   end
 
   concern :today_grade do
@@ -25,15 +27,19 @@ Rails.application.routes.draw do
   end
 
   concern :order do
-	  resources :orders, only:[:new,:creat]
+	  resources :orders, only:[:new,:create]
+  end
+
+  concern :accounting do
+    resources :accountings, only:[:new,:create,:edit,:update,:confirm]
   end
 
   concern :table do
-	  resources :tables, only:[:new,:creat,:show,:edit,:update],concerns: :order
+	  resources :tables, only:[:new,:create,:show,:edit,:update],concerns: [:order,:accounting]
 	  get 'tables/:id/add' => "tables#add"
 	  patch 'tables/:id/add' => "tables#adding"
-	  get 'tables/:id/extention' => "tables#extention"
-	  patch 'tables/:id/extention' => "tables#extentioning"
+	  get 'tables/:id/extension' => "tables#extension", as:'table_extension'
+	  patch 'tables/:id/exsention' => "tables#extensioning",as:'table_extensioning'
 	  get 'tables/:id/special' => "tables#special"
 	  patch 'tables/:id/special' => "tables#specialing"
   end
@@ -43,29 +49,25 @@ Rails.application.routes.draw do
   end
 
   concern :staff do
-  	resources :staffs, only:[:index,:creat,:edit,:update]
+  	resources :staffs, only:[:index,:create,:edit,:update]
   end
 
   concern :product do
-  	resources :products, only:[:index,:new,:creat,:destroy]
+  	resources :products, only:[:index,:new,:create,:destroy]
   end
 
   concern :girl do
-  	resources :girls, only:[:index,:creat,:edit,:show,:update,:destroy]
+  	resources :girls, only:[:index,:create,:edit,:show,:update,:destroy]
   end
 
-  concern :accounting do
-	  resources :accountings, only:[:new,:creat,:edit,:update,:confirm]
-  end
-
-  resources :shops, only:[:index,:new,:creat,:show,:edit,:update,:destroy],concerns: [:accounting, :girl, :product, :staff, :today, :mounth_grade, :table]
-  get 'shops/add' => "shops#add"
+  resources :shops, only:[:index,:new,:create,:show,:edit,:update,:destroy],concerns: [:girl, :product, :staff, :today, :mounth_grade, :table]
+  get 'shops/add' => "shops#add", as: 'add_shop'
   post 'shops/add' => "shops#adding"
-  get 'shop/:id/top' => "shops#top"
-  get 'shop/:id/rall' => "shops#rall"
-  patch 'shop/:id/ralling' => "shops#ralling"
-  get 'shop/:id/detial' => "shops#detial"
-  patch 'shop/:id/detial' => "shops#setting"
+  get 'shop/:id/top' => "shops#top", as: 'shop_top'
+  get 'shop/:id/roll' => "shops#roll", as: 'shop_roll'
+  patch 'shop/:id/rolling' => "shops#rolling",as: 'shop_rolling'
+  get 'shop/:id/detial' => "shops#detial", as: 'shop_detial'
+  patch 'shop/:id/detial' => "shops#setting", as:'shop_detial_set'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

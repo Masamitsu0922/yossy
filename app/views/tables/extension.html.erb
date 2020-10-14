@@ -1,0 +1,9 @@
+<h1>延長確認画面</h1>
+<span>卓番号</span><%= @table.number %><br>
+<span>人数</span><%= @table.member %>人<br>
+<span>現在の金額</span><%= @table.payment %>円<br>
+<span>延長した場合の金額</span><%= @table.payment + @payment %><br>
+<%= form_with model:@table, url:shop_table_extensioning_path(@shop.id,@table.id) do |f| %>
+<%= f.hidden_field :payment,:value => @table.payment + @payment %>
+<%= f.submit "延長確定" %>
+<% end %>

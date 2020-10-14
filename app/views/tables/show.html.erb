@@ -1,0 +1,25 @@
+<p><%= link_to "会計",new_shop_table_accounting_path(@shop.id,@table.id) %></p>
+<p><%= link_to "オーダー",new_shop_table_order_path(@shop.id,@table.id) %></p>
+<p><%= link_to "延長",shop_table_extension_path(@shop.id,@table.id) %></p>
+
+<h1><%= @table.number %>卓</h1>
+
+<span>キャスト:</span>
+<% @table_girls.each do |table_girl| %>
+	<% if table_girl.today_girl_id != nil %>
+		<span><%= table_girl.today_girl.girl.name %></span>
+	<% end %>
+<% end %><br>
+
+<span>人数</span><%= @table.member %><br>
+<span>本指名:</span><br>
+<span>場内指名</span><br>
+<span>現状会計</span><br>
+<span>セット数</span><%= @table.set_count%><br>
+<span>ドリンク</span><%= @orders.where(product_id: 0).count %><br>
+<span>ファーストセット料金</span><%= @table.price %>円
+<% if @table.tax == "true" %>
+	TAXカット
+<% end %><br>
+<span>名前</span><%= @table.name%><br>
+<span>メモ</span><%= @table.memo%><br>

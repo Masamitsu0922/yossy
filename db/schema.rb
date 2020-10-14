@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_07_181421) do
+ActiveRecord::Schema.define(version: 2020_10_13_082505) do
 
   create_table "catches", force: :cascade do |t|
     t.integer "shop_id"
@@ -52,6 +52,14 @@ ActiveRecord::Schema.define(version: 2020_10_07_181421) do
   create_table "mounth_grades", force: :cascade do |t|
     t.integer "shop_id"
     t.integer "mounth"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "nameds", force: :cascade do |t|
+    t.integer "table_id"
+    t.integer "today_girl_id"
+    t.integer "named_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -105,13 +113,12 @@ ActiveRecord::Schema.define(version: 2020_10_07_181421) do
   end
 
   create_table "shops", force: :cascade do |t|
-    t.integer "owner_shop_id", null: false
     t.string "name", null: false
-    t.integer "postal_code", null: false
+    t.string "postal_code", null: false
     t.string "address", null: false
     t.string "email", null: false
     t.string "shop_id", null: false
-    t.string "passward", null: false
+    t.string "password", null: false
     t.integer "girl_wage"
     t.integer "staff_wage"
     t.integer "set_price"
@@ -121,9 +128,11 @@ ActiveRecord::Schema.define(version: 2020_10_07_181421) do
     t.integer "drink"
     t.integer "shot"
     t.float "tax"
+    t.float "card_tax"
     t.integer "accompany_system"
     t.integer "table"
     t.integer "vip"
+    t.integer "vip_price"
     t.integer "drink_back"
     t.integer "shot_back"
     t.integer "bottle_back"
@@ -169,13 +178,14 @@ ActiveRecord::Schema.define(version: 2020_10_07_181421) do
     t.integer "set_time", null: false
     t.string "name"
     t.text "memo"
-    t.string "set_count", null: false
+    t.integer "set_count", null: false
     t.integer "payment_method", default: 0
     t.integer "payment"
     t.integer "card_payment"
     t.boolean "tax", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number"
   end
 
   create_table "today_girls", force: :cascade do |t|

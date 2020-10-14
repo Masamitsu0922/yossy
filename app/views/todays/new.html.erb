@@ -1,0 +1,13 @@
+<h1>開店準備</h1>
+<%= form_with model:@today,url:shop_todays_path, local: true do |f| %>
+	<%= f.label :date, "日付" %>
+	<%= f.text_field :date %><br>
+	<% @girls.each do |girl| %>
+		<%= f.fields_for :today_girls,  local: true do |t| %>
+			<%= t.check_box :girl_id,{}, girl.id %><%= girl.name %>
+			<%= t.text_field :time %>
+			<%= t.text_field :today_payment %>日払い　送り先<%= t.text_field :destination %><br>
+		<% end %>
+	<% end %>
+	<%= f.submit %>
+<% end %>

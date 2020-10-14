@@ -1,0 +1,23 @@
+<h1>入店情報</h1>
+<%= form_with model: @table,url:shop_tables_path do |f| %>
+	<%= f.label :number, "卓番号" %>
+	<%= f.select :number,options_for_select(1..@shop.table,selected: 1) %><br>
+	<%= f.label :member, "人数" %>
+	<%= f.select :member,options_for_select(1..10,selected: 1) %><br>
+	<%= f.fields_for :nameds do |t| %>
+		<%= t.label :today_girl_id, "指名" %>
+		<%= t.collection_select(:today_girl_id,@girls,:id,:name, prompt: "フリー") %>
+		<%= t.check_box :named_status,checked_value: 0,unchecked_value: 1 %>同伴
+	<% end %>
+	<%= f.label :price, "セット料金" %>
+	<%= f.text_field :price %>円<br>
+	<%= f.label :set_time, "時間" %>
+	<%= f.text_field :set_time, value: "60" %>分<br>
+	<%= f.label :tax,"TAXカット" %>
+	<%= f.check_box :tax,{}, "true", "false" %>
+	<%= f.label :name, "客の名前" %>
+	<%= f.text_field :name %><br>
+	<%= f.label :memo %>
+	<%= f.text_area :memo %>
+	<%= f.submit "入店" %>
+<% end %>

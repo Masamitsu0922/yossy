@@ -1,0 +1,14 @@
+<h1>キャスト一覧</h1>
+<%= form_with model: @girl,url: shop_girls_path do |f| %>
+	<%= f.label :name, "名前" %>
+	<%= f.text_field :name %>
+	<%= f.label :wage, "時給" %>
+	<%= f.text_field :wage %>
+	<%= f.label :destination, "送り先" %>
+	<%= f.text_field :destination %>
+	<%= f.submit "新規登録" %>
+<% end %>
+
+<% @girls.each do |girl| %>
+	<%= girl.name %><%= link_to "編集", edit_shop_girl_path(girl.shop_id,girl.id) %>
+<% end %>
