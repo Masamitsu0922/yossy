@@ -1,0 +1,12 @@
+<%= form_with model:@table, url:shop_table_accountings_update_path(@shop.id,@table.id),local: true do |f| %>
+	<% if @table.payment_method !=2 %>
+		<%= f.label "合計金額" %>
+		<%= f.text_field :all_payment, value:(@table.payment + (@table.payment * @shop.tax) + (@table.card_payment + (@table.card_payment * @shop.tax))+(@table.card_payment + (@table.card_payment * @shop.tax)) * @shop.card_tax).to_i %>
+	<% else %>
+		<%= f.label "現金" %>
+		<%= f.text_field :payment, value:(@table.payment + (@table.payment * @shop.tax)).to_i %>
+		<%= f.label "カード" %>
+		<%= f.text_field :card_payment, value:(@table.card_payment + (@table.card_payment * @shop.tax)+(@table.card_payment + (@table.card_payment * @shop.tax)) * @shop.card_tax).to_i %>
+	<% end %>
+<%= f.submit "変更" %>
+<% end %>

@@ -1,0 +1,20 @@
+<h1>メニュー新規登録</h1>
+<%= form_with model:@product, url:shop_products_path(@shop.id) do |f| %>
+	<%= f.label :name, "名称"  %>
+	<%= f.text_field :name %>
+	<%= f.label :category_id, "種別" %>
+	<%= f.collection_select :category_id,@categories,:id,:name,prompt: "" %>
+	<%= f.label :price, "価格" %>
+	<%= f.text_field :price %>
+	<%= f.submit "メニュー登録" %>
+<% end %>
+
+<% @categories.each do |category| %>
+	<% if category.products != [] %>
+		<h3><%= category.name %></h3>
+		<% products = category.products %>
+		<% products.each do |product| %>
+			<%= product.name %><%= product.price %><%= product.back_wage %><br>
+		<% end %>
+	<% end %>
+<% end %>

@@ -1,0 +1,22 @@
+<h1>オーダー</h1>
+
+<%= form_with model:@order, url:shop_table_orders_path,local: true do |f| %>
+	<h3>ドリンク</h3>
+	<% @table_girls.each_with_index do |girl,i| %>
+	<% if girl.today_girl_id != nil %>
+	<%= girl.today_girl.girl.name %>
+	<%= f.collection_select :drink_id, @categories.where.not(name:[3,4]),:id,:name %>
+	<%= f.select :drink_count,options_for_select(0..10,selected: 0) %><br>
+	<% end %>
+	<% end %>
+	<h3>ボトル</h3>
+	<%= f.collection_select :bottle_name, @categories.find_by(id: 3).products,:id,:name,prompt:"" %>
+	<%= f.select :bottle_count, options_for_select(0..10,selected: 0) %>
+	<h3>その他</h3>
+	<%= f.collection_select :any_name, @categories.find_by(id:4).products,:id,:name,prompt:"" %>
+	<%= f.select :any_count,options_for_select(0..10,selected: 0) %><br>
+	<h3>未登録のメニュー</h3>
+	<%= f.text_field :new_name %>
+	<%= f.text_field :new_price, placeholder:"値段を半角で入力" %>
+	<%= f.submit "オーダー確定" %>
+<% end %>

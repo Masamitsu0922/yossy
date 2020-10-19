@@ -1,0 +1,124 @@
+<h1><%= @table.number %>卓 会計確認画面</h1>
+<% if @table.payment_method == 0 %>
+<%= link_to "カード併用",shop_table_and_card_path(@shop.id,@table.id) %>
+<%= link_to "カード会計" ,shop_table_card_path(@shop.id,@table.id),method: :post  %>
+<% elsif @table.payment_method == 1 %>
+<%= link_to "現金会計", shop_table_cash_path(@shop.id,@table.id), method: :post %>
+<% elsif @table.payment_method == 2 %>
+<%= link_to "現金会計", shop_table_cash_path(@shop.id,@table.id), method: :post %>
+<% end %>
+
+<table>
+	<tr>
+		<th>セット料金</th>
+		<td>
+			<%= @table.price %>円×<%= @table.member %>名
+		</td>
+		<td>
+			<%= @table.price * @table.member %>
+		</td>
+	</tr>
+	<% i = 1 %>
+	<% while  i < @table.set_count %>
+	<tr>
+		<th>セット料金</th>
+		<td>
+			<%= @shop.set_price %>×<%= @table.member%>
+		</td>
+		<td>
+			<%= @shop.set_price * @table.member%>
+		</td>
+	</tr>
+	<% i += 1%>
+	<% end %>
+	<tr>
+		<th>ドリンク</th>
+		<td>
+			<% drink_category = @shop.categories.find_by(name: "drink") %>
+			<% drinks= Product.where(category_id: drink_category.id) %>
+			<% order_drinks = @table.orders.where(product_id: drinks.pluck(:id)) %>
+			<% drink_total_quantity = 0 %>
+			<% order_drinks.each do |drink| %>
+				<% drink_total_quantity += drink.quantity %>
+			<% end %>
+			<%= @shop.drink %>円×<%= drink_total_quantity %>杯
+		</td>
+		<td>
+			<%= @shop.drink * drink_total_quantity %>
+		</td>
+	</tr>
+	<tr>
+		<th>ショット</th>
+		<td>
+			<% shot_category = @shop.categories.find_by(name: "shot") %>
+			<% shots= Product.where(category_id: shot_category.id) %>
+			<% order_shots = @table.orders.where(product_id: shots.pluck(:id)) %>
+			<% shot_total_quantity = 0 %>
+			<% order_shots.each do |shot| %>
+				<% total_quantity += shot.quantity %>
+			<% end %>
+			<%= @shop.shot %>円×<%= shot_total_quantity %>杯
+		</td>
+		<td>
+			<%= @shop.shot * shot_total_quantity %>
+		</td>
+	</tr>
+	<tr>
+		<th>その他</th>
+		<td></td>
+		<td></td>
+	</tr>
+		<% bottle_category = @shop.categories.find_by(name: "botole") %>
+		<% bottles= Product.where(category_id: bottle_category.id) %>
+		<% order_bottles = @table.orders.where(product_id: bottles.pluck(:id)) %>
+		<% order_bottles.each do |order| %>
+		<tr>
+			<th></th>
+			<td><%= order.product.name %>×<%= order.quantity %></td>
+			<td><%= order.product.price * order.quantity %></td>
+		</tr>
+		<% end %>
+		<% any_category = @shop.categories.find_by(name: "any") %>
+		<% anys= Product.where(category_id: any_category.id) %>
+		<% order_anys = @table.orders.where(product_id: anys.pluck(:id)) %>
+		<% order_anys.each do |order| %>
+		<tr>
+			<th></th>
+			<td><%= order.product.name %>×<%= order.quantity %></td>
+			<td><%= order.product.price * order.quantity %></td>
+		</tr>
+		<% end %>
+	<tr>
+		<th>小計</th>
+		<td></td>
+		<td><%= @payment + @card_payment %></td>
+	</tr>
+	<tr>
+		<th>TAX</th>
+		<td></td>
+		<td><%= @card_tax + @tax %></td>
+	</tr>
+	<% if @table.payment_method != 0 %>
+	<tr>
+		<th>カード決済手数料</th>
+		<td></td>
+		<td><%= @card_fee %></td>
+	</tr>
+	<% end %>
+</table>
+
+合計金額<br>
+<% if @table.payment_method == 0 %>
+<%= @tax + @payment %>
+<% elsif @table.payment_method == 1 %>
+<%= @card_payment + @card_tax + @card_fee %>
+<% elsif @table.payment_method == 2 %>
+現金会計金額
+<%= @tax + @payment %><br>
+カード会計金額
+<%= @card_payment + @card_tax + @card_fee %><br>
+合計金額
+<%= @card_payment + @card_tax + @payment + @card_fee + @tax   %>
+<% end %>
+<%= link_to "合計金額編集", shop_table_edit_accounting_path(@shop.id,@table.id) %>
+<%= link_to "会計確定", shop_table_accountings_path(@shop.id,@table.id) %>

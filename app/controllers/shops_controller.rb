@@ -30,8 +30,8 @@ class ShopsController < ApplicationController
 
 	def setting
 		@shop=Shop.find(params[:id])
-		@shop.tax = params[:tax_percentage].to_f / 100
-		@shop.card_tax = params[:card_tax_percentage].to_f / 100
+		@shop.tax = params[:shop][:tax_percentage].to_f / 100
+		@shop.card_tax = params[:shop][:card_tax_percentage].to_f / 100
 		@shop.update(shop_params)
 		category=Category.new(shop_id: @shop.id,name: "ドリンク")
 		category.save

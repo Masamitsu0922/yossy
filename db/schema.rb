@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_13_082505) do
+ActiveRecord::Schema.define(version: 2020_10_19_160325) do
 
   create_table "catches", force: :cascade do |t|
     t.integer "shop_id"
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(version: 2020_10_13_082505) do
     t.integer "payment_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "extension"
   end
 
   create_table "staffs", force: :cascade do |t|
@@ -180,8 +181,8 @@ ActiveRecord::Schema.define(version: 2020_10_13_082505) do
     t.text "memo"
     t.integer "set_count", null: false
     t.integer "payment_method", default: 0
-    t.integer "payment"
-    t.integer "card_payment"
+    t.float "payment"
+    t.float "card_payment"
     t.boolean "tax", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -215,6 +216,7 @@ ActiveRecord::Schema.define(version: 2020_10_13_082505) do
     t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "mounth_grade_id"
   end
 
 end

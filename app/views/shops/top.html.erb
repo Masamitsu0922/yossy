@@ -1,9 +1,13 @@
 <h1><%= @shop.name %> 店舗トップ</h1>
 <%= link_to "キャスト一覧",shop_girls_path(@shop.id) %>
+<% if @shop.today == [] %>
 <%= link_to "開店準備", new_shop_todays_path(@shop.id) %>
+<% else %>
 <%= link_to "出勤一覧", shop_todays_index_path(@shop.id) %>
 <%= link_to "入店", new_shop_table_path(@shop.id) %>
-<%= link_to "回転", shop_roll_path(@shop.id) %><br>
+<%= link_to "回転", shop_roll_path(@shop.id) %>
+<% end %>
+<%= link_to "商品登録", new_shop_product_path(@shop.id) %><br>
 
 <% @shop.table.times do |i| %>
 	<% if @shop.today.tables.find_by(number: i+1) != nil %>

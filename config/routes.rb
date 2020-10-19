@@ -31,7 +31,9 @@ Rails.application.routes.draw do
   end
 
   concern :accounting do
-    resources :accountings, only:[:new,:create,:edit,:update,:confirm]
+    resources :accountings, only:[:new,:create]
+    get 'accountings/edit' => "accountings#edit",as: 'edit_accounting'
+    patch 'accountings/update' => "accountings#update",as: 'accountings_update'
   end
 
   concern :table do
@@ -42,6 +44,10 @@ Rails.application.routes.draw do
 	  patch 'tables/:id/exsention' => "tables#extensioning",as:'table_extensioning'
 	  get 'tables/:id/special' => "tables#special"
 	  patch 'tables/:id/special' => "tables#specialing"
+    post 'tables/:id/card' => "tables#card", as:'table_card'
+    get 'tables/:id/and_card' => "tables#and_card", as:'table_and_card'
+    patch 'tables/:id/and_carding' => "tables#and_carding", as:'table_and_carding'
+    post 'tables/:id/cash' => "tables#cash", as:'table_cash'
   end
 
   concern :mounth_grade do
