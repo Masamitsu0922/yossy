@@ -12,15 +12,17 @@ class ShopsController < ApplicationController
 			@shop=Shop.new(shop_params)
 			@shop.save
 			#オーナーと紐づく中間テーブルの作成
-			owner_shop=OwnerShop.new
-			owner_shop.owner_id = current_owner.id
-			owner_shop.shop_id = @shop.id
-			owner_shop.is_authority = true
-			owner_shop.save
+			owner_shop=OwnerShop.new(owner_id:current_owner.id,shop_id:@shop.id,is_authority:true)
+			owner.save
+			mounth = MounthGrade.new(shop_id:owner_shop.id,mounth: Date.today.month)
+			mounth.save
+			today = Today.new(shop_id:owner_shop.id,date:Date.today.day,mounth_grade_id:mounth.id)
+			today.save
+			TodayGrade.create(mounth_grade_id:mounth.id,date:today.date,sale:0,card_sale:0)
 
 			redirect_to shop_detial_path(@shop)
 		else
-			render new
+			redirect_to 'shops#new'
 		end
 	end
 
@@ -43,13 +45,26 @@ class ShopsController < ApplicationController
 	end
 
 	def add
+		@owner_shop = OwnerShop.new
 	end
 
 	def adding
+		if shop = Shop.find_by(shop_id:params[:owner_shop][:shop_id])
+			if shop.password == params[:owner_shop][:password]
+				OwnerShop.create(owner_id:current_owner.id,shop_id:shop.id,is_authority: false)
+				redirect_to shops_path
+			else
+				redirect_to shops_add_path
+			end
+		else
+			redirect_to shops_add_path
+		end
 	end
 
 	def top
 		@shop=Shop.find(params[:id])
+		@mounth_grade = MounthGrade.find_by(id:@shop.today.mounth_grade_id)
+		@today_grade = TodayGrade.find_by(date:@shop.today.date)
 	end
 
 	def roll

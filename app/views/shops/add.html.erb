@@ -1,0 +1,7 @@
+<h1>店舗追加画面</h1>
+<%= form_with model:@owner_shop, url:adding_shop_path do |f| %>
+	<%= f.label :shop_id,"店舗ID" %>
+	<%= f.text_field :shop_id %>
+	<%= f.password_field :password %>
+	<%= f.submit "追加" %>
+<% end %>

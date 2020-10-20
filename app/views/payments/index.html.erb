@@ -1,0 +1,29 @@
+<h1>本日の支払い</h1>
+
+<table>
+	<tr>
+		<th></th><th>項目</th><th>支払先</th><th>金額</th><th>備考</th>
+	</tr>
+	<% @payments.each_with_index do |payment,i| %>
+		<tr>
+			<td><%= i+1 %></td>
+			<td><%= payment.item %></td>
+			<td><%= payment.name %></td>
+			<td><%= payment.price %></td>
+			<td><%= payment.memo%></td>
+		</tr>
+	<% end %>
+</table>
+
+<%= form_with model:@payment,url: shop_mounth_grade_today_grade_payments_path(@shop.id,@mounth_grade.id,@today_grade.id) do |f| %>
+	<%= f.label :item,"項目" %>
+	<%= f.text_field :item %>
+	<%= f.label :name, "支払先" %>
+	<%= f.text_field :name %>
+	<%= f.label :price, "金額" %>
+	<%= f.text_field :price %>
+	<%= f.label :memo, "備考" %>
+	<%= f.text_field :memo %>
+	<%= f.hidden_field :today_grade_id,:value => @today_grade.id %>
+	<%= f.submit "登録" %>
+<% end %>

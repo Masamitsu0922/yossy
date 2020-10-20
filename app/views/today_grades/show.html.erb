@@ -1,0 +1,27 @@
+<h1><%= @mounth_grade.mounth %>月<%= @today_grade.date %>日</h1>
+<table>
+	<tr>
+		<th>現金会計</th>
+		<th>カード会計</th>
+		<th>合計金額</th>
+		<th>支払い金額</th>
+	</tr>
+	<tr>
+		<td>
+			<%= @today_grade.sale %>
+		</td>
+		<td>
+			<%= @today_grade.card_sale %>
+		</td>
+		<td>
+			<%= @today_grade.sale + @today_grade.card_sale %>
+		</td>
+		<td>
+			<%= @payment %>
+		</td>
+	</tr>
+</table>
+
+<%= link_to "支払い一覧",shop_mounth_grade_today_grade_payments_path(@shop.id,@mounth_grade.id,@today_grade.id) %>
+
+<%= link_to "締め作業完了",shop_todays_confirm_path(@shop.id) %>

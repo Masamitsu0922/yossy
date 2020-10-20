@@ -1,13 +1,30 @@
 <h1>開店準備</h1>
-<%= form_with model:@today,url:shop_todays_path, local: true do |f| %>
-	<%= f.label :date, "日付" %>
-	<%= f.text_field :date %><br>
-	<% @girls.each do |girl| %>
-		<%= f.fields_for :today_girls,  local: true do |t| %>
-			<%= t.check_box :girl_id,{}, girl.id %><%= girl.name %>
-			<%= t.text_field :time %>
-			<%= t.text_field :today_payment %>日払い　送り先<%= t.text_field :destination %><br>
+<%= form_with model:@today, url:shop_todays_path,method: :post do |f| %>
+	<%= @today.mounth_grade.mounth %>月
+	<%= f.collection_select :date, Date.new(Date.today.year, Date.today.month, 1)..Date.new(Date.today.year, Date.today.month, -1), :day, :day, selected: @today.date %>日<br>
+	<table>
+		<tr>
+			<th>名前</th><th>時間</th><th>日払い金額</th><th>送り先</th>
+		</tr>
+		<% @girls.each do |girl| %>
+			<%= f.fields_for :today_girls do |t| %>
+			<tr>
+				<td>
+					<%= t.check_box :girl_id,{}, girl.id %>
+					<%= girl.name %>
+				</td>
+				<td>
+					<%= t.time_select :start_time, {minute_step: 15} %>~<%= t.time_select :end_time, {minute_step: 15} %>
+				</td>
+				<td>
+					<%= t.text_field :today_payment %>円
+				</td>
+				<td>
+					<%= t.text_field :destination %>
+				</td>
+			</tr>
+			<% end %>
 		<% end %>
-	<% end %>
+	</table>
 	<%= f.submit %>
 <% end %>

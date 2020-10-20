@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_19_160325) do
+ActiveRecord::Schema.define(version: 2020_10_20_074744) do
 
   create_table "catches", force: :cascade do |t|
     t.integer "shop_id"
@@ -192,7 +192,6 @@ ActiveRecord::Schema.define(version: 2020_10_19_160325) do
   create_table "today_girls", force: :cascade do |t|
     t.integer "today_id"
     t.integer "girl_id"
-    t.float "time"
     t.integer "slide_wage"
     t.integer "sale"
     t.string "destination"
@@ -200,6 +199,8 @@ ActiveRecord::Schema.define(version: 2020_10_19_160325) do
     t.integer "today_payment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.time "start_time"
+    t.time "end_time"
   end
 
   create_table "today_grades", force: :cascade do |t|

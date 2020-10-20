@@ -121,4 +121,4 @@
 <%= @card_payment + @card_tax + @payment + @card_fee + @tax   %>
 <% end %>
 <%= link_to "合計金額編集", shop_table_edit_accounting_path(@shop.id,@table.id) %>
-<%= link_to "会計確定", shop_table_accountings_path(@shop.id,@table.id) %>
+<%= link_to "会計確定", shop_table_accountings_path(@shop.id,@table.id),method: :post %>

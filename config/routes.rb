@@ -11,9 +11,10 @@ Rails.application.routes.draw do
   root :to => "tops#about"
 
   concern :today do
-	  resource :todays, only:[:new,:create,:edit,:update,:destroy]
+	  resource :todays, only:[:new,:create, :edit,:update,:destroy]
 	  get 'todays/thanks' => "todays#thanks"
     get 'todays/index' => "todays#index"
+    get 'todays/confirm' => "todays#confirm"
   end
 
   concern :payment do
@@ -21,7 +22,7 @@ Rails.application.routes.draw do
   end
 
   concern :today_grade do
-	  resources :today_grades, only:[:index],concerns: :payment
+	  resources :today_grades, only:[:show],concerns: :payment
 	  get 'todays/finish' => "todays_grades#finish"
 	  get 'todays/confirm' => "todays_grades#confirm"
   end
@@ -66,9 +67,9 @@ Rails.application.routes.draw do
   	resources :girls, only:[:index,:create,:edit,:show,:update,:destroy]
   end
 
-  resources :shops, only:[:index,:new,:create,:show,:edit,:update,:destroy],concerns: [:girl, :product, :staff, :today, :mounth_grade, :table]
+  resources :shops, only:[:index,:new,:create,:edit,:update,:destroy],concerns: [:girl, :product, :staff, :today, :mounth_grade, :table]
   get 'shops/add' => "shops#add", as: 'add_shop'
-  post 'shops/add' => "shops#adding"
+  post 'shops/add' => "shops#adding", as:'adding_shop'
   get 'shop/:id/top' => "shops#top", as: 'shop_top'
   get 'shop/:id/roll' => "shops#roll", as: 'shop_roll'
   patch 'shop/:id/rolling' => "shops#rolling",as: 'shop_rolling'
