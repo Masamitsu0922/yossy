@@ -1,0 +1,8 @@
+<h1>退勤情報編集メニュー</h1>
+<%= form_with model:@today_girl,url:shop_todays_today_girl_path(@shop.id,@today_girl.id) do |f| %>
+	<%= @today_girl.name %><br>
+	<%= f.label :start_time,"実際の退勤時間を入力" %>
+	<%= f.time_select :start_time, {minute_step: 15,selected: @today_girl.start_time} %>
+	<%= f.hidden_field :attendance_status, :value => 2 %>
+	<%= f.submit "出勤確定" %>
+<% end %>

@@ -7,13 +7,19 @@
 <span>キャスト:</span>
 <% @table_girls.each do |table_girl| %>
 	<% if table_girl.today_girl_id != nil %>
-		<span><%= table_girl.today_girl.girl.name %></span>
+		<span><%= table_girl.today_girl.name %></span>
 	<% end %>
 <% end %><br>
 
 <span>人数</span><%= @table.member %><br>
-<span>本指名:</span><br>
-<span>場内指名</span><br>
+<span>本指名:</span>
+<% @table.nameds.each do |named|%>
+	<% if named.today_girl_id != nil %>
+		<%= TodayGirl.find_by(id:named.today_girl_id).name %>
+	<% end %>
+<% end %>
+<br>
+<span>場内指名:</span><br>
 <span>現状会計</span><%=@table.payment%><br>
 <span>セット数</span><%= @table.set_count%><br>
 <span>ドリンク</span><%= @orders.where(product_id: 0).count %><br>

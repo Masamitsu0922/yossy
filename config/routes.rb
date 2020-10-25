@@ -10,8 +10,12 @@ Rails.application.routes.draw do
 
   root :to => "tops#about"
 
+  concern :today_girl do
+    resources :today_girls, only:[:edit,:update]
+  end
+
   concern :today do
-	  resource :todays, only:[:new,:create, :edit,:update,:destroy]
+	  resource :todays, only:[:new,:create,:destroy],concerns: [:today_girl]
 	  get 'todays/thanks' => "todays#thanks"
     get 'todays/index' => "todays#index"
     get 'todays/confirm' => "todays#confirm"
@@ -37,8 +41,14 @@ Rails.application.routes.draw do
     patch 'accountings/update' => "accountings#update",as: 'accountings_update'
   end
 
+  concern :table_girl do
+    resources :table_girls, only:[:update]
+  end
+
   concern :table do
-	  resources :tables, only:[:new,:create,:show,:edit,:update],concerns: [:order,:accounting]
+	  resources :tables, only:[:new,:create,:show,:edit,:update],concerns: [:order,:accounting,:table_girl]
+    get 'tables/:id/occurrence' =>"tables#occurrence", as:'table_occurrence'
+    post 'tables/:id/occurrence' =>"tables#occurrence_create", as:'table_occurrence_create'
 	  get 'tables/:id/add' => "tables#add"
 	  patch 'tables/:id/add' => "tables#adding"
 	  get 'tables/:id/extension' => "tables#extension", as:'table_extension'
@@ -49,6 +59,7 @@ Rails.application.routes.draw do
     get 'tables/:id/and_card' => "tables#and_card", as:'table_and_card'
     patch 'tables/:id/and_carding' => "tables#and_carding", as:'table_and_carding'
     post 'tables/:id/cash' => "tables#cash", as:'table_cash'
+    post 'tables/:id/table_girl/:table_girl_id' => "table#hall",as:'table_hall'
   end
 
   concern :mounth_grade do

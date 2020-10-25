@@ -10,22 +10,31 @@ class TodaysController < ApplicationController
 		shop = Shop.find(params[:shop_id])
 		@today = shop.today
 		@today.update(date:params[:today][:date].to_i)
+		binding.pry
 
 		params[:today][:today_girls_attributes].values.each do |param|
-			if param[:"girl_id"].to_i != 0
-			  	start_time = Time.local(param[:"start_time(1i)"],param[:"start_time(2i)"],param[:"start_time(3i)"],param[:"start_time(4i)"],param[:"start_time(5i)"],)
-		      	end_time = Time.local(param[:"end_time(1i)"],param[:"end_time(2i)"],param[:"end_time(3i)"],param[:"end_time(4i)"],param[:"end_time(5i)"],)
-				today_girls = TodayGirl.new(today_id: shop.today.id, girl_id: param[:"girl_id"].to_i, start_time: start_time,end_time: end_time, destination: param[:"destination"])
-				today_girls.save
+			if param[:"girl_id"] != nil
+				if param[:"girl_id"].to_i != 0
+				  	start_time = Time.local(param[:"start_time(1i)"],param[:"start_time(2i)"],param[:"start_time(3i)"],param[:"start_time(4i)"],param[:"start_time(5i)"])
+			      	end_time = Time.local(param[:"end_time(1i)"],param[:"end_time(2i)"],param[:"end_time(3i)"],param[:"end_time(4i)"],param[:"end_time(5i)"])
+			      	name = Girl.find_by(id: param[:"girl_id"].to_i).name
+					today_girl = TodayGirl.new(today_id: shop.today.id, girl_id: param[:"girl_id"].to_i,name: name, start_time: start_time,end_time: end_time,slide_wage: Girl.find_by(id:(param[:"girl_id"]).to_i).wage, destination: param[:"destination"], girl_status: 0, today_payment: param[:"today_payment"])
+					today_girl.save
+				end
+			elsif param[:"girl_status"].to_i == 1 || param[:"girl_status"].to_i == 2
+				start_time = Time.local(param[:"start_time(1i)"],param[:"start_time(2i)"],param[:"start_time(3i)"],param[:"start_time(4i)"],param[:"start_time(5i)"])
+			    end_time = Time.local(param[:"end_time(1i)"],param[:"end_time(2i)"],param[:"end_time(3i)"],param[:"end_time(4i)"],param[:"end_time(5i)"])
+			    today_girl = TodayGirl.new(name:param[:"name"],today_id: shop.today.id, start_time: start_time,end_time: end_time,slide_wage: param[:"slide_wage"], destination: param[:"destination"], girl_status: param[:"girl_status"].to_i, today_payment: param[:"today_payment"],is_all_today: param[:"is_all_today"])
+			    today_girl.save
 			end
 		end
 		redirect_to shop_top_path(shop.id)
 	end
 
 	def index
-		shop = Shop.find(params[:shop_id])
-		today = shop.today
-		@today_girls = today.today_girls
+		@shop = Shop.find(params[:shop_id])
+		@today = @shop.today
+		@today_girls = @today.today_girls.sort{ |a,b| a[:end_time] <=> b[:end_time]}
 	end
 
 	def confirm

@@ -17,7 +17,45 @@
 					<%= t.time_select :start_time, {minute_step: 15} %>~<%= t.time_select :end_time, {minute_step: 15} %>
 				</td>
 				<td>
-					<%= t.text_field :today_payment %>円
+					<%= t.text_field :today_payment,:value => 0 %>円
+				</td>
+				<td>
+					<%= t.text_field :destination %>
+				</td>
+			</tr>
+			<% end %>
+		<% end %>
+	</table>
+
+	<h4>派遣、体入キャスト</h4>
+	<table>
+		<tr>
+			<th>携帯</th><th>名前</th><th>時給</th><th>勤務時間</th><th>日払い</th><th>送り先</th>
+		</tr>
+		<% 5.times do %>
+			<%= f.fields_for :today_girls do |t| %>
+			<tr>
+				<td>
+					<%= t.radio_button :girl_status,:"1" %>
+					<%= t.label :girl_status,"派遣",{value: :"1"} %>
+					<%= t.radio_button :girl_status,:"2" %>
+					<%= t.label :girl_status,"体入",{value: :"2"} %>
+				</td>
+				<td>
+					<%= t.label :name, "名前" %>
+					<%= t.text_field :name  %>
+				</td>
+				<td>
+					<%= t.label :slide_wage, "時給" %>
+					<%= t.text_field :slide_wage  %>
+				</td>
+				<td>
+					<%= t.time_select :start_time, {minute_step: 15} %>~<%= t.time_select :end_time, {minute_step: 15} %>
+				</td>
+				<td>
+					<%= t.check_box :is_all_today,{},checked_value = "true",unchecked_value = "false" %>
+					<%= t.label :is_all_today, "全日" %>
+					<%= t.text_field :today_payment,:value => 0 %>円
 				</td>
 				<td>
 					<%= t.text_field :destination %>

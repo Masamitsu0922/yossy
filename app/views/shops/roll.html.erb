@@ -4,26 +4,33 @@
 		<h3><%= i + 1 %>卓</h3>
 		<% table = @tables.find_by(number: i+1) %>
 		<% if table != nil %>
-			<%= f.fields_for :tables do |t| %>
-			<%  if t.object.number == i+1 %>
-				<%= t.fields_for :table_girls do |table_girl| %>
-					<% #TableGirl.where(table_id: table.id).each do |table_girl| %>
-						<% if table_girl.object.today_girl_id == nil %>
-							<%= table_girl.collection_select :today_girl_id,@girls,:id,:name,prompt: "" %>
-						<% else %>
-							<%= table_girl.collection_select :today_girl_id,@girls,:id,:name,selected: table_girl.object.today_girl.girl.id,include_blank:"" %>
-						<% end %>
-					<% #end %>
-				<% end %>
+			<h4>客数:<%= table.member %></h4>
+			指名:
+			<% if table.nameds == [] %>
+			なし
+			<% else %>
+			<% table.nameds.each do |named| %>
+			<%= named.today_girl.name %>、
 			<% end %>
+			<% end %><br>
+			<%= f.fields_for :tables do |t| %>
+				<%  if t.object.number == i+1 %>
+					<%= t.fields_for :table_girls do |s| %>
+						<% if s.object.today_girl_id == nil %>
+							<%= s.collection_select :today_girl_id,@girls,:id,:name,prompt: "" %>
+						<% else %>
+							<%= s.collection_select :today_girl_id,@girls,:id,:name,selected: s.object.today_girl_id,include_blank:"" %>
+						<% end %>
+					<% end %>
+				<% end %>
 			<% end %>
 		<% end %>
 	<% end %>
 	<%= f.submit "回転" %>
 <% end %>
 <h3>待機</h3>
-<% @today_girls.each do |girl| %>
-	<% if girl.table_girl == [] %>
-		<%= girl.girl.name %>
+<% @girls.each do |girl| %>
+	<% if girl.table_girl == nil %>
+		<%= girl.name %>
 	<% end %>
 <% end %>

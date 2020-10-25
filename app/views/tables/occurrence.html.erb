@@ -1,0 +1,12 @@
+
+発生メニュー
+<%= form_with model:@table, url:shop_table_occurrence_path(@shop.id,@table.id),method: :post do |f| %>
+	<%= f.label :time, "発生時刻" %>
+	<%= f.time_select :time, {minute_step: 10,selected: Time.now} %>
+	<% @table.member.times do %>
+		<%= f.fields_for :table_girls do |t| %>
+			<%= t.collection_select :today_girl_id,@girls,:id,:name,prompt:"選択" %>
+		<% end %>
+	<% end %>
+	<%= f.submit "発生" %>
+<% end %>

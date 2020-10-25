@@ -23,10 +23,10 @@
 	<tr>
 		<th>セット料金</th>
 		<td>
-			<%= @shop.set_price %>×<%= @table.member%>
+			<%= @shop.set_price + @shop.extension_price %>×<%= @table.member%>
 		</td>
 		<td>
-			<%= @shop.set_price * @table.member%>
+			<%= (@shop.set_price + @shop.extension_price) * @table.member%>
 		</td>
 	</tr>
 	<% i += 1%>
@@ -34,7 +34,7 @@
 	<tr>
 		<th>ドリンク</th>
 		<td>
-			<% drink_category = @shop.categories.find_by(name: "drink") %>
+			<% drink_category = @shop.categories.find_by(name: "ドリンク") %>
 			<% drinks= Product.where(category_id: drink_category.id) %>
 			<% order_drinks = @table.orders.where(product_id: drinks.pluck(:id)) %>
 			<% drink_total_quantity = 0 %>
@@ -50,7 +50,7 @@
 	<tr>
 		<th>ショット</th>
 		<td>
-			<% shot_category = @shop.categories.find_by(name: "shot") %>
+			<% shot_category = @shop.categories.find_by(name: "ショット") %>
 			<% shots= Product.where(category_id: shot_category.id) %>
 			<% order_shots = @table.orders.where(product_id: shots.pluck(:id)) %>
 			<% shot_total_quantity = 0 %>
@@ -68,7 +68,7 @@
 		<td></td>
 		<td></td>
 	</tr>
-		<% bottle_category = @shop.categories.find_by(name: "botole") %>
+		<% bottle_category = @shop.categories.find_by(name: "ボトル") %>
 		<% bottles= Product.where(category_id: bottle_category.id) %>
 		<% order_bottles = @table.orders.where(product_id: bottles.pluck(:id)) %>
 		<% order_bottles.each do |order| %>
@@ -78,7 +78,7 @@
 			<td><%= order.product.price * order.quantity %></td>
 		</tr>
 		<% end %>
-		<% any_category = @shop.categories.find_by(name: "any") %>
+		<% any_category = @shop.categories.find_by(name: "その他") %>
 		<% anys= Product.where(category_id: any_category.id) %>
 		<% order_anys = @table.orders.where(product_id: anys.pluck(:id)) %>
 		<% order_anys.each do |order| %>

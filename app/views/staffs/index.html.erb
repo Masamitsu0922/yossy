@@ -1,0 +1,32 @@
+<h1>スタッフ新規登録 </h1>
+<%= form_with model:@staff, url:shop_staffs_path do |f| %>
+	<%= f.label :name, "名前" %>
+	<%= f.text_field :name %>
+	<%= f.label :wage, "時給" %>
+	<%= f.text_field :wage %>
+	<%= f.label :is_authority, "リーダー権限" %>
+	<%= f.check_box :is_authority, {}, true, false %>
+	<%= f.hidden_field :password, :value => @shop.password %>
+	<%= f.hidden_field :shop_id, :value => @shop.id %>
+	<%= f.hidden_field :shop_id_for_sign, :valur => @shop.shop_id %>
+	<%= f.submit "新規登録" %>
+<% end %>
+
+<h1>スタッフ一覧</h1>
+<table>
+	<tr>
+		<th>名前</th><th>時給</th><th>権限</th>
+	</tr>
+<% @staffs.each do |staff| %>
+<tr>
+	<td><%= staff.name %></td><td><%= staff.wage %></td>
+	<td>
+		<% if staff.is_authority == true %>
+		スタッフリーダー
+		<% else %>
+		スタッフ
+		<% end %>
+	</td>
+</tr>
+<% end %>
+</table>

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Owners::SessionsController < Devise::SessionsController
+
+ #before_action :configure_permitted_parameters
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -24,4 +26,8 @@ class Owners::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
+
+ # def configure_permitted_parameters
+   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:email])
+ # end
 end

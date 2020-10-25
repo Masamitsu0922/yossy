@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_20_074744) do
+ActiveRecord::Schema.define(version: 2020_10_24_084431) do
 
   create_table "catches", force: :cascade do |t|
     t.integer "shop_id"
@@ -145,11 +145,12 @@ ActiveRecord::Schema.define(version: 2020_10_20_074744) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "extension"
+    t.integer "extension_price"
   end
 
   create_table "staffs", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
+    t.string "email", default: ""
+    t.string "encrypted_password", default: ""
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -159,8 +160,7 @@ ActiveRecord::Schema.define(version: 2020_10_20_074744) do
     t.integer "shop_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_staffs_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_staffs_on_reset_password_token", unique: true
+    t.string "shop_id_for_sign"
   end
 
   create_table "table_girls", force: :cascade do |t|
@@ -173,7 +173,7 @@ ActiveRecord::Schema.define(version: 2020_10_20_074744) do
 
   create_table "tables", force: :cascade do |t|
     t.integer "today_id", null: false
-    t.time "time", null: false
+    t.time "time"
     t.integer "member", null: false
     t.integer "price", null: false
     t.integer "set_time", null: false
@@ -181,8 +181,8 @@ ActiveRecord::Schema.define(version: 2020_10_20_074744) do
     t.text "memo"
     t.integer "set_count", null: false
     t.integer "payment_method", default: 0
-    t.float "payment"
-    t.float "card_payment"
+    t.float "payment", default: 0.0
+    t.float "card_payment", default: 0.0
     t.boolean "tax", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -201,6 +201,10 @@ ActiveRecord::Schema.define(version: 2020_10_20_074744) do
     t.datetime "updated_at", null: false
     t.time "start_time"
     t.time "end_time"
+    t.string "name"
+    t.boolean "is_all_today"
+    t.integer "attendance_status", default: 0
+    t.integer "back_wage", default: 0
   end
 
   create_table "today_grades", force: :cascade do |t|

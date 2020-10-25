@@ -35,13 +35,15 @@ class ShopsController < ApplicationController
 		@shop.tax = params[:shop][:tax_percentage].to_f / 100
 		@shop.card_tax = params[:shop][:card_tax_percentage].to_f / 100
 		@shop.update(shop_params)
-		category=Category.new(shop_id: @shop.id,name: "ドリンク")
-		category.save
+		drink_category=Category.create(shop_id: @shop.id,name: "ドリンク")
+		shot_category=Category.create(shop_id: @shop.id,name: "ショット")
+		bottle_category=Category.create(shop_id: @shop.id,name: "ボトル")
+		any_category=Category.create(shop_id: @shop.id,name: "その他")
 
-		product=Product.new(category_id: category.id, name: キャストドリンク, back_wage:@shop.drink_back, price: @shop.drink)
-		product.save
+		Product.create(category_id: drink_category.id, name: "キャストドリンク", back_wage:@shop.drink_back, price: @shop.drink)
+		Product.create(category_id: shot_category.id, name: "ショット", back_wage:@shop.shot_back, price: @shop.shot)
 
-		redirect_to shops_path
+		redirect_to shops_path(current_owner.id)
 	end
 
 	def add
@@ -63,27 +65,50 @@ class ShopsController < ApplicationController
 
 	def top
 		@shop=Shop.find(params[:id])
+		if @shop.today != nil
+			if @shop.today.today_girls != nil
+				@today_girls = @shop.today.today_girls.where(attendance_status: 1)
+			end
+			@tables = @shop.today.tables
+
+		@costomers = 0
+		@tables.each do |table|
+			@costomers += table.member
+		end
 		@mounth_grade = MounthGrade.find_by(id:@shop.today.mounth_grade_id)
 		@today_grade = TodayGrade.find_by(date:@shop.today.date)
+		end
 	end
 
 	def roll
 		@shop = Shop.find(params[:id])
 		@today = @shop.today
 		@tables = @shop.today.tables
-		@girls = @shop.today.today_girls.map(&:girl)
+		@girls = @shop.today.today_girls.where(attendance_status: 1)
 		@table_girls = @tables.map(&:table_girls)
-		@today_girls = TodayGirl.all
-		#binding.pry
 	end
 
 	def rolling
-		#binding.pry
 		shop = Shop.find(params[:id])
 		today = shop.today
-		today.update(today_params)
-		#binding.pry
-		redirect_to shop_top_path(shop.id)
+
+		#params[:today][:tables_attributes].each do |table|
+		#	if table[1][:table_girls_attributes] != nil
+			#	table[1][:table_girls_attributes].values.each do |param|
+			#		table_girl = TableGirl.find_by(today_girl_id:param[:"today_girl_id"])
+			#		if table_girl != nil
+			#			table_girl.update(today_girl_id: nil,name_status: 0)
+			#		end
+		#		end
+		# => end
+		#end
+
+		if today.update(today_params)
+			#binding.pry
+			redirect_to shop_top_path(shop.id)
+		else
+			redirect_to shop_roll_path(shop.id)
+		end
 	end
 
 	private

@@ -47,7 +47,7 @@ class AccountingsController < ApplicationController
 		today_grade = TodayGrade.find_by(mounth_grade_id:mounth.id,date: today.date)
 
 		cash_sale = table.payment * @shop.tax + table.payment + today_grade.sale.to_f
-		card_sale = (table.card_payment * @shop.tax + table.card_payment) * @shop.card_tax + today_grade.card_sale.to_f
+		card_sale = (table.card_payment * @shop.tax + table.card_payment) * @shop.card_tax + table.card_payment + today_grade.card_sale.to_f
 		#日別集計に売り上げを保存
 		today_grade.update(sale:cash_sale,card_sale:card_sale)
 

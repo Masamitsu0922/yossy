@@ -4,12 +4,37 @@
     <title>Yossy</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <script src="https://kit.fontawesome.com/8f5dcc4261.js" crossorigin="anonymous"></script>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body style="background: #f5f5dc">
+    <div class="header" style = "background: #dcdcdc">
+      <nav class="navbar navbar-main  navbar-shadow" role="navigation">
+        <div class="container relative">
+          <div class="navbar-header">
+            <div>Yossy POS</div>
+          </div>
+          <div id="slidemenu">
+            <ul class="nav navbar-nav navbar-right" data-hover="dropdown" data-animations="zoomIn fadeIn fadeInUp fadeIn">
+              <% if owner_signed_in? %>
+                <li><%= link_to '店舗一覧', shops_path, class: '' %></li>
+                <li><%= link_to 'ログアウト', destroy_owner_session_path, method: :delete,class: '' %></li>
+
+              <% elsif staff_signed_in? %>
+                <li><%= link_to 'ログアウト', destroy_staff_session_path, method: :delete, class: '' %></li>
+              <% else %>
+                <li class="nav-list"><%= link_to 'About', root_path, class: '' %></li>
+                <li class="nav-list"><%= link_to '新規登録', new_owner_registration_path, class: '' %></li>
+                <li class="nav-list"><%= link_to 'オーナーログイン', new_owner_session_path, class: '' %></li>
+                <li class="nav-list"><%= link_to 'スタッフログイン', new_staff_session_path, class: '' %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
     <%= yield %>
   </body>
 </html>

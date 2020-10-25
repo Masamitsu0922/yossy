@@ -1,3 +1,38 @@
-<% @today_girls.each do |girl| %>
-	<%= girl.girl.name %><br>
-<% end %>
+<h1>出勤一覧</h1>
+<table>
+	<tr>
+		<th>名前</th><th>出勤予定時間</th><th>退勤予定時間</th><th>日払い</th><th>送り先</th><th>出勤ステータス</th>
+	</tr>
+	<% @today_girls.each do |girl| %>
+	<tr>
+		<td>
+			<%= girl.name %>
+		</td>
+		<td>
+			<%= girl.start_time.strftime('%H:%M') %>
+		</td>
+		<td>
+			<%= girl.end_time.strftime('%H:%M') %>
+		</td>
+		<td>
+			<% if girl.is_all_today == true %>
+				全日
+			<% else %>
+				<%= girl.today_payment %>円
+			<% end %>
+		</td>
+		<td>
+			<%= girl.destination %>
+		</td>
+		<td>
+			<% if girl.attendance_status == 0 %>
+				<%= link_to "出勤",edit_shop_todays_today_girl_path(@shop.id,girl.id) %>
+			<% elsif girl.attendance_status == 1 %>
+				<%= link_to "退勤",edit_shop_todays_today_girl_path(@shop.id,girl.id) %>
+			<% elsif girl.attendance_status == 2 %>
+				退勤済み
+			<% end %>
+		</td>
+	</tr>
+	<% end %>
+</table>

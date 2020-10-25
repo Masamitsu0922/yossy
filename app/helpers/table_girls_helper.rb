@@ -1,0 +1,2 @@
+module TableGirlsHelper
+end

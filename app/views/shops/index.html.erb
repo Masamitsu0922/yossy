@@ -1,6 +1,33 @@
-<h1>店舗一覧</h1>
-<%= link_to '新規登録', new_shop_path %>
-<% @owner.owner_shops.each do |owner_shop| %>
-	<%= link_to owner_shop.shop.name,shop_top_path(owner_shop.shop_id) %>
-<% end %>
-<%= link_to '既存の店舗の追加',add_shop_path %>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-2">
+			<h2 class="shops_index">店舗一覧</h2>
+		</div>
+		<div class="create-links col-md-5 col-md-offset-1">
+
+				<%= link_to new_shop_path do %>
+				<span class="create-shop">
+				<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+				<span>新規登録</span>
+				</span>
+				<% end %>
+				<%= link_to add_shop_path do %>
+					<span class="add-shop">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					<span>既存の店舗を追加</span>
+				<% end %>
+			</span>
+		</div>
+	</div>
+	<div class="have-shops row">
+		<div class="col-md-9 col-md-offset-2">
+		<% @owner.owner_shops.each do |owner_shop| %>
+				<%= link_to shop_top_path(owner_shop.shop_id) do %>
+					<div class="shop-name">
+						<%=owner_shop.shop.name %>
+					</div>
+				<% end %>
+		<% end %>
+		</div>
+	</div>
+</div>
