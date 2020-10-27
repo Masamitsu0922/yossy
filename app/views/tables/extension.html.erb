@@ -1,9 +1,23 @@
-<h1>延長確認画面</h1>
-<span>卓番号</span><%= @table.number %><br>
-<span>人数</span><%= @table.member %>人<br>
-<span>現在の金額</span><%= @table.payment %>円<br>
-<span>延長した場合の金額</span><%= @table.payment + @payment %><br>
-<%= form_with model:@table, url:shop_table_extensioning_path(@shop.id,@table.id) do |f| %>
-<%= f.hidden_field :payment,:value => @table.payment + @payment %>
-<%= f.submit "延長確定" %>
-<% end %>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-1">
+			<h2 class="shops_index">延長確認画面</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="extension col-md-4 col-md-offset-1">
+			<table>
+				<tr><th class= "table-number-ext">卓番号</th><td>: <%= @table.number %></td></tr>
+				<tr><th class="table-member-ext">人数</th><td>: <%= @table.member %>人</td></tr>
+				<tr><th class="table-payment-ext">現在の金額（税抜き</th><td>: <%= @table.payment.to_i %>円</td></tr>
+				<tr><th class="table-payment-ext-aft">延長した場合の金額(税抜き)  </th><td>: <%= (@table.payment + @payment).to_i %>円</td></tr>
+			</table>
+
+			<%= form_with model:@table, url:shop_table_extensioning_path(@shop.id,@table.id) do |f| %>
+			<%= f.hidden_field :payment,:value => @table.payment + @payment %>
+			<%= f.submit "延長確定",class:"order-submit submit-link" %>
+			<% end %>
+		</div>
+	</div>
+</div>
+

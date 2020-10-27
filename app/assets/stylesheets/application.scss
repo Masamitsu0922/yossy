@@ -95,3 +95,346 @@
 	background-color:#98fb98;
 	color:#ff4500;
 }
+
+.menu-box{
+	color:#ffffff;
+	background-color:#696969;
+	text-align:right;
+}
+
+.menu-text{
+	color:#ffffff;
+	margin:5px 5px;
+	padding-left:3px;
+}
+
+
+.now-grade{
+	text-align:center;
+	font-size:32px;
+}
+
+.table-info{
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+}
+
+.table-info .table-number{
+	border-radius: 5px;
+	background-color:#ffffff;
+	font-size:40px;
+	padding:9px 18px;
+	margin: 10px;
+}
+
+.customer-box{
+	border-radius: 10px;
+	background-color:#8fbc8f;
+	margin:30px;
+	min-height:200px;
+	padding: 20px 0;
+}
+
+.table-member{
+	margin:10px 0 10px 100px ;
+	font-size:30px;
+	color:#ffffff;
+	padding-right:30px;
+}
+
+.customer-name{
+	position:absolute;
+	font-size:20px;
+	color:#ffffff;
+}
+
+.outtime{
+	margin-top:10px;
+	margin-right:20px;
+	padding:12px;
+	font-size:30px;
+	background-color:#ffffff;
+	color:#000000;
+	border:0.5px solid #000000;
+	border-radius:10px;
+}
+
+.time-member{
+	float:right;
+	padding-top:10px;
+}
+
+.numbers{
+	margin-bottom:20px;
+	padding-bottom:20px;
+	border-bottom:0.5px solid #000000;
+}
+
+.girl-box{
+	margin:0 30px;
+}
+
+.girl-head{
+	font-size:20px;
+	color:#ffffff;
+}
+.girl-name{
+	margin:0 15px;
+	padding:10px;
+	font-size:20px;
+	background-color:#ffc0cb;
+	border-radius:10px;
+}
+.hall-name-action{
+	background-color:#ffff00;
+	padding:10px;
+}
+
+.name-status{
+	font-size:20px;
+}
+
+.occurrence-box{
+	text-align:center;
+}
+
+.occurrence-action{
+	background-color:#dc143c;
+	padding:20px 50px;
+	font-size:40px;
+	border-radius:10px;
+}
+
+.occurrence-text{
+	color:#ffffff;
+}
+
+.customer-come{
+	font-size:32px;
+	background-color:#98fb98;
+	padding:20px 30px;
+	border-radius:10px;
+	margin-right:20px;
+	margin-left:25px;
+	border:3px solid #a9a9a9;
+}
+
+.roll{
+	font-size:32px;
+	background-color:#ffd700;
+	padding:20px 30px;
+	border-radius:10px;
+	border:3px solid #a9a9a9;
+}
+
+.open-link{
+	font-size:32px;
+	background-color:#ffd700;
+	padding:20px 30px;
+	border-radius:10px;
+	border:3px solid #a9a9a9;
+	color:red;
+}
+
+.roll-come{
+	margin-top:200px;
+}
+
+.order-accounting-link{
+	margin:40px 0 0 0;
+	text-align:right;
+	padding-top:20px;
+}
+
+.accounting-link{
+	font-size:32px;
+	background-color:#87ceeb;
+	padding:20px 82px;
+	border-radius:10px;
+	margin-right:20px;
+}
+
+.order-link{
+	font-size:32px;
+	background-color:#f0e68c;
+	padding:20px 50px;
+	border-radius:10px;
+	margin-right:20px;
+}
+
+.extension-link{
+	font-size:32px;
+	background-color:#ffc0cb;
+	padding:20px 82px;
+	border-radius:10px;
+	margin-right:20px;
+}
+
+li{
+	list-style:none;
+}
+
+.heading{
+	margin-right:10px;
+	width:120px;
+	float:left;
+}
+
+.submit-link{
+	margin-top:30px;
+	background-color: gold;
+	font-size: 20px;
+	border-radius: 5px;
+	box-shadow: 3px 3px 3px gray;
+	transition: 0.3s;
+}
+
+.rolling{
+	padding:10px 30px;
+}
+
+.rolling-box{
+	text-align:center;
+}
+
+.waiting-girl{
+	padding:30px 20px;
+	height:200px;
+	background-color:#ffffff;
+	margin:20px 0 100px 0;
+}
+
+.order-label{
+	width:50px;
+	float:left;
+}
+
+.drink-name{
+	float:left;
+}
+
+.drink-name{
+	width:700px;
+}
+
+.order-submit{
+	margin-left:200px;
+}
+
+.table-show-link-box{
+	width:100%;
+}
+
+.table-show-box{
+	font-size:28px;
+}
+
+.table-show-box .table-girl{
+	margin-bottom:20px;
+}
+.table-show-box .show-table-member{
+	margin-bottom:20px;
+}
+.table-show-box .table-payment{
+	margin-bottom:20px;
+}
+.table-show-box .set-count{
+	margin-bottom:20px;
+}
+.table-show-box .drink-count{
+	margin-bottom:20px;
+}
+.table-show-box .set-price{
+	margin-bottom:20px;
+}
+.table-show-box .table-customer-name{
+	margin-bottom:20px;
+}
+.table-show-box .costomer-memo{
+	margin-bottom:20px;
+}
+
+.payment-method-box{
+	text-align:right;
+	margin-bottom:20px;
+}
+
+.swich{
+	padding:10px 20px;
+	border-radius:8px;
+	font-size:22px;
+	margin-right:12px;
+}
+
+.with-card{
+	background-color:#6495ed;
+	color:#ffffff;
+}
+
+.card{
+	background-color:#8fbc8f;
+	color:#ffffff;
+}
+
+.cash{
+	background-color:#6495ed;
+	color:#ffffff;
+}
+
+.all-payment{
+	text-align:center;
+}
+
+.edit-all-payment{
+	padding:5px;
+	background-color:#ffd700;
+	position:absolute;
+	right:20px;
+	top:40px;
+}
+
+.payment-confirm{
+	text-align:center;
+	background-color:#dc143c;
+	margin-bottom:30px;
+	color:#ffffff;
+	padding:20px 0;
+	font-size:32px;
+}
+
+.payment-confirm:hover{
+	color:#ff0000;
+	background-color:#ff69b4;
+}
+
+.table-show-link-box{
+	margin-bottom:1000px
+}
+
+.attendance{
+	width:150px;
+	text-align:center;
+}
+
+.attendance-time-box{
+	float:left;
+	margin:10px 30px 0 30px;
+}
+
+.attendance{
+	float:left;
+}
+
+.attendance-submit-link{
+	margin-top:0px;
+	padding:10px;
+}
+
+.girl-create-box {
+	margin:50px 0;
+}
+
+.girls-index{
+	margin-bottom:150px;
+}

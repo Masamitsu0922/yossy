@@ -1,36 +1,53 @@
-<h1>回転メニュー</h1>
-<%= form_with model: @today,url:shop_rolling_path,local: true do |f| %>
-	<% @shop.table.times do |i| %>
-		<h3><%= i + 1 %>卓</h3>
-		<% table = @tables.find_by(number: i+1) %>
-		<% if table != nil %>
-			<h4>客数:<%= table.member %></h4>
-			指名:
-			<% if table.nameds == [] %>
-			なし
-			<% else %>
-			<% table.nameds.each do |named| %>
-			<%= named.today_girl.name %>、
-			<% end %>
-			<% end %><br>
-			<%= f.fields_for :tables do |t| %>
-				<%  if t.object.number == i+1 %>
-					<%= t.fields_for :table_girls do |s| %>
-						<% if s.object.today_girl_id == nil %>
-							<%= s.collection_select :today_girl_id,@girls,:id,:name,prompt: "" %>
-						<% else %>
-							<%= s.collection_select :today_girl_id,@girls,:id,:name,selected: s.object.today_girl_id,include_blank:"" %>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-2">
+			<h2 class="shops_index">回転メニュー</h2>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+		<%= form_with model: @today,url:shop_rolling_path,local: true do |f| %>
+			<% @shop.table.times do |i| %>
+				<% table = @tables.find_by(number: i+1) %>
+				<% if table != nil %>
+				<h3><%= i + 1 %>卓</h3>
+					客数: <%= table.member %><br>
+					指名: 
+					<% if table.nameds == [] %>
+					なし
+					<% else %>
+					<% table.nameds.each do |named| %>
+					<%= named.today_girl.name %>、
+					<% end %>
+					<% end %><br>
+					<%= f.fields_for :tables do |t| %>
+						<%  if t.object.number == i+1 %>
+							<%= t.fields_for :table_girls do |s| %>
+								<% if s.object.today_girl_id == nil %>
+									<%= s.collection_select :today_girl_id,@girls,:id,:name,prompt: "" %>
+								<% else %>
+									<%= s.collection_select :today_girl_id,@girls,:id,:name,selected: s.object.today_girl_id,include_blank:"" %>
+								<% end %>
+							<% end %>
 						<% end %>
 					<% end %>
 				<% end %>
 			<% end %>
+			<div class="rolling-box">
+			<%= f.submit "回転",class:"rolling submit-link" %>
+			</div>
 		<% end %>
-	<% end %>
-	<%= f.submit "回転" %>
-<% end %>
-<h3>待機</h3>
-<% @girls.each do |girl| %>
-	<% if girl.table_girl == nil %>
-		<%= girl.name %>
-	<% end %>
-<% end %>
+		<h3>待機</h3>
+		<div class="waiting-girl">
+			<% @girls.each do |girl| %>
+				<% if girl.table_girl == nil %>
+				<span class="girl-name">
+					<i class="fas fa-female"></i>
+					<%= girl.name %>
+				</span>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+</div>

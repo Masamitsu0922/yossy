@@ -1,7 +1,8 @@
 class AccountingsController < ApplicationController
 
+	before_action :set_shop_status
+
 	def new
-		@shop = Shop.find(params[:shop_id])
 		@table = Table.find(params[:table_id])
 		@payment = @table.payment
 		#現金会計税抜き
@@ -16,12 +17,10 @@ class AccountingsController < ApplicationController
 	end
 
 	def edit
-		@shop = Shop.find(params[:shop_id])
 		@table = Table.find(params[:table_id])
 	end
 
 	def update
-		@shop = Shop.find(params[:shop_id])
 		@table = Table.find(params[:table_id])
 
 		if @table.payment_method == 0
@@ -40,7 +39,6 @@ class AccountingsController < ApplicationController
 	end
 
 	def create
-		@shop = Shop.find(params[:shop_id])
 		table = Table.find(params[:table_id])
 		today = table.today
 		mounth = today.mounth_grade
@@ -55,5 +53,18 @@ class AccountingsController < ApplicationController
 		table.destroy
 		redirect_to shop_top_path(@shop.id)
 	end
+
+	private
+
+	def set_shop_status
+			@shop=Shop.find(params[:shop_id])
+			if @shop.today != nil
+				if @shop.today.today_girls != nil
+					@today_girls = @shop.today.today_girls.where(attendance_status: 1)
+				end
+				@mounth_grade = MounthGrade.find_by(id:@shop.today.mounth_grade_id)
+				@today_grade = TodayGrade.find_by(date:@shop.today.date)
+			end
+		end
 
 end

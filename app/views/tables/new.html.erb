@@ -1,24 +1,52 @@
-<h1>入店情報</h1>
-<%= form_with model: @table,url:shop_tables_path do |f| %>
-	<%= f.label :number, "卓番号" %>
-	<%= f.select :number,options_for_select(1..@shop.table,selected: 1) %><br>
-	<%= f.label :member, "人数" %>
-	<%= f.select :member,options_for_select(1..10,selected: 1) %><br>
-	<%= f.fields_for :nameds do |t| %>
-		<%= t.label :today_girl_id, "指名" %>
-		<%= t.collection_select(:today_girl_id,@girls,:id,:name, prompt: "フリー") %>
-		<%= t.check_box :named_status,checked_value: 0,unchecked_value: 1 %>同伴<br>
-	<% end %>
-	<%= f.label :price, "セット料金" %>
-	<%= f.text_field :price %>円
-	<%= f.label :tax,"TAXカット" %>
-	<%= f.check_box :tax,{}, "true", "false" %><br>
-	<%= f.label :set_time, "時間" %>
-	<%= f.text_field :set_time, value: "60" %>分<br>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-1">
+			<h2 class="shops_index">入店情報</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-1">
+			<%= form_with model: @table,url:shop_tables_path do |f| %>
+			<ul>
+				<li class="table-number-form">
+						<%= f.label :number, "卓番号",class:"heading" %>
+						<%= f.select :number,options_for_select(1..@shop.table,selected: 1),class:"inputo-form" %>
+				</li><br>
+				<li class="member-form">
+						<%= f.label :member, "人数",class:"heading" %>
+						<%= f.select :member,options_for_select(1..10,selected: 1),class:"inputo-form" %>
+				</li><br>
 
-	<%= f.label :name, "客の名前" %>
-	<%= f.text_field :name %><br>
-	<%= f.label :memo %>
-	<%= f.text_area :memo %>
-	<%= f.submit "入店" %>
-<% end %>
+				<li class="name-form">
+					<%= f.fields_for :nameds do |t| %>
+							<%= t.label :today_girl_id, "指名",class:"heading" %>
+							<%= t.collection_select(:today_girl_id,@girls,:id,:name, prompt: "フリー",class:"inputo-form") %>
+							<%= t.check_box :named_status,checked_value: 0,unchecked_value: 1,class:"check-box" %>同伴
+					<% end %>
+				</li><br>
+
+				<li class="price-form">
+						<%= f.label :price, "セット料金",class:"heading" %>
+						<%= f.text_field :price,placeholder:"セット料金を入力",class:"inputo-form" %>円
+						<%= f.check_box :tax,{}, "true", "false" %>TAXカット
+				</li><br>
+
+				<li class="name-form">
+						<%= f.label :set_time, "時間",class:"heading" %>
+						<%= f.text_field :set_time, value: "60",class:"inputo-form" %>分
+				</li><br>
+
+				<li class="customer-form">
+						<%= f.label :name, "客の名前",class:"heading"  %>
+						<%= f.text_field :name,class:"inputo-form" %>
+				</li><br>
+
+				<li class="memo-form">
+						<%= f.label :memo,class:"heading" %>
+						<%= f.text_area :memo,class:"inputo-form" %>
+				</li><br>
+				<%= f.submit "入店",class:"submit-link" %>
+			<% end %>
+		</div>
+	</div>
+</div>

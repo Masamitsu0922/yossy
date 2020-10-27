@@ -1,31 +1,88 @@
-<p><%= link_to "会計",new_shop_table_accounting_path(@shop.id,@table.id) %></p>
-<p><%= link_to "オーダー",new_shop_table_order_path(@shop.id,@table.id) %></p>
-<p><%= link_to "延長",shop_table_extension_path(@shop.id,@table.id) %></p>
 
-<h1><%= @table.number %>卓</h1>
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-1">
+			<h2 class="shops_index"><%= @table.number %>卓 詳細画面</h2>
+				<div class="table-show-box">
+					<div class="table-girl">
+						<span>接客中キャスト:</span>
+						<% @table_girls.each do |table_girl| %>
+							<% if table_girl.today_girl_id != nil %>
+								<span class="girl-name">
+									<i class="fas fa-female"></i>
+									<%= table_girl.today_girl.name %>
+								</span>
+								<% if table_girl.name_status == 0 %>
+									<%= link_to shop_table_table_girl_path(@shop.id,@table.id,table_girl.id),method: :patch do %>
+										<span class="hall-name-action">場内指名</span>
+									<% end %>
+								<% elsif table_girl.name_status == 1 %>
+									<span class="name-status">(本指名)</span>
+								<% elsif table_girl.name_status == 2 %>
+									<span class="name-status">(場内)</span>
+								<% elsif table_girl.name_status == 3 %>
+									<span class="name-status">(同伴)</span>
+								<% end %>
+							<% end %>
+						<% end %>
+					</div>
 
-<span>キャスト:</span>
-<% @table_girls.each do |table_girl| %>
-	<% if table_girl.today_girl_id != nil %>
-		<span><%= table_girl.today_girl.name %></span>
-	<% end %>
-<% end %><br>
+					<div class="show-table-member">
+						<span>人数: </span><%= @table.member %>名
+					</div>
 
-<span>人数</span><%= @table.member %><br>
-<span>本指名:</span>
-<% @table.nameds.each do |named|%>
-	<% if named.today_girl_id != nil %>
-		<%= TodayGirl.find_by(id:named.today_girl_id).name %>
-	<% end %>
-<% end %>
-<br>
-<span>場内指名:</span><br>
-<span>現状会計</span><%=@table.payment%><br>
-<span>セット数</span><%= @table.set_count%><br>
-<span>ドリンク</span><%= @orders.where(product_id: 0).count %><br>
-<span>ファーストセット料金</span><%= @table.price %>円
-<% if @table.tax == "true" %>
-	TAXカット
-<% end %><br>
-<span>名前</span><%= @table.name%><br>
-<span>メモ</span><%= @table.memo%><br>
+					<div class="table-payment">
+						<span>現状会計: </span><%= @table.payment.to_i %>円
+					</div>
+					<div class="set-count">
+						<span>セット数: </span><%= @table.set_count%>
+					</div>
+
+					<div class="drink-count">
+						<span>ドリンク: </span><%= @drinks.count %>杯
+					</div>
+
+					<div class="drink-count">
+						<span>ショット: </span><%= @shots.count %>杯
+					</div>
+
+					<div class="set-price">
+						<span>ファーストセット料金: </span><%= @table.price %>円
+						<% if @table.tax == "true" %>
+						TAXカット
+						<% end %>
+					</div>
+					<div class="table-customer-name">
+						<span>名前: </span><%= @table.name%>
+					</div>
+					<div class="costomer-memo">
+						<span>メモ</span><%= @table.memo%>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="table-show-link-box order-accounting-link">
+		<span>
+			<%= link_to new_shop_table_accounting_path(@shop.id,@table.id), class:"accounting-link" do %>
+			<i class="fas fa-cash-register"></i>
+			会計
+			<% end %>
+		</span>
+		<span>
+			<%= link_to new_shop_table_order_path(@shop.id,@table.id),class:"order-link" do %>
+			<i class="far fa-hand-paper"></i>
+			オーダー
+
+			<% end %>
+		</span>
+		<span>
+			<%= link_to shop_table_extension_path(@shop.id,@table.id),class:"extension-link" do %>
+			<i class="fas fa-plus"></i>
+			延長
+			<% end %>
+		</span>
+	</div>
+</div>
+

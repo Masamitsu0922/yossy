@@ -1,6 +1,8 @@
 class TablesController < ApplicationController
+
+	before_action :set_shop_status
+
 	def new
-		@shop = Shop.find(params[:shop_id])
 		@table = Table.new
 		@table.nameds.build
 		@girls = @shop.today.today_girls.where(attendance_status:1)
@@ -8,10 +10,8 @@ class TablesController < ApplicationController
 	end
 
 	def create
-		shop = Shop.find(params[:shop_id])
 		table = Table.new(table_params)
-		table.today_id = shop.today.id
-		#binding.pry
+		table.today_id = @shop.today.id
 		table.set_count = 1
 
 
@@ -25,34 +25,16 @@ class TablesController < ApplicationController
 			end
 		end
 
-		#if table.nameds == []
-		#	table.member.times do |i|
-		#		table_girl = TableGirl.new(table_id: table.id,name_status: 0)
-		#		table_girl.save
-		#	end
-		#else
-		#	table.nameds.each do |named|
-		#		table_girl = TableGirl.new(today_girl_id: named.today_girl_id,table_id: table.id,name_status: 1)
-		#		table_girl.save
-		#	end
-		#	free_member = table.member - table.nameds.count
-		#	free_member.times do |i|
-		#		table_girl = TableGirl.new(table_id: table.id,name_status: 0)
-		#		table_girl.save
-		#	end
-		#end
-		redirect_to shop_top_path(shop.id)
+		redirect_to shop_top_path(@shop.id)
 	end
 
 	def occurrence
-		@shop = Shop.find(params[:shop_id])
 		@table = Table.find(params[:id])
 		@girls = @shop.today.today_girls.where(attendance_status:1)
 		@table.table_girls.build
 	end
 
 	def occurrence_create
-		@shop = Shop.find(params[:shop_id].to_i)
 		@table = Table.find(params[:id].to_i)
 		@table.update(table_params)
 
@@ -73,10 +55,10 @@ class TablesController < ApplicationController
 				if named.named_status == 1
 					back_wage =named_girl.table_girl.today_girl.back_wage
 					named_girl.table_girl.today_girl.update(back_wage:back_wage + shop.name_back)
-				if named.named_status == 2
+				elsif named.named_status == 2
 					back_wage =named_girl.table_girl.today_girl.back_wage
 					named_girl.table_girl.today_girl.update(back_wage:back_wage + shop.hall_back)
-				if named.named_status == 3
+				elsif named.named_status == 3
 					back_wage =named_girl.table_girl.today_girl.back_wage
 					named_girl.table_girl.today_girl.update(back_wage:back_wage + shop.accompany_back)
 				end
@@ -88,19 +70,24 @@ class TablesController < ApplicationController
 
 	def show
 		@table=Table.find(params[:id])
-		@shop=Shop.find(params[:shop_id])
 		@table_girls = @table.table_girls
 		@orders=@table.orders
+		drink_category = @shop.categories.find_by(name:"ドリンク")
+		@drinks = @table.products.where(category_id:drink_category.id)
+		shot_category = @shop.categories.find_by(name:"ショット")
+		@shots = @table.products.where(category_id:shot_category.id)
+
+
 	end
 
 	def extension
 		@table = Table.find(params[:id])
-		@shop = Shop.find(params[:shop_id])
 		@payment = (@shop.set_price + @shop.extension_price) * @table.member
 
 		@table.table_girls.each do |table_girl|
+			#延長するごとに指名料、指名バックを加算
 			if table_girl.today_girl_id != nil
-				today_girl = TodayGirl.find_by(today_girl_id:table_girl.today_girl_id)
+				today_girl = TodayGirl.find_by(id:table_girl.today_girl_id)
 				if table_girl.name_status == 2
 					@payment += @shop.hall_price
 					today_girl.update(back_wage:today_girl.back_wage + @shop.hall_back)
@@ -125,7 +112,6 @@ class TablesController < ApplicationController
 	end
 
 	def card
-		@shop = Shop.find(params[:shop_id])
 		@table = Table.find(params[:id])
 		@table.update(card_payment: @table.payment + @table.card_payment)
 		@table.update(payment_method: 1,payment: 0)
@@ -133,12 +119,10 @@ class TablesController < ApplicationController
 	end
 
 	def and_card
-		@shop = Shop.find(params[:shop_id])
 		@table = Table.find(params[:id])
 	end
 
 	def and_carding
-		@shop = Shop.find(params[:shop_id])
 		@table = Table.find(params[:id])
 		@table.update(card_payment: params[:table][:card_payment].to_f / (1.0+@shop.tax))
 		@table.update(payment:@table.payment - @table.card_payment,payment_method: 2)
@@ -146,7 +130,6 @@ class TablesController < ApplicationController
 	end
 
 	def cash
-		@shop = Shop.find(params[:shop_id])
 		@table = Table.find(params[:id])
 		@table.update(payment: @table.payment+@table.card_payment)
 		@table.update(payment_method: 0,card_payment: 0)
@@ -154,6 +137,17 @@ class TablesController < ApplicationController
 	end
 
 	private
+
+		def set_shop_status
+			@shop=Shop.find(params[:shop_id])
+			if @shop.today != nil
+				if @shop.today.today_girls != nil
+					@today_girls = @shop.today.today_girls.where(attendance_status: 1)
+				end
+				@mounth_grade = MounthGrade.find_by(id:@shop.today.mounth_grade_id)
+				@today_grade = TodayGrade.find_by(date:@shop.today.date)
+			end
+		end
 
 		def table_params
 			params.require(:table).permit(:number,:today_id,:member,:time,:price,:set_time,:set_count,:payment,:name,:memo,:tax,:card_payment,nameds_attributes:[:today_girl_id,:table_id,:named_status])

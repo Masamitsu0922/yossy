@@ -9,5 +9,6 @@ class Table < ApplicationRecord
 	accepts_nested_attributes_for :nameds
 	belongs_to :today
 
-	validates :number,uniqueness: true
+	validates :number, uniqueness: true
+	has_many :products, through: :orders
 end

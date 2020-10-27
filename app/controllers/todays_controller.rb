@@ -1,4 +1,7 @@
 class TodaysController < ApplicationController
+
+	before_action :set_shop_status
+
 	def new
 		shop = Shop.find(params[:shop_id])
 		@today = shop.today
@@ -80,6 +83,18 @@ class TodaysController < ApplicationController
 		TodayGrade.create(mounth_grade_id:mounth.id)
 
 		redirect_to shop_top_path(@shop.id)
+	end
+
+	private
+	def set_shop_status
+		@shop=Shop.find(params[:shop_id])
+		if @shop.today != nil
+			if @shop.today.today_girls != nil
+				@today_girls = @shop.today.today_girls.where(attendance_status: 1)
+			end
+		end
+		@mounth_grade = MounthGrade.find_by(id:@shop.today.mounth_grade_id)
+		@today_grade = TodayGrade.find_by(date:@shop.today.date)
 	end
 
 end

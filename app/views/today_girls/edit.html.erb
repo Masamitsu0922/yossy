@@ -1,20 +1,34 @@
+<div class="container">
+	<div class="row">
+		<% if @today_girl.attendance_status == 0 %>
+		<div class="col-md-8 col-md-offset-3">
+			<h2 class="shops_index">出勤情報編集メニュー</h2>
+			<%= form_with model:@today_girl,url:shop_todays_today_girl_path(@shop.id,@today_girl.id) do |f| %>
+				<div class="attendance girl-name"><i class="fas fa-female"></i><%= @today_girl.name %></div>
 
-<% if @today_girl.attendance_status == 0 %>
-	<h1>出勤情報編集メニュー</h1>
-	<%= form_with model:@today_girl,url:shop_todays_today_girl_path(@shop.id,@today_girl.id) do |f| %>
-		<%= @today_girl.name %><br>
-		<%= f.label :start_time,"実際の出勤時間を入力" %>
-		<%= f.time_select :start_time, {minute_step: 15,selected: @today_girl.start_time} %>
-		<%= f.hidden_field :attendance_status, :value => 1 %>
-		<%= f.submit "出勤確定" %>
-	<% end %>
-<% elsif @today_girl.attendance_status == 1 %>
-	<h1>退勤情報編集メニュー</h1>
-	<%= form_with model:@today_girl,url:shop_todays_today_girl_path(@shop.id,@today_girl.id) do |f| %>
-		<%= @today_girl.name %><br>
-		<%= f.label :end_time,"実際の退勤時間を入力" %>
-		<%= f.time_select :end_time, {minute_step: 15,selected: @today_girl.end_time} %>
-		<%= f.hidden_field :attendance_status, :value => 2 %>
-		<%= f.submit "退勤確定" %>
-	<% end %>
-<% end %>
+				<div class="attendance-time-box">
+					<div><%= f.label :start_time,"実際の出勤時間を入力" %></div>
+					<div><%= f.time_select :start_time, {minute_step: 15,selected: @today_girl.start_time} %></div>
+					<%= f.hidden_field :attendance_status, :value => 1 %>
+				</div>
+					<%= f.submit "出勤確定",class:"attendance-submit-link submit-link" %>
+			<% end %>
+
+
+
+		<% elsif @today_girl.attendance_status == 1 %>
+			<div class="col-md-8 col-md-offset-3">
+				<h2 class="shops_index">退勤編集メニュー</h2>
+				<%= form_with model:@today_girl,url:shop_todays_today_girl_path(@shop.id,@today_girl.id) do |f| %>
+					<div class="attendance girl-name"><i class="fas fa-female"></i><%= @today_girl.name %></div>
+
+					<div class="attendance-time-box">
+						<div><%= f.time_select :end_time, {minute_step: 15,selected: @today_girl.end_time} %></div>
+						<div>※実際の退勤時間を入力</div>
+					</div>
+					<%= f.hidden_field :attendance_status, :value => 2 %>
+					<%= f.submit "退勤確定", class:"attendance-submit-link submit-link" %>
+				<% end %>
+		<% end %>
+	</div>
+</div>

@@ -1,14 +1,55 @@
-<h1>キャスト一覧</h1>
-<%= form_with model: @girl,url: shop_girls_path do |f| %>
-	<%= f.label :name, "名前" %>
-	<%= f.text_field :name %>
-	<%= f.label :wage, "時給" %>
-	<%= f.text_field :wage %>
-	<%= f.label :destination, "送り先" %>
-	<%= f.text_field :destination %>
-	<%= f.submit "新規登録" %>
-<% end %>
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<h2 class="shops_index">キャスト新規登録</h2>
+		</div>
+	</div>
 
-<% @girls.each do |girl| %>
-	<%= girl.name %><%= link_to "編集", edit_shop_girl_path(girl.shop_id,girl.id) %>
-<% end %>
+	<div class="row">
+		<div class="col-md-4 col-md-offset-2">
+			<div class="girl-create-box">
+				<%= form_with model: @girl,url: shop_girls_path do |f| %>
+				<table class="table table-simple">
+					<tr>
+						<td><%= f.label :name, "名前" %></td>
+						<td><%= f.text_field :name %></td>
+					</tr>
+					<tr>
+						<td><%= f.label :wage, "時給" %></td>
+						<td><%= f.text_field :wage %></td>
+					</tr>
+					<tr>
+						<td><%= f.label :destination, "送り先" %></td>
+						<td><%= f.text_field :destination %></td>
+					</tr>
+					<tr><td></td><td class="pull-right"><%= f.submit "新規登録" %></td></tr>
+				</table>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<h2 class="shops_index">キャスト一覧</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-7 col-md-offset-2">
+			<div class="girls-index">
+			<table class="table table-bordered">
+				<tr><th>源氏名</th><th>時給</th><th>送り先</th><th>今月の売り上げ</th></tr>
+				<% @girls.each do |girl| %>
+					<% girl_grade = 0 %>
+					<% girl.girl_grades.each do |grade| %>
+						<% if grade.sale != nil %>
+							<% girl_grade += grade.sale %>
+						<% end %>
+					<% end %>
+					<tr><td><%= girl.name %></td><td><%= girl.wage %>円/時</td><td><%= girl.destination %></td><td><%= girl_grade %>円</td></tr>
+
+				<% end %>
+			</table>
+		</div>
+		</div>
+	</div>
+</div>

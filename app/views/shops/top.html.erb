@@ -1,75 +1,145 @@
 <div class="container">
 	<div class="row">
-		<div class="col-md-12">
-				<%= link_to "キャスト一覧",shop_girls_path(@shop.id) %>
-
-			<% if @shop.today.today_girls == [] %>
-				<%= link_to "開店準備", new_shop_todays_path(@shop.id) %>
-			<% else %>
-				<%= link_to "出勤一覧", shop_todays_index_path(@shop.id) %>
-				<%= link_to "入店", new_shop_table_path(@shop.id) %>
-				<%= link_to "回転", shop_roll_path(@shop.id) %>
-			<% end %>
-
-			<% if owner_signed_in? %>
-				<% if current_owner.owner_shops.find_by(shop_id:@shop.id).is_authority == true %>
-					<%= link_to "商品登録", new_shop_product_path(@shop.id) %>
-					<%= link_to "日報", shop_mounth_grade_today_grade_path(@shop.id,@mounth_grade.id,@today_grade.id) %>
-					<%= link_to "スタッフ一覧", shop_staffs_path(@shop.id) %>
-				<% end %>
-			<% end %>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-4 col-md-offset-2">
+		<div class="col-md-4 col-md-offset-1">
 			<h2 class="shops_index"><%= @shop.name %> 店舗トップ</h2>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-4 col-md-offset-2">
+		<div class="col-md-10 col-md-offset-1">
 
 
-			<table>
-				<tr><th>出勤</th><td><%= @today_girls.count %>人</td></tr>
-				<tr><th>客数</th><td><%= @costomers%>人</td></tr>
-				<tr><th>プラマイ</th><td><%= @today_girls.count - @costomers%></td></tr>
-				<tr><th></th><td></td></tr>
+			<table class="now-grade table table-bordered">
+				<tr><td>出勤</td><td><%= @today_girls.count %>人</td></tr>
+				<tr><td>客数</td><td><%= @costomers%>人</td></tr>
+				<tr><td>プラマイ</td><td><%= @today_girls.count - @costomers%></td></tr>
+				<tr><td>現売り</td><td><%= @today_grade.sale %>円</td></tr>
 			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="roll-come col-md-5 col-md-offset-7">
+			<% if @shop.today.today_girls == [] %>
+			<div class="open-link">
+            	<%= link_to "開店準備", new_shop_todays_path(@shop.id) %>
+            </div>
+          	<% else %>
+            <span class="customer-come">
+            	<i class="fas fa-store-alt"></i>
+            	<%= link_to "入店", new_shop_table_path(@shop.id) %>
+            </span>
+            <span class="roll">
+            	<i class="fas fa-sync-alt"></i>
+            	<%= link_to "回転", shop_roll_path(@shop.id) %>
+            </span>
+          <% end %>
+		</div>
+	</div>
 
+	<div class="table-info row">
+		<div class="col-md-12">
 			<% @shop.table.times do |i| %>
-				<% if @shop.today.tables.find_by(number: i+1) != nil %>
-				<%=link_to shop_table_path(@shop.id,@shop.today.tables.find_by(number: i+1).id) do %>
-					<%= i+1 %>卓<br>
-				<% end %>
-				<% else %>
-				<%= i+1 %>卓<br>
-				<% end %>
-				<% table = @shop.today.tables.find_by(number: i+1) %>
+			<% table = @shop.today.tables.find_by(number: i+1) %>
+			<div class="customer-box">
+				<div class="numbers">
 				<% if table != nil %>
-				客数:<%=table.member %><br>
+					<span class="table-number">
+						<%=link_to shop_table_path(@shop.id,@shop.today.tables.find_by(number: i+1).id) do %>
+							<%= i+1 %>卓
+						<% end %>
+					</span>
+					<span class="customer-name">
+						名前: <%= table.name %><br>
+						メモ: <%= table.memo %>
+					</span>
+					<span class="time-member">
+					<span class="table-member">
+						<i class="fas fa-male"></i>
+						客数: <%=table.member %>
+					</span>
+					<% if table.table_girls != []  %>
+						<span class="outtime">
+							<i class="fas fa-clock"></i>
+							最短アウト時刻: <%= (table.time + (table.set_time * 60)).strftime('%H:%M') %>
+						</span>
+					<% end %>
+					</span>
+
+					<% else %>
+					<span class="table-number">
+						<%= i+1 %>卓
+					</span>
+				<% end %>
+			</div>
+
+				<% if table != nil %>
 					<% if table.table_girls != [] %>
 					<!-- すでに発生していた場合の処理 -->
-						最短アウト時刻: <%= (table.time + (table.set_time * 60)).strftime('%H:%M') %><br>
+					<div class="girl-box">
+						<span class="girl-head">
 						キャスト:
+						</span>
 						<% table.table_girls.each do |table_girl| %>
 							<% if table_girl.today_girl_id != nil %>
 							<!-- テーブルにキャストがついていたら名前を表示 -->
+							<span class="girl-name">
+								<i class="fas fa-female"></i>
 								<%= table_girl.today_girl.name %>
+							</span>
 								<% if table_girl.name_status == 0 %>
-								<%= link_to "場内指名する",shop_table_table_girl_path(@shop.id,table.id,table_girl.id),method: :patch %>
-								<% elsif table_girl.name_status == 1 %>
-								本指名
-								<% elsif table_girl.name_status == 2 %>
-								場内
-								<% elsif table_girl.name_status == 3 %>
-								同伴
-								<% end %>
+
+									<%= link_to shop_table_table_girl_path(@shop.id,table.id,table_girl.id),method: :patch do %>
+										<span class="hall-name-action">場内指名</span>
+									<% end %>
+										<% elsif table_girl.name_status == 1 %>
+											<span class="name-status">
+											(本指名)
+											</span>
+										<% elsif table_girl.name_status == 2 %>
+											<span class="name-status">
+											(場内)
+											</span>
+										<% elsif table_girl.name_status == 3 %>
+											<span class="name-status">
+											(同伴)
+											</span>
+									<% end %>
 							<% end %>
 						<% end %>
+					</div>
+
+						<div class="order-accounting-link">
+						<span>
+
+							<%= link_to new_shop_table_accounting_path(@shop.id,table.id), class:"accounting-link" do %>
+							<i class="fas fa-cash-register"></i>
+							会計
+							<% end %>
+						</span>
+						<span>
+							<%= link_to new_shop_table_order_path(@shop.id,table.id),class:"order-link" do %>
+							<i class="far fa-hand-paper"></i>
+							オーダー
+
+							<% end %>
+						</span>
+						<span>
+							<%= link_to shop_table_extension_path(@shop.id,table.id),class:"extension-link" do %>
+							<i class="fas fa-plus"></i>
+							延長
+							<% end %>
+						</span>
+					</div>
+
 					<% else %>
-						<%= link_to "発生",shop_table_occurrence_path(@shop.id,table.id) %>
+					<div class="occurrence-box">
+						<span class="occurrence-action">
+							<i class="fas fa-address-book"></i>
+							<%= link_to "発生",shop_table_occurrence_path(@shop.id,table.id),class:"occurrence-text" %>
+						</span>
+					</div>
 					<% end %>
 				<% end %><br>
+			</div>
 			<% end %>
 		</div>
 	</div>

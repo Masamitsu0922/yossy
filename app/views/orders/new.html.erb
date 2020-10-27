@@ -1,27 +1,60 @@
-<h1>オーダー</h1>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<h2 class="shops_index">オーダー</h2>
+		</div>
+	</div>
 
-<%= form_with model:@table, url:shop_table_orders_path,local: true,method: :post do |f| %>
-	<h3>ドリンク</h3>
-	<% @table_girls.each do |girl| %>
-		<%= f.fields_for :orders do |t| %>
-			<% if girl.today_girl_id != nil %>
-				<%= girl.today_girl.name %>
-				<%= t.collection_select :product_id, @drink_products,:id,:name %>
-				<%= t.select :quantity, options_for_select(0..10,selected: 0) %>
-				<%= t.hidden_field :today_girl_id, :value => girl.today_girl_id %>
-				<br>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-4">
+
+			<%= form_with model:@table, url:shop_table_orders_path,local: true,method: :post do |f| %>
+				<div class="order-box">
+					<h3><i class="fas fa-wine-glass-alt"></i>ドリンク</h3>
+					<% @table_girls.each do |girl| %>
+						<%= f.fields_for :orders do |t| %>
+							<% if girl.today_girl_id != nil %>
+							<ul>
+								<li>
+									<div class="order-label">
+										<i class="fas fa-female"></i><%= girl.today_girl.name %>
+									</div>
+									<%= t.collection_select :product_id, @drink_products,:id,:name,class:"drink-name" %>
+									<%= t.select :quantity, options_for_select(0..10,selected: 0) %>
+									<%= t.hidden_field :today_girl_id, :value => girl.today_girl_id,class:"quantity" %>
+								</li>
+							</ul>
+							<% end %>
+						<% end %>
+					<% end %>
+				</div>
+				<div class="order-box">
+					<h3><i class="fas fa-wine-bottle"></i>ボトル</h3>
+					<%= f.fields_for :orders do |t| %>
+						<ul>
+							<li>
+								<span class="order-label">名称</span>
+								<%= t.collection_select :product_id, @bottle_products,:id,:name,prompt:"",class:"drink-name" %>
+								<%= t.select :quantity, options_for_select(0..10,selected: 0) %>
+							</li>
+						</ul>
+					<% end %>
+				</div>
+
+				<div class="order-box">
+					<%= f.fields_for :orders do |t| %>
+						<h3>その他</h3>
+						<ul>
+							<li>
+								<span class="order-label">名称</span>
+								<%= t.collection_select :product_id, @any_products,:id,:name,prompt:"",class:"drink-name" %>
+								<%= t.select :quantity,options_for_select(0..10,selected: 0) %>
+							</li>
+						</ul>
+					<% end %>
+				</div>
+				<%= f.submit "オーダー確定",class:"order-submit submit-link" %>
 			<% end %>
-		<% end %>
-	<% end %>
-	<h3>ボトル</h3>
-	<%= f.fields_for :orders do |t| %>
-		<%= t.collection_select :product_id, @bottle_products,:id,:name,prompt:"" %>
-		<%= t.select :quantity, options_for_select(0..10,selected: 0) %>
-	<% end %>
-	<%= f.fields_for :orders do |t| %>
-		<h3>その他</h3>
-		<%= t.collection_select :product_id, @any_products,:id,:name,prompt:"" %>
-		<%= t.select :quantity,options_for_select(0..10,selected: 0) %><br>
-	<% end %>
-	<%= f.submit "オーダー確定" %>
-<% end %>
+		</div>
+	</div>
+</div>

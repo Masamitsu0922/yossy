@@ -1,4 +1,7 @@
 class ShopsController < ApplicationController
+
+	before_action :set_shop_status,except: :index
+
 	def index
 		@owner=current_owner
 	end
@@ -112,12 +115,25 @@ class ShopsController < ApplicationController
 	end
 
 	private
+
+	def set_shop_status
+		@shop=Shop.find(params[:id])
+		if @shop.today != nil
+			if @shop.today.today_girls != nil
+				@today_girls = @shop.today.today_girls.where(attendance_status: 1)
+			end
+			@mounth_grade = MounthGrade.find_by(id:@shop.today.mounth_grade_id)
+			@today_grade = TodayGrade.find_by(date:@shop.today.date)
+		end
+	end
+
 	def shop_params
 		params.require(:shop).permit(:name,:postal_code,:address,:email,:shop_id,:password,:girl_wage,
 			:staff_wage,:set_price,:name_price,:hall_price,:accompany,:drink,:shot,:tax,:acconpany_system,
 			:table,:vip,:drink_back,:shot_back,:bottle_back,:name_back,:hall_back,:slide_line,:slide_wage,
 			:deadline,:payment_date,owner_shops_attributes: [:id, :shop_id, :owner_id ,:is_authority])
 	end
+
 	def today_params
 		params.require(:today).permit(tables_attributes:[:id,table_girls_attributes:[:id,:today_girl_id]])
 	end

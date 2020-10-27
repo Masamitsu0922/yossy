@@ -33,6 +33,29 @@
             </ul>
           </div>
         </div>
+        <% if owner_signed_in? || staff_signed_in? %>
+        <% if @shop != nil %>
+        <div class="menu-box col-md-12">
+
+          <%= link_to "店舗TOP",shop_top_path(@shop.id),class:"menu-text" %>
+
+          <% if @shop.today.today_girls == [] %>
+            <%= link_to "開店準備", new_shop_todays_path(@shop.id),class:"menu-text" %>
+          <% else %>
+            <%= link_to "出勤一覧", shop_todays_index_path(@shop.id),class:"menu-text" %>
+          <% end %>
+
+          <% if owner_signed_in? %>
+            <% if current_owner.owner_shops.find_by(shop_id:@shop.id).is_authority == true %>
+              <%= link_to "キャスト一覧",shop_girls_path(@shop.id),class:"menu-text" %>
+              <%= link_to "商品登録", new_shop_product_path(@shop.id),class:"menu-text" %>
+              <%= link_to "日報", shop_mounth_grade_today_grade_path(@shop.id,@mounth_grade.id,@today_grade.id),class:"menu-text" %>
+              <%= link_to "スタッフ一覧", shop_staffs_path(@shop.id),class:"menu-text" %>
+            <% end %>
+          <% end %>
+        </div>
+        <% end %>
+        <% end %>
       </nav>
     </div>
     <%= yield %>
