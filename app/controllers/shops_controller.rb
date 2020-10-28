@@ -7,7 +7,7 @@ class ShopsController < ApplicationController
 	before_action :check_staff_leader,only: [:roll,:rolling]
 	#スタッフリーダーであるか確認
 	#閲覧オーナーであるか確認
-	before_action :check_master_owner,only: [:detial,:setting]
+	before_action :check_master_owner,only: [:detial,:setting,:destroy]
 	#マスターオーナーであるか確認
 	before_action :set_shop_status,except: [:index,:new,:create,:add,:adding]
 
@@ -122,6 +122,18 @@ class ShopsController < ApplicationController
 		else
 			redirect_to shop_roll_path(shop.id)
 		end
+	end
+
+	def destroy
+		@shop.destroy
+		redirect_to shops_path
+	end
+
+	def release
+		shop = @shop.owner_shops.find_by(owner_id:current_owner_id)
+		shop.destroy
+		redirect_to shops_path
+
 	end
 
 	private

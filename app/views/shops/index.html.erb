@@ -22,11 +22,20 @@
 	<div class="have-shops row">
 		<div class="col-md-9 col-md-offset-2">
 		<% @owner.owner_shops.each do |owner_shop| %>
-				<%= link_to shop_top_path(owner_shop.shop_id) do %>
-					<div class="shop-name">
-						<%=owner_shop.shop.name %>
-					</div>
+			<%= link_to shop_top_path(owner_shop.shop_id) do %>
+				<div class="shop-name">
+					<%=owner_shop.shop.name %>
+				</div>
+			<% end %>
+			<% if owner_shop.is_authority == true %>
+				<%= link_to shop_path(owner_shop.shop_id),method: :delete  do %>
+					<div class="delete-link">削除</div>
 				<% end %>
+			<% else %>
+				<% link_to shop_release_path(owner_shop.shop_id),method: :delete  do %>
+					<div class="delete-link">登録解除</div>
+				<% end %>
+			<% end %>
 		<% end %>
 		</div>
 	</div>

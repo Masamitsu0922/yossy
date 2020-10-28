@@ -86,6 +86,7 @@ Rails.application.routes.draw do
   patch 'shop/:id/rolling' => "shops#rolling",as: 'shop_rolling'
   get 'shop/:id/detial' => "shops#detial", as: 'shop_detial'
   patch 'shop/:id/detial' => "shops#setting", as:'shop_detial_set'
+  delete 'shop/;id/release' => "shops#release", as:'shop_release'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
