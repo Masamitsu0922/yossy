@@ -16,6 +16,27 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+.about-icon{
+	padding-top:10px;
+	float:left;
+}
+
+.about-head{
+	border-bottom:4px solid;
+	padding:10px 0;
+	width:95%;
+	margin-bottom:30px;
+
+}
+
+.introduction-head{
+	font-size:32px;
+}
+.introduction-script{
+	font-size:22px;
+	margin:20px 0 30px 0;
+	padding-left:32px;
+}
 
 .form-header{
 	border-radius: 10px 10px 0px 0px;
@@ -483,4 +504,8 @@ input[type="submit"].detail_submit{
 	hight:40px;
 	font-size:20px;
 	padding:10px 50px;
+}
+
+#slidemenu{
+	padding-top:10px;
 }

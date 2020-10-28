@@ -47,10 +47,24 @@ class AccountingsController < ApplicationController
 		mounth = today.mounth_grade
 		today_grade = TodayGrade.find_by(mounth_grade_id:mounth.id,date: today.date)
 
+
 		cash_sale = table.payment * @shop.tax + table.payment + today_grade.sale.to_f
 		card_sale = (table.card_payment * @shop.tax + table.card_payment) * @shop.card_tax + table.card_payment + today_grade.card_sale.to_f
 		#日別集計に売り上げを保存
 		today_grade.update(sale:cash_sale,card_sale:card_sale)
+
+		table.table_girls.each do |girl|
+			unless girl.name_status == 0
+				girl.today_girl.sale += cash_sale + card_sale
+				girl.today_girl.update
+
+				if girl.sale > @shop.slide_line
+					slide_count = girl.sale / @shop.slide_line
+					girl.slide_wage == girl.girl.wage + (@shop.slide_wage * slide_count)
+					girl.update
+				end
+			end
+		end
 
 		#テーブル情報を削除
 		table.destroy
