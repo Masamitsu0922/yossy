@@ -3,12 +3,9 @@ class ShopsController < ApplicationController
 	before_action :check_user_basic
 	#オーナー、スタッフどちらかログインしているか確認
 	before_action :authenticate_owner!,only: [:index,:new,:create,:detial,:setting,:add,:adding]
-	#オーナー権限があるかどうか確認
-	#before_action :check_staff,only: :top
 	#その店舗のスタッフであるか買う人
 	before_action :check_staff_leader,only: [:roll,:rolling]
 	#スタッフリーダーであるか確認
-	before_action :check_orner,only: :top
 	#閲覧オーナーであるか確認
 	before_action :check_master_owner,only: [:detial,:setting]
 	#マスターオーナーであるか確認
@@ -25,18 +22,21 @@ class ShopsController < ApplicationController
 
 	def create
 		if params[:passward] == params[:passward_verification]
-			#店舗情報の保存
-			@shop=Shop.new(shop_params)
-			@shop.save
-			#オーナーと紐づく中間テーブルの作成
-			owner_shop=OwnerShop.new(owner_id:current_owner.id,shop_id:@shop.id,is_authority:true)
-			owner_shop.save
-			#初期設定：店舗に紐づく月度成績と日付テーブルの作成
-			mounth = MounthGrade.new(shop_id:@shop.id,mounth: Date.today.month)
-			mounth.save
-			today = Today.new(shop_id:@shop.id,date:Date.today.day,mounth_grade_id:mounth.id)
-			today.save
-			TodayGrade.create(mounth_grade_id:mounth.id,date:today.date,sale:0,card_sale:0)
+			ActiveRecord::Base.transaction do
+				#店舗情報の保存
+				@shop=Shop.new(shop_params)
+				@shop.save! # true/false
+				#オーナーと紐づく中間テーブルの作成
+				owner_shop=OwnerShop.new(owner_id:current_owner.id,shop_id:@shop.id,is_authority:true)
+				owner_shop.save
+				#初期設定：店舗に紐づく月度成績と日付テーブルの作成
+				mounth = MounthGrade.new(shop_id:@shop.id,mounth: Date.today.month)
+				mounth.save
+				today = Today.new(shop_id:@shop.id,date:Date.today.day,mounth_grade_id:mounth.id)
+				today.save
+				TodayGrade.create(mounth_grade_id:mounth.id,date:today.date,sale:0,card_sale:0)
+			rescue
+			end
 
 			redirect_to shop_detial_path(@shop.id)
 		else
@@ -133,14 +133,6 @@ class ShopsController < ApplicationController
 		end
 	end
 
-	def check_staff
-		if staff_signed_in?
-			unless current_staff.shop_id == params[:id]
-				redirect_to shop_top_path(params[:id])
-			end
-		end
-	end
-
 	def check_staff_leader
 		if staff_signed_in?
 			unless current_staff.is_authority ==true
@@ -148,14 +140,6 @@ class ShopsController < ApplicationController
 			end
 		end
 
-	end
-
-	def check_orner
-		if owner_signed_in?
-			unless current_owner.owner_shops.find_by(shop_id:params[:id]) != nil
-				redirect_to shops_path(current_owner.id)
-			end
-		end
 	end
 
 	def check_master_owner

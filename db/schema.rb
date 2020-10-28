@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_24_084431) do
+ActiveRecord::Schema.define(version: 2020_10_28_130837) do
 
   create_table "catches", force: :cascade do |t|
     t.integer "shop_id"
@@ -218,7 +218,7 @@ ActiveRecord::Schema.define(version: 2020_10_24_084431) do
 
   create_table "todays", force: :cascade do |t|
     t.integer "shop_id"
-    t.date "date"
+    t.integer "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "mounth_grade_id"
