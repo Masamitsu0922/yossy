@@ -55,10 +55,9 @@ class AccountingsController < ApplicationController
 
 		table.table_girls.each do |girl|
 			unless girl.name_status == 0
-				girl.today_girl.sale += cash_sale + card_sale
-				girl.today_girl.update
-
-				if girl.sale > @shop.slide_line
+				total_sale = girl.today_girl.sale + cash_sale + card_sale
+				girl.today_girl.update(sale:total_sale)
+				if girl.today_girl.sale > @shop.slide_line
 					slide_count = girl.sale / @shop.slide_line
 					girl.slide_wage == girl.girl.wage + (@shop.slide_wage * slide_count)
 					girl.update

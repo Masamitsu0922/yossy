@@ -27,13 +27,13 @@ class TodayGirlsController < ApplicationController
 
 		if @today_girl.attendance_status == 2
 			#退勤時に給料計算及び支払い項目の追加
-			if @today_girl.start_time >  @today_girl.end_time
+			if @today_girl.start_time.hour >  @today_girl.end_time.hour
 				#出勤中に日付が変わっていた場合の処理
-				start_time_for_calculate = (24 - @today_girl.start_time.hour)+(@today_girl.start_time.min / 60)
-				end_time_for_calculate = @today_girl.end_time.hour +(@today_girl.end_time.min / 60)
+				start_time_for_calculate = (24 - @today_girl.start_time.hour) + (@today_girl.start_time.min / 60)
+				end_time_for_calculate = @today_girl.end_time.hour + (@today_girl.end_time.min / 60)
 				total_time = start_time_for_calculate + end_time_for_calculate
 			else
-				total_time = (@today_girl.start_time -  @today_girl.end_time) / 3600
+				total_time = (@today_girl.end_time - @today_girl.start_time) / 3600
 			end
 
 			time_wage = total_time.to_i * @today_girl.slide_wage
@@ -41,6 +41,7 @@ class TodayGirlsController < ApplicationController
 			total_back = @today_girl.back_wage
 
 			total_wage = time_wage + total_back
+			binding.pry
 
 
 			GirlGrade.create(girl_id:@today_girl.girl_id,mounth_grade_id:shop.today.mounth_grade_id,date:shop.today.date,sale:@today_girl.sale,payment:total_wage)

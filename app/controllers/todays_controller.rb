@@ -18,7 +18,6 @@ class TodaysController < ApplicationController
 		shop = Shop.find(params[:shop_id])
 		@today = shop.today
 		@today.update(date:params[:today][:date].to_i)
-		binding.pry
 
 		params[:today][:today_girls_attributes].values.each do |param|
 			if param[:"girl_id"] != nil
@@ -62,7 +61,7 @@ class TodaysController < ApplicationController
 					mounth = @shop.mounth_grades.find_by(mounth:Date.today.month)
 				end
 			#month = Date.today.month
-		elsif Date.today.day == @shop.today.day
+		elsif Date.today.day == @shop.today.date
 			#営業中に日付が変わらなかった場合
 				if @shop.mounth_grades.find_by(mounth:Date.tomorrow.month) == []
 					#アクション中の翌日の日付を参照し対応する月度成績テーブルがなかった場合

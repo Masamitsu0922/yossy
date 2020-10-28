@@ -103,24 +103,13 @@ class ShopsController < ApplicationController
 	end
 
 	def rolling
-		today = shop.today
-
-		#params[:today][:tables_attributes].each do |table|
-		#	if table[1][:table_girls_attributes] != nil
-			#	table[1][:table_girls_attributes].values.each do |param|
-			#		table_girl = TableGirl.find_by(today_girl_id:param[:"today_girl_id"])
-			#		if table_girl != nil
-			#			table_girl.update(today_girl_id: nil,name_status: 0)
-			#		end
-		#		end
-		# => end
-		#end
+		today = @shop.today
 
 		if today.update(today_params)
-			#binding.pry
-			redirect_to shop_top_path(shop.id)
+
+			redirect_to shop_top_path(@shop.id)
 		else
-			redirect_to shop_roll_path(shop.id)
+			redirect_to shop_roll_path(@shop.id)
 		end
 	end
 
@@ -175,7 +164,7 @@ class ShopsController < ApplicationController
 
 	def shop_params
 		params.require(:shop).permit(:name,:postal_code,:address,:email,:shop_id,:password,:girl_wage,
-			:staff_wage,:set_price,:name_price,:hall_price,:accompany,:drink,:shot,:tax,:acconpany_system,
+			:staff_wage,:set_price,:extension_price,:name_price,:hall_price,:accompany,:drink,:shot,:tax,:acconpany_system,
 			:table,:vip,:drink_back,:shot_back,:bottle_back,:name_back,:hall_back,:slide_line,:slide_wage,
 			:deadline,:payment_date,owner_shops_attributes: [:id, :shop_id, :owner_id ,:is_authority])
 	end

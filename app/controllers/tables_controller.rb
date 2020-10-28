@@ -21,12 +21,13 @@ class TablesController < ApplicationController
 
 
 		table.payment = table.price * table.member
+		binding.pry
 
 		table.save
 		table.nameds.each do |named|
 			#空の指名テーブルを削除
 			if named.today_girl_id == nil
-				Named.find_by(id:named.id).destroy
+				named.destroy
 			end
 		end
 

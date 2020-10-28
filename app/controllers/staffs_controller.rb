@@ -14,7 +14,6 @@ class StaffsController < ApplicationController
 	def create
 		@shop = Shop.find(params[:shop_id])
 		staff = Staff.new(staff_params)
-		binding.pry
 		staff.save
 		redirect_to shop_staffs_path(@shop.id)
 	end
