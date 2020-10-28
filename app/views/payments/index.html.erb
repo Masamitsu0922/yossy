@@ -47,8 +47,8 @@
 	</div>
 		<div class="row">
 		<div class="col-md-3 col-md-offset-2">
-			<table class="table table-simple">
 			<%= form_with model:@payment,url: shop_mounth_grade_today_grade_payments_path(@shop.id,@mounth_grade.id,@today_grade.id) do |f| %>
+			<table class="table table-simple">
 			<tr>
 				<td><%= f.label :item,"項目" %></td>
 				<td><%= f.text_field :item %></td>
@@ -67,8 +67,8 @@
 			</tr>
 				<%= f.hidden_field :today_grade_id,:value => @today_grade.id %>
 				<tr><td></td><td><%= f.submit "登録" %></td></tr>
-			<% end %>
 		</table>
+		<% end %>
 		</div>
 	</div>
 </div>

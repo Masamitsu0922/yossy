@@ -28,7 +28,7 @@ class ProductsController < ApplicationController
 		end
 
 		@product.save
-		redirect_to shop_top_path(@shop.id)
+		redirect_to new_shop_product_path(@shop.id)
 
 	end
 
