@@ -1,5 +1,10 @@
 class TodaysController < ApplicationController
-
+	before_action :check_user_basic
+	#オーナー、スタッフどちらかログインしているか確認
+	before_action :check_staff_leader,except: :index
+	#スタッフリーダーであるか確認
+	before_action :check_master_owner,except: :index
+	#マスターオーナーであるか確認
 	before_action :set_shop_status
 
 	def new
@@ -35,19 +40,16 @@ class TodaysController < ApplicationController
 	end
 
 	def index
-		@shop = Shop.find(params[:shop_id])
 		@today = @shop.today
 		@today_girls = @today.today_girls.sort{ |a,b| a[:end_time] <=> b[:end_time]}
 	end
 
 	def confirm
-		@shop = Shop.find(params[:shop_id])
 	end
 
 	def destroy
-		@shop = Shop.find(params[:shop_id])
 
-		if Date.today.day != @shop.today.day
+		if Date.today.day != @shop.today.date
 			#営業中に日付が変わった場合
 			day = Date.today.day
 
@@ -80,12 +82,36 @@ class TodaysController < ApplicationController
 
 
 		Today.create(shop_id:@shop.id, date:day,mounth_grade_id:mounth.id)
-		TodayGrade.create(mounth_grade_id:mounth.id)
+		TodayGrade.create(mounth_grade_id:mounth.id,date:day,sale:0,card_sale:0)
 
 		redirect_to shop_top_path(@shop.id)
 	end
 
 	private
+	def check_user_basic
+		if owner_signed_in? || staff_signed_in?
+		else
+			redirect_to root_path
+		end
+	end
+
+	def check_staff_leader
+		if staff_signed_in?
+			unless current_staff.is_authority ==true
+				redirect_to shop_top_path(params[:shop_id])
+			end
+		end
+
+	end
+
+	def check_master_owner
+		if owner_signed_in?
+			unless current_owner.owner_shops.find_by(shop_id:params[:shop_id]).is_authority == true
+				redirect_to shops_path(current_owner.id)
+			end
+		end
+	end
+
 	def set_shop_status
 		@shop=Shop.find(params[:shop_id])
 		if @shop.today != nil

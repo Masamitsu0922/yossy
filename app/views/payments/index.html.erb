@@ -1,29 +1,75 @@
-<h1>本日の支払い</h1>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-2">
+			<h2 class="shops_index">本日の支払い</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
 
-<table>
-	<tr>
-		<th></th><th>項目</th><th>支払先</th><th>金額</th><th>備考</th>
-	</tr>
-	<% @payments.each_with_index do |payment,i| %>
-		<tr>
-			<td><%= i+1 %></td>
-			<td><%= payment.item %></td>
-			<td><%= payment.name %></td>
-			<td><%= payment.price %></td>
-			<td><%= payment.memo%></td>
-		</tr>
-	<% end %>
-</table>
-
-<%= form_with model:@payment,url: shop_mounth_grade_today_grade_payments_path(@shop.id,@mounth_grade.id,@today_grade.id) do |f| %>
-	<%= f.label :item,"項目" %>
-	<%= f.text_field :item %>
-	<%= f.label :name, "支払先" %>
-	<%= f.text_field :name %>
-	<%= f.label :price, "金額" %>
-	<%= f.text_field :price %>
-	<%= f.label :memo, "備考" %>
-	<%= f.text_field :memo %>
-	<%= f.hidden_field :today_grade_id,:value => @today_grade.id %>
-	<%= f.submit "登録" %>
-<% end %>
+			<table class="table table-bordered">
+				<tr class="success">
+					<th></th><th>項目</th><th>支払先</th><th>金額</th><th>備考</th>
+				</tr>
+				<% @payments.each_with_index do |payment,i| %>
+					<tr>
+						<td><%= i+1 %></td>
+						<td><%= payment.item %></td>
+						<td><%= payment.name %></td>
+						<td><%= payment.price %>円</td>
+						<td><%= payment.memo%></td>
+					</tr>
+				<% end %>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+		<div class="col-md-4 col-md-offset-6">
+				<table class="table table-bordered">
+				<tr>
+					<td class="success">合計金額</td>
+					<td>
+						<% all_payment = 0 %>
+						<% @payments.each do |payment| %>
+							<% all_payment += payment.price %>
+						<% end %>
+						<%= all_payment %>円
+					</td>
+				</tr>
+			</table>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4 col-md-offset-2">
+			<h2 class="shops_index">支払い項目追加</h2>
+		</div>
+	</div>
+		<div class="row">
+		<div class="col-md-3 col-md-offset-2">
+			<table class="table table-simple">
+			<%= form_with model:@payment,url: shop_mounth_grade_today_grade_payments_path(@shop.id,@mounth_grade.id,@today_grade.id) do |f| %>
+			<tr>
+				<td><%= f.label :item,"項目" %></td>
+				<td><%= f.text_field :item %></td>
+			</tr>
+			<tr>
+				<td><%= f.label :name, "支払先" %></td>
+				<td><%= f.text_field :name %></td>
+			</tr>
+			<tr>
+				<td><%= f.label :price, "金額 ※半角で入力してください" %></td>
+				<td><%= f.text_field :price,placeholder:"税込金額で記入" %>円</td>
+			</tr>
+			<tr>
+				<td><%= f.label :memo, "備考" %></td>
+				<td><%= f.text_field :memo %></td>
+			</tr>
+				<%= f.hidden_field :today_grade_id,:value => @today_grade.id %>
+				<tr><td></td><td><%= f.submit "登録" %></td></tr>
+			<% end %>
+		</table>
+		</div>
+	</div>
+</div>
+</div>

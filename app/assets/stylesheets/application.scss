@@ -438,3 +438,49 @@ li{
 .girls-index{
 	margin-bottom:150px;
 }
+
+.pay-confirm{
+	background-color:#f0e68c;
+	color:#000000;
+}
+
+.pay-confirm:hover{
+	background-color:#ffd700;
+}
+
+.finish{
+	margin:100px 0;
+}
+
+.back{
+	font-size:22px;
+	text-align:right;
+}
+
+.open-set-head{
+	float:left;
+}
+
+.open-set-memo{
+	margin-top:40px;
+	font-size:20px;
+}
+
+.open-submit{
+	text-align:center;
+	margin-bottom:150px;
+}
+
+.datail-submit-box{
+	text-align:center;
+	margin:50px 0 150px 0;
+}
+
+input[type="submit"].detail_submit{
+	background-color:red;
+	color:#ffffff;
+	widrh:30%;
+	hight:40px;
+	font-size:20px;
+	padding:10px 50px;
+}

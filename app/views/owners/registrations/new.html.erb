@@ -1,34 +1,47 @@
-<h2>Sign up</h2>
+<section class="slice slice-lg sct-color-1">
+  <div class = "container">
+    <div class ="row">
+      <div class="col-md-4 col-md-offset-4">
+        <div class="form style-1 rounded has-shadow-1">
+          <div class="form-header text-center ">
+            <h2>新規登録</h2>
+            </div>
+            <div class="form-body">
+              <div class="row">
+                <div class="col-xs-ofset-1 col-xs-10">
+                  <div class="form-message-box">
+                    <p class="form-message">登録情報を入力してください。</p>
+                </div>
+              </div>
+            </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "owners/shared/error_messages", resource: resource %>
+            <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+              <div class="form-group has-icon">
+                  <label class="control-label sr-only" for="inputEmail">名前</label>
+                   <%= f.text_field :name, autofocus: true, autocomplete: true,class:"form-control", placeholder: "名前" %>
+              </div>
 
-  <div class="field">
-    <%= f.label :名前 %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "名前を入力" %>
+              <div class="form-group has-icon">
+                <label class="control-label sr-only" for="inputEmail">Email</label>
+                <%= f.email_field :email, autofocus: true, class:"form-control", id:"inputEmail", placeholder: "メールアドレス" %>
+              </div>
+
+              <div class="form-group has-icon">
+                <label class="control-label sr-only" for="inputEmail">Password</label>
+                <%= f.password_field :password, autocomplete: "off", class:"form-control", id:"inputEmail", placeholder: "パスワード" %>
+              </div>
+
+              <div class="form-group has-icon">
+                <label class="control-label sr-only" for="inputEmail">Password</label>
+                <%= f.password_field :password_confirmation, autocomplete: "off", class:"form-control", id:"inputEmail", placeholder: "確認用パスワード" %>
+              </div>
+
+              <%= f.submit "新規登録", class:"sign-in btn btn-lg btn-block btn-base-1 mt-20" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="field">
-    <%= f.label :メールアドレス %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "メールアドレスを入力" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :パスワード %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "パスワードを入力" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :パスワード（確認用） %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "パスワードをもう一度入力" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "新規登録" %>
-  </div>
-<% end %>
-
-<%= render "owners/shared/links" %>

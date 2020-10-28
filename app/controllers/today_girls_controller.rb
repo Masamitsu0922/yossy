@@ -1,5 +1,10 @@
 class TodayGirlsController < ApplicationController
-
+	before_action :check_user_basic
+	#オーナー、スタッフどちらかログインしているか確認
+	before_action :check_staff_leader
+	#スタッフリーダーであるか確認
+	before_action :check_master_owner
+	#マスターオーナーであるか確認
 	before_action :set_shop_status,except: :index
 
 	def edit
@@ -22,7 +27,14 @@ class TodayGirlsController < ApplicationController
 
 		if @today_girl.attendance_status == 2
 			#退勤時に給料計算及び支払い項目の追加
-			total_time = (@today_girl.start_time -  @today_girl.end_time) / 3600
+			if @today_girl.start_time >  @today_girl.end_time
+				#出勤中に日付が変わっていた場合の処理
+				start_time_for_calculate = (24 - @today_girl.start_time.hour)+(@today_girl.start_time.min / 60)
+				end_time_for_calculate = @today_girl.end_time.hour +(@today_girl.end_time.min / 60)
+				total_time = start_time_for_calculate + end_time_for_calculate
+			else
+				total_time = (@today_girl.start_time -  @today_girl.end_time) / 3600
+			end
 
 			time_wage = total_time.to_i * @today_girl.slide_wage
 
@@ -38,6 +50,29 @@ class TodayGirlsController < ApplicationController
 	end
 
 	private
+	def check_user_basic
+		if owner_signed_in? || staff_signed_in?
+		else
+			redirect_to root_path
+		end
+	end
+
+	def check_staff_leader
+		if staff_signed_in?
+			unless current_staff.is_authority == true
+				redirect_to shop_top_path(params[:shop_id])
+			end
+		end
+
+	end
+
+	def check_master_owner
+		if owner_signed_in?
+			unless current_owner.owner_shops.find_by(shop_id:params[:shop_id]).is_authority == true
+				redirect_to shops_path(current_owner.id)
+			end
+		end
+	end
 
 	def set_shop_status
 		@shop=Shop.find(params[:shop_id])

@@ -1,19 +1,46 @@
-<h1>店舗新規登録</h1>
-    <%= form_with model: @shop, local: true do |f| %>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-3">
+            <h2 class="shops_index">店舗新規登録</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+                <%= form_with model: @shop, local: true do |f| %>
+                    <table class="table">
+                        <tr>
+                            <td><%= f.label :name, "店舗名" %></td>
+                            <td><%= f.text_field :name %></td>
+                        </tr>
+                        <tr>
+                            <td><%= f.label :email, "メールアドレス" %></td>
+                            <td><%= f.text_field :email %></td>
+                        </tr>
+                        <tr>
+                            <td><%= f.label :postal_code, "郵便番号" %> ※半角、ハイフンなし</td>
+                            <td><%= f.text_field :postal_code %></td>
+                        </tr>
+                        <tr>
+                            <td><%= f.label :address, "住所" %></td>
+                            <td><%= f.text_field :address %></td>
+                        </tr>
+                        <tr>
+                            <td><%= f.label :shop_id, "店舗認証用ID" %> ※任意の文字列</td>
+                            <td><%= f.text_field :shop_id %></td>
+                        </tr>
+                        <tr>
+                            <td><%= f.label :password, "パスワード" %></td>
+                            <td><%= f.password_field :password %></td>
+                        </tr>
+                        <tr>
+                            <td><%= f.label :password_verification, "パスワード" %></td>
+                            <td><%= f.password_field :password_verification %></td>
+                        </tr>
+                        <tr>
+                           <td></td><td><%= f.submit "新規登録" %></td>
+                       </tr>
 
-        <%= f.label :name, "店舗名" %>
-        <%= f.text_field :name %><br>
-        <%= f.label :email, "メールアドレス" %>
-        <%= f.text_field :email %><br>
-        <%= f.label :postal_code, "郵便番号" %>
-        <%= f.text_field :postal_code %><br>
-        <%= f.label :address, "住所" %>
-        <%= f.text_field :address %><br>
-        <%= f.label :shop_id, "店舗認証用ID" %>
-        <%= f.text_field :shop_id %><br>
-        <%= f.label :password, "パスワード" %>
-        <%= f.text_field :password %>
-        <%= f.label :password_verification, "パスワード" %>
-        <%= f.text_field :password_verification %>
-       <%= f.submit "新規登録" %>
-<% end %>
+            <% end %>
+        </div>
+    </div>
+</div>

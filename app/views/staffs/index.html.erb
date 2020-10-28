@@ -1,32 +1,52 @@
-<h1>スタッフ新規登録 </h1>
-<%= form_with model:@staff, url:shop_staffs_path do |f| %>
-	<%= f.label :name, "名前" %>
-	<%= f.text_field :name %>
-	<%= f.label :wage, "時給" %>
-	<%= f.text_field :wage %>
-	<%= f.label :is_authority, "リーダー権限" %>
-	<%= f.check_box :is_authority, {}, true, false %>
-	<%= f.hidden_field :password, :value => @shop.password %>
-	<%= f.hidden_field :shop_id, :value => @shop.id %>
-	<%= f.hidden_field :shop_id_for_sign, :valur => @shop.shop_id %>
-	<%= f.submit "新規登録" %>
-<% end %>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<h2 class="shops_index">スタッフ新規登録 </h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<%= form_with model:@staff, url:shop_staffs_path do |f| %>
+			<table class="table">
+				<tr>
+					<td><%= f.label :name, "名前" %></td>
+					<td><%= f.text_field :name %></td>
+				</tr>
+				<tr>
+					<td><%= f.label :wage, "時給" %></td>
+					<td><%= f.text_field :wage %></td>
+				</tr>
+				<tr>
+					<td><%= f.label :is_authority, "リーダー権限" %></td>
+					<td>有り<%= f.check_box :is_authority, {}, true, false %></td>
+				</tr>
+					<%= f.hidden_field :password, :value => @shop.password %>
+					<%= f.hidden_field :shop_id, :value => @shop.id %>
+					<%= f.hidden_field :shop_id_for_sign, :valur => @shop.shop_id %>
+				<tr>
+					<td></td><td><%= f.submit "新規登録" %></td>
+				</tr>
+			</table>
+			<% end %>
 
-<h1>スタッフ一覧</h1>
-<table>
-	<tr>
-		<th>名前</th><th>時給</th><th>権限</th>
-	</tr>
-<% @staffs.each do |staff| %>
-<tr>
-	<td><%= staff.name %></td><td><%= staff.wage %></td>
-	<td>
-		<% if staff.is_authority == true %>
-		スタッフリーダー
-		<% else %>
-		スタッフ
-		<% end %>
-	</td>
-</tr>
-<% end %>
-</table>
+			<h2 class="shops_index">スタッフ一覧</h2>
+			<table class="table table-bordered">
+				<tr>
+					<th>名前</th><th>時給</th><th>権限</th>
+				</tr>
+			<% @staffs.each do |staff| %>
+			<tr>
+				<td><%= staff.name %></td><td><%= staff.wage %>円</td>
+				<td>
+					<% if staff.is_authority == true %>
+					スタッフリーダー
+					<% else %>
+					スタッフ
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+			</table>
+		</div>
+	</div>
+</div>

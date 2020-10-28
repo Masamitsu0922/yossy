@@ -1,6 +1,16 @@
-<h1>カード併用会計</h1>
-<p> カードで会計する分の金額を記入してください（半角数字のみ)</p>
-<%= form_with model:@table,url: shop_table_and_carding_path(@shop.id,@table.id) do |f| %>
-	<%= f.text_field :card_payment %>
-	<%= f.submit "会計確認画面へ" %>
-<% end %>
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<h2 class="shops_index">カード併用会計</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+		カードで会計する分の金額を記入してください（半角数字のみ)
+		<%= form_with model:@table,url: shop_table_and_carding_path(@shop.id,@table.id) do |f| %>
+			<%= f.text_field :card_payment,:value => 0.to_i %>円
+			<%= f.submit "会計確認画面へ" %>
+		<% end %>
+	</div>
+</div>
+</div>

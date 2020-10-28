@@ -1,3 +1,17 @@
-<h1>締め作業を完了し、本日の営業を終了しますか？</h1>
-<%= link_to "営業終了",shop_todays_path(@shop.id),method: :delete %>
-<%= link_to "戻る", shop_top_path(@shop.id) %>
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<h2 class="finish"><i class="fas fa-question-circle"></i>締め作業を完了し、本日の営業を終了しますか？</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+		<%= link_to shop_todays_path(@shop.id),method: :delete do %>
+		<div class="payment-confirm">営業終了</div>
+		<% end %>
+		<%= link_to shop_top_path(@shop.id) do%>
+		<div class="back">戻る</div>
+		<% end %>
+	</div>
+	</div>
+</div>

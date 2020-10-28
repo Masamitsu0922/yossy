@@ -1,68 +1,81 @@
-<h1>開店準備</h1>
-<%= form_with model:@today, url:shop_todays_path,method: :post do |f| %>
-	<%= @today.mounth_grade.mounth %>月
-	<%= f.collection_select :date, Date.new(Date.today.year, Date.today.month, 1)..Date.new(Date.today.year, Date.today.month, -1), :day, :day, selected: @today.date %>日<br>
-	<table>
-		<tr>
-			<th>名前</th><th>時間</th><th>日払い金額</th><th>送り先</th>
-		</tr>
-		<% @girls.each do |girl| %>
-			<%= f.fields_for :today_girls do |t| %>
-			<tr>
-				<td>
-					<%= t.check_box :girl_id,{}, girl.id %>
-					<%= girl.name %>
-				</td>
-				<td>
-					<%= t.time_select :start_time, {minute_step: 15} %>~<%= t.time_select :end_time, {minute_step: 15} %>
-				</td>
-				<td>
-					<%= t.text_field :today_payment,:value => 0 %>円
-				</td>
-				<td>
-					<%= t.text_field :destination %>
-				</td>
-			</tr>
-			<% end %>
-		<% end %>
-	</table>
+<div class="container">
+	<div class="row">
+		<div class="col-md-8">
+			<h2 class="open-set-head shops_index">開店準備　</h2><div class="open-set-memo">※出勤キャストの登録</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<%= form_with model:@today, url:shop_todays_path,method: :post do |f| %>
+				<%= @today.mounth_grade.mounth %>月
+				<%= f.collection_select :date, Date.new(Date.today.year, Date.today.month, 1)..Date.new(Date.today.year, Date.today.month, -1), :day, :day, selected: @today.date %>日<br>
+				<h4><i class="fas fa-house-user"></i>在籍キャスト</h4>
+				<table class="table">
+					<tr>
+						<th>名前</th><th>時間</th><th>日払い金額</th><th>送り先</th>
+					</tr>
+					<% @girls.each do |girl| %>
+						<%= f.fields_for :today_girls do |t| %>
+						<tr>
+							<td>
+								<%= t.check_box :girl_id,{}, girl.id %>
+								<%= girl.name %>
+							</td>
+							<td>
+								<%= t.time_select :start_time, {minute_step: 15} %>~<%= t.time_select :end_time, {minute_step: 15} %>
+							</td>
+							<td>
+								<%= t.text_field :today_payment,:value => 0 %>円
+							</td>
+							<td>
+								<%= t.text_field :destination %>
+							</td>
+						</tr>
+						<% end %>
+					<% end %>
+				</table>
 
-	<h4>派遣、体入キャスト</h4>
-	<table>
-		<tr>
-			<th>携帯</th><th>名前</th><th>時給</th><th>勤務時間</th><th>日払い</th><th>送り先</th>
-		</tr>
-		<% 5.times do %>
-			<%= f.fields_for :today_girls do |t| %>
-			<tr>
-				<td>
-					<%= t.radio_button :girl_status,:"1" %>
-					<%= t.label :girl_status,"派遣",{value: :"1"} %>
-					<%= t.radio_button :girl_status,:"2" %>
-					<%= t.label :girl_status,"体入",{value: :"2"} %>
-				</td>
-				<td>
-					<%= t.label :name, "名前" %>
-					<%= t.text_field :name  %>
-				</td>
-				<td>
-					<%= t.label :slide_wage, "時給" %>
-					<%= t.text_field :slide_wage  %>
-				</td>
-				<td>
-					<%= t.time_select :start_time, {minute_step: 15} %>~<%= t.time_select :end_time, {minute_step: 15} %>
-				</td>
-				<td>
-					<%= t.check_box :is_all_today,{},checked_value = "true",unchecked_value = "false" %>
-					<%= t.label :is_all_today, "全日" %>
-					<%= t.text_field :today_payment,:value => 0 %>円
-				</td>
-				<td>
-					<%= t.text_field :destination %>
-				</td>
-			</tr>
+				<h4><i class="fas fa-suitcase-rolling"></i>派遣、体入キャスト</h4>
+				<table class="table">
+					<tr>
+						<th>携帯</th><th>名前</th><th>時給</th><th>勤務時間</th><th>日払い</th><th>送り先</th>
+					</tr>
+					<% 5.times do %>
+						<%= f.fields_for :today_girls do |t| %>
+						<tr>
+							<td>
+								<%= t.radio_button :girl_status,:"1" %>
+								<%= t.label :girl_status,"派遣",{value: :"1"} %>
+								<%= t.radio_button :girl_status,:"2" %>
+								<%= t.label :girl_status,"体入",{value: :"2"} %>
+							</td>
+							<td>
+								<%= t.label :name, "名前" %>
+								<%= t.text_field :name  %>
+							</td>
+							<td>
+								<%= t.label :slide_wage, "時給" %>
+								<%= t.text_field :slide_wage  %>
+							</td>
+							<td>
+								<%= t.time_select :start_time, {minute_step: 15} %>~<%= t.time_select :end_time, {minute_step: 15} %>
+							</td>
+							<td>
+								<%= t.check_box :is_all_today,{},checked_value = "true",unchecked_value = "false" %>
+								<%= t.label :is_all_today, "全日" %>
+								<%= t.text_field :today_payment,:value => 0 %>円
+							</td>
+							<td>
+								<%= t.text_field :destination %>
+							</td>
+						</tr>
+						<% end %>
+					<% end %>
+				</table>
+				<div class="open-submit">
+					<%= f.submit "準備完了",class:"submit-link" %>
+				</div>
 			<% end %>
-		<% end %>
-	</table>
-	<%= f.submit %>
-<% end %>
+		</div>
+	</div>
+</div>

@@ -34,7 +34,7 @@
           </div>
         </div>
         <% if owner_signed_in? || staff_signed_in? %>
-        <% if @shop != nil %>
+        <% if @shop != nil && @shop.id != nil %>
         <div class="menu-box col-md-12">
 
           <%= link_to "店舗TOP",shop_top_path(@shop.id),class:"menu-text" %>

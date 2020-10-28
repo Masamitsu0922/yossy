@@ -6,8 +6,6 @@
 	</div>
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
-
-
 			<table class="now-grade table table-bordered">
 				<tr><td>出勤</td><td><%= @today_girls.count %>人</td></tr>
 				<tr><td>客数</td><td><%= @costomers%>人</td></tr>
@@ -17,21 +15,46 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="roll-come col-md-5 col-md-offset-7">
-			<% if @shop.today.today_girls == [] %>
-			<div class="open-link">
-            	<%= link_to "開店準備", new_shop_todays_path(@shop.id) %>
-            </div>
-          	<% else %>
-            <span class="customer-come">
-            	<i class="fas fa-store-alt"></i>
-            	<%= link_to "入店", new_shop_table_path(@shop.id) %>
-            </span>
-            <span class="roll">
-            	<i class="fas fa-sync-alt"></i>
-            	<%= link_to "回転", shop_roll_path(@shop.id) %>
-            </span>
-          <% end %>
+
+		<% if owner_signed_in? %>
+			<% if current_owner.owner_shops.find_by(shop_id:@shop.id).is_authority == true %>
+				<% if @shop.today.today_girls == [] %>
+					<div class="roll-come col-md-10 col-md-offset-1">
+					<div class="open-set payment-confirm">
+					<%= link_to "開店準備", new_shop_todays_path(@shop.id) %>
+					</div>
+				<% else %>
+					<div class="roll-come col-md-5 col-md-offset-7">
+					<span class="customer-come">
+					<i class="fas fa-store-alt"></i>
+					<%= link_to "入店", new_shop_table_path(@shop.id) %>
+					</span>
+					<span class="roll">
+					<i class="fas fa-sync-alt"></i>
+					<%= link_to "回転", shop_roll_path(@shop.id) %>
+					</span>
+				<% end %>
+			<% end %>
+		<% elsif staff_signed_in? %>
+			<% if current_staff.is_authority == true %>
+				<% if @shop.today.today_girls == [] %>
+					<div class="roll-come col-md-10 col-md-offset-1">
+					<div class="open-set payment-confirm">
+					<%= link_to "開店準備", new_shop_todays_path(@shop.id) %>
+					</div>
+				<% else %>
+					<div class="roll-come col-md-5 col-md-offset-7">
+					<span class="customer-come">
+					<i class="fas fa-store-alt"></i>
+					<%= link_to "入店", new_shop_table_path(@shop.id) %>
+					</span>
+					<span class="roll">
+					<i class="fas fa-sync-alt"></i>
+					<%= link_to "回転", shop_roll_path(@shop.id) %>
+					</span>
+				<% end %>
+			<% end %>
+		<% end %>
 		</div>
 	</div>
 

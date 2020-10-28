@@ -1,51 +1,70 @@
-<h1>店舗初期設定</h1>
-    <p>店舗名</p><%= @shop.name %><br>
-    <p>メールアドレス</p><%= @shop.email %><br>
-    <p>郵便番号</p><%= @shop.postal_code %><br>
-    <%= form_with model: @shop,url: shop_detial_set_path(@shop), local: true do |f| %>
-
-        <%= f.label :girl_wage, "キャスト時給（デフォルト）" %>
-        <%= f.text_field :girl_wage %><br>
-        <%= f.label :staff_wage, "スタッフ時給（デフォルト）" %>
-        <%= f.text_field :staff_wage %><br>
-        <%= f.label :drink, "ドリンク料金" %>
-        <%= f.text_field :drink %><br>
-        <%= f.label :shot, "ショット料金" %>
-        <%= f.text_field :shot %><br>
-        <%= f.label :tax_percentage, "TAX" %>
-        <%= f.text_field :tax_percentage %><br>
-        <%= f.label :card_tax_percentage, "カード手数料" %>
-        <%= f.text_field :card_tax_percentage %>%<br>
-        <%= f.label :set_price, "セット料金" %>
-        <%= f.text_field :set_price %><br>
-        <%= f.label :name_price, "指名料" %>
-        <%= f.text_field :name_price %><br>
-        <%= f.label :hall_price, "場内指名料" %>
-        <%= f.text_field :hall_price %><br>
-        <%= f.label :accompany, "同伴料金" %>
-        <%= f.text_field :accompany %><br>
-        <%= f.radio_button :accompany_system, 0 %>
-        <%= f.label :accompany_system, "同伴料金に指名料を含める（ファーストセットのみ）" %>
-        <%= f.radio_button :accompany_system, 1 %>
-        <%= f.label :accompany_system, "同伴料金と指名料別" %><br>
-        <%= f.label :table, "席数(VIPを含めない）" %>
-        <%= f.text_field :table %><br>
-        <%= f.label :vip, "VIP" %>
-        <%= f.text_field :vip %><br>
-        <%= f.label :vip_price, "VIP使用料" %>
-        <%= f.text_field :vip_price %><br>
-        <%= f.label :drink_back, "ドリンクバック" %>
-        <%= f.text_field :drink_back %><br>
-        <%= f.label :shot_back, "ショットバック" %>
-        <%= f.text_field :shot_back %><br>
-        <%= f.label :bottle_back, "ボトルバック" %>
-        <%= f.text_field :bottle_back %><br>
-        <%= f.label :name_back, "本指名バック" %>
-        <%= f.text_field :name_back %><br>
-        <%= f.label :hall_back, "場内バック" %>
-        <%= f.text_field :hall_back %><br>
-        <%= f.label :slide_line, "売り上げスライド" %>
-        <%= f.text_field :slide_line %>円ごとに
-        <%= f.text_field :slide_wage %>円/時給 アップ<br>
-       <%= f.submit "新規登録" %>
-<% end %>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2 class="shops_index">店舗初期設定</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 col-md-offset-2">
+            <table class="table table-bordered">
+                <tr><td>店舗名</td><td><%= @shop.name %></td></tr>
+                <tr><td>認証ID</td><td><%= @shop.shop_id %></td></tr>
+                <tr><td>メールアドレス</td><td><%= @shop.email %></td></tr>
+                <tr><td>郵便番号</td><td><%= @shop.postal_code %></td></tr>
+                <tr><td>住所</td><td><%= @shop.address %></td></tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <%= form_with model: @shop,url: shop_detial_set_path(@shop), local: true do |f| %>
+                <table class="table">
+                    <tr><td><%= f.label :girl_wage, "キャスト時給（デフォルト）" %></td>
+                    <td><%= f.text_field :girl_wage %>円</td></tr>
+                    <tr><td><%= f.label :staff_wage, "スタッフ時給（デフォルト）" %></td>
+                    <td><%= f.text_field :staff_wage %>円</td></tr>
+                    <tr><td><%= f.label :drink, "キャストドリンク料金" %></td>
+                    <td><%= f.text_field :drink %>円</td></tr>
+                    <tr><td><%= f.label :shot, "キャストショット料金" %></td>
+                    <td><%= f.text_field :shot %>円</td></tr>
+                    <tr><td><%= f.label :tax_percentage, "TAX" %></td>
+                    <td><%= f.text_field :tax_percentage %>%</td></tr>
+                    <tr><td><%= f.label :card_tax_percentage, "カード手数料" %></td>
+                    <td><%= f.text_field :card_tax_percentage %>%</td></tr>
+                    <tr><td><%= f.label :set_price, "通常セット料金" %></td>
+                    <td><%= f.text_field :set_price %>円</td></tr>
+                    <tr><td><%= f.label :name_price, "本指名料" %></td>
+                    <td><%= f.text_field :name_price %>円/セット</td></tr>
+                    <tr><td><%= f.label :hall_price, "場内指名料" %></td>
+                    <td><%= f.text_field :hall_price %>円/セット</td></tr>
+                    <tr><td><%= f.label :accompany, "同伴料金" %></td>
+                    <td><%= f.text_field :accompany %>円</td></tr>
+                    <td><%= f.radio_button :accompany_system, 0 %>
+                    <%= f.label :accompany_system, "同伴料金に指名料を含める（ファーストセットのみ）" %></td>
+                    <td><%= f.radio_button :accompany_system, 1 %>
+                    <%= f.label :accompany_system, "同伴料金と指名料別" %></td></tr>
+                    <tr><td><%= f.label :table, "席数(VIPを含めない）" %></td>
+                    <td><%= f.text_field :table %>席</td></tr>
+                    <tr><td><%= f.label :vip, "VIP" %></td>
+                    <td><%= f.text_field :vip %></td></tr>
+                    <tr><td><%= f.label :vip_price, "VIP使用料" %></td>
+                    <td><%= f.text_field :vip_price %>円/セット</td></tr>
+                    <tr><td><%= f.label :drink_back, "ドリンクバック" %></td>
+                    <td><%= f.text_field :drink_back %>円</td></tr>
+                    <tr><td><%= f.label :shot_back, "ショットバック" %></td>
+                    <td><%= f.text_field :shot_back %>円</td></tr>
+                    <tr><td><%= f.label :bottle_back, "ボトルバック" %></td>
+                    <td><%= f.text_field :bottle_back %>円</td></tr>
+                    <tr><td><%= f.label :name_back, "本指名バック" %></td>
+                    <td><%= f.text_field :name_back %>円</td></tr>
+                    <tr><td><%= f.label :hall_back, "場内バック" %></td>
+                    <td><%= f.text_field :hall_back %>円</td></tr>
+                    <tr><td><%= f.label :slide_line, "売り上げスライド" %></td>
+                    <td><%= f.text_field :slide_line %>円ごとに</td></tr>
+                    <tr><td></td><td><%= f.text_field :slide_wage %>円/時給 アップ</td></tr>
+            </table>
+            <div class="datail-submit-box"><%= f.submit "新規登録",:class=>"detail_submit" %></div>
+            <% end %>
+        </div>
+    </div>
+</div>

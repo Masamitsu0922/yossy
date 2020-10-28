@@ -1,7 +1,23 @@
-<h1>店舗追加画面</h1>
-<%= form_with model:@owner_shop, url:adding_shop_path do |f| %>
-	<%= f.label :shop_id,"店舗ID" %>
-	<%= f.text_field :shop_id %>
-	<%= f.password_field :password %>
-	<%= f.submit "追加" %>
-<% end %>
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-1">
+			<h2 class="shops_index">店舗追加画面</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-1">
+
+			<%= form_with model:@owner_shop, url:adding_shop_path do |f| %>
+				<table class="table">
+					<tr><td><%= f.label :shop_id,"店舗ID" %></td>
+					<td><%= f.text_field :shop_id %></td></tr>
+					<tr><td><%= f.label :password,"パスワード"%></td>
+					<td><%= f.password_field :password %></td></tr>
+				</table>
+				<div class="pull-right">
+					<%= f.submit "追加" %>
+				</div>
+			<% end %>
+		</div>
+	</div>
+</div>

@@ -1,6 +1,18 @@
 class ShopsController < ApplicationController
 
-	before_action :set_shop_status,except: :index
+	before_action :check_user_basic
+	#オーナー、スタッフどちらかログインしているか確認
+	before_action :authenticate_owner!,only: [:index,:new,:create,:detial,:setting,:add,:adding]
+	#オーナー権限があるかどうか確認
+	#before_action :check_staff,only: :top
+	#その店舗のスタッフであるか買う人
+	before_action :check_staff_leader,only: [:roll,:rolling]
+	#スタッフリーダーであるか確認
+	before_action :check_orner,only: :top
+	#閲覧オーナーであるか確認
+	before_action :check_master_owner,only: [:detial,:setting]
+	#マスターオーナーであるか確認
+	before_action :set_shop_status,except: [:index,:new,:create,:add,:adding]
 
 	def index
 		@owner=current_owner
@@ -8,33 +20,34 @@ class ShopsController < ApplicationController
 
 	def new
 		@shop=Shop.new
+
 	end
 
 	def create
 		if params[:passward] == params[:passward_verification]
+			#店舗情報の保存
 			@shop=Shop.new(shop_params)
 			@shop.save
 			#オーナーと紐づく中間テーブルの作成
 			owner_shop=OwnerShop.new(owner_id:current_owner.id,shop_id:@shop.id,is_authority:true)
-			owner.save
-			mounth = MounthGrade.new(shop_id:owner_shop.id,mounth: Date.today.month)
+			owner_shop.save
+			#初期設定：店舗に紐づく月度成績と日付テーブルの作成
+			mounth = MounthGrade.new(shop_id:@shop.id,mounth: Date.today.month)
 			mounth.save
-			today = Today.new(shop_id:owner_shop.id,date:Date.today.day,mounth_grade_id:mounth.id)
+			today = Today.new(shop_id:@shop.id,date:Date.today.day,mounth_grade_id:mounth.id)
 			today.save
 			TodayGrade.create(mounth_grade_id:mounth.id,date:today.date,sale:0,card_sale:0)
 
-			redirect_to shop_detial_path(@shop)
+			redirect_to shop_detial_path(@shop.id)
 		else
 			redirect_to 'shops#new'
 		end
 	end
 
 	def detial
-		@shop=Shop.find(params[:id])
 	end
 
 	def setting
-		@shop=Shop.find(params[:id])
 		@shop.tax = params[:shop][:tax_percentage].to_f / 100
 		@shop.card_tax = params[:shop][:card_tax_percentage].to_f / 100
 		@shop.update(shop_params)
@@ -67,7 +80,6 @@ class ShopsController < ApplicationController
 	end
 
 	def top
-		@shop=Shop.find(params[:id])
 		if @shop.today != nil
 			if @shop.today.today_girls != nil
 				@today_girls = @shop.today.today_girls.where(attendance_status: 1)
@@ -84,7 +96,6 @@ class ShopsController < ApplicationController
 	end
 
 	def roll
-		@shop = Shop.find(params[:id])
 		@today = @shop.today
 		@tables = @shop.today.tables
 		@girls = @shop.today.today_girls.where(attendance_status: 1)
@@ -92,7 +103,6 @@ class ShopsController < ApplicationController
 	end
 
 	def rolling
-		shop = Shop.find(params[:id])
 		today = shop.today
 
 		#params[:today][:tables_attributes].each do |table|
@@ -115,6 +125,46 @@ class ShopsController < ApplicationController
 	end
 
 	private
+
+	def check_user_basic
+		if owner_signed_in? || staff_signed_in?
+		else
+			redirect_to root_path
+		end
+	end
+
+	def check_staff
+		if staff_signed_in?
+			unless current_staff.shop_id == params[:id]
+				redirect_to shop_top_path(params[:id])
+			end
+		end
+	end
+
+	def check_staff_leader
+		if staff_signed_in?
+			unless current_staff.is_authority ==true
+				redirect_to shop_top_path(params[:id])
+			end
+		end
+
+	end
+
+	def check_orner
+		if owner_signed_in?
+			unless current_owner.owner_shops.find_by(shop_id:params[:id]) != nil
+				redirect_to shops_path(current_owner.id)
+			end
+		end
+	end
+
+	def check_master_owner
+		if owner_signed_in?
+			unless current_owner.owner_shops.find_by(shop_id:params[:id]).is_authority == true
+				redirect_to shops_path(current_owner.id)
+			end
+		end
+	end
 
 	def set_shop_status
 		@shop=Shop.find(params[:id])
