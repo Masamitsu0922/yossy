@@ -79,7 +79,7 @@ class OrdersController < ApplicationController
 				@today_girls = @shop.today.today_girls.where(attendance_status: 1)
 			end
 			@mounth_grade = MounthGrade.find_by(id:@shop.today.mounth_grade_id)
-			@today_grade = TodayGrade.find_by(date:@shop.today.date)
+			@today_grade = @mounth_grade.today_grades.find_by(date:@shop.today.date)
 		end
 	end
 end
