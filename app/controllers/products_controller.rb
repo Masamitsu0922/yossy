@@ -7,13 +7,11 @@ class ProductsController < ApplicationController
 	before_action :set_shop_status
 
 	def new
-		@shop = Shop.find(params[:shop_id])
 		@product = Product.new
 		@categories = Category.where(shop_id:@shop.id)
 	end
 
 	def create
-		@shop = Shop.find(params[:shop_id])
 		@product = Product.new(product_params)
 		if @product.category_id == 1
 			@product.back_wage = @shop.drink_back

@@ -41,7 +41,6 @@ class TodayGirlsController < ApplicationController
 			total_back = @today_girl.back_wage
 
 			total_wage = time_wage + total_back
-			binding.pry
 
 
 			GirlGrade.create(girl_id:@today_girl.girl_id,mounth_grade_id:shop.today.mounth_grade_id,date:shop.today.date,sale:@today_girl.sale,payment:total_wage)

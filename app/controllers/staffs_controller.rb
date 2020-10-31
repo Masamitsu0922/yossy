@@ -6,13 +6,11 @@ class StaffsController < ApplicationController
 	before_action :set_shop_status
 
 	def index
-		@shop = Shop.find(params[:shop_id])
 		@staff = Staff.new
 		@staffs = @shop.staffs
 	end
 
 	def create
-		@shop = Shop.find(params[:shop_id])
 		staff = Staff.new(staff_params)
 		staff.save
 		redirect_to shop_staffs_path(@shop.id)

@@ -40,7 +40,7 @@
 				<tr><th>源氏名</th><th>時給</th><th>送り先</th><th>今月の売り上げ</th></tr>
 				<% @girls.each do |girl| %>
 					<% girl_grade = 0 %>
-					<% girl.girl_grades.each do |grade| %>
+					<% girl.girl_grades.where(mounth_grade_id:@mounth_grande.id).each do |grade| %>
 						<% if grade.sale != nil %>
 							<% girl_grade += grade.sale %>
 						<% end %>

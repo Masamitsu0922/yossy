@@ -8,15 +8,13 @@ class TodaysController < ApplicationController
 	before_action :set_shop_status
 
 	def new
-		shop = Shop.find(params[:shop_id])
-		@today = shop.today
-		@girls = shop.girls
+		@today = @shop.today
+		@girls = @shop.girls
 		@today.today_girls.build
 	end
 
 	def create
-		shop = Shop.find(params[:shop_id])
-		@today = shop.today
+		@today = @shop.today
 		@today.update(date:params[:today][:date].to_i)
 
 		params[:today][:today_girls_attributes].values.each do |param|
@@ -25,17 +23,17 @@ class TodaysController < ApplicationController
 				  	start_time = Time.local(param[:"start_time(1i)"],param[:"start_time(2i)"],param[:"start_time(3i)"],param[:"start_time(4i)"],param[:"start_time(5i)"])
 			      	end_time = Time.local(param[:"end_time(1i)"],param[:"end_time(2i)"],param[:"end_time(3i)"],param[:"end_time(4i)"],param[:"end_time(5i)"])
 			      	name = Girl.find_by(id: param[:"girl_id"].to_i).name
-					today_girl = TodayGirl.new(sale:0,today_id: shop.today.id, girl_id: param[:"girl_id"].to_i,name: name, start_time: start_time,end_time: end_time,slide_wage: Girl.find_by(id:(param[:"girl_id"]).to_i).wage, destination: param[:"destination"], girl_status: 0, today_payment: param[:"today_payment"])
+					today_girl = TodayGirl.new(sale:0,today_id: @shop.today.id, girl_id: param[:"girl_id"].to_i,name: name, start_time: start_time,end_time: end_time,slide_wage: Girl.find_by(id:(param[:"girl_id"]).to_i).wage, destination: param[:"destination"], girl_status: 0, today_payment: param[:"today_payment"])
 					today_girl.save
 				end
 			elsif param[:"girl_status"].to_i == 1 || param[:"girl_status"].to_i == 2
 				start_time = Time.local(param[:"start_time(1i)"],param[:"start_time(2i)"],param[:"start_time(3i)"],param[:"start_time(4i)"],param[:"start_time(5i)"])
 			    end_time = Time.local(param[:"end_time(1i)"],param[:"end_time(2i)"],param[:"end_time(3i)"],param[:"end_time(4i)"],param[:"end_time(5i)"])
-			    today_girl = TodayGirl.new(sale:0,name:param[:"name"],today_id: shop.today.id, start_time: start_time,end_time: end_time,slide_wage: param[:"slide_wage"], destination: param[:"destination"], girl_status: param[:"girl_status"].to_i, today_payment: param[:"today_payment"],is_all_today: param[:"is_all_today"])
+			    today_girl = TodayGirl.new(sale:0,name:param[:"name"],today_id: @shop.today.id, start_time: start_time,end_time: end_time,slide_wage: param[:"slide_wage"], destination: param[:"destination"], girl_status: param[:"girl_status"].to_i, today_payment: param[:"today_payment"],is_all_today: param[:"is_all_today"])
 			    today_girl.save
 			end
 		end
-		redirect_to shop_top_path(shop.id)
+		redirect_to shop_top_path(@shop.id)
 	end
 
 	def index

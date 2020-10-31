@@ -7,16 +7,12 @@ class PaymentsController < ApplicationController
 	before_action :set_shop_status
 
 	def index
-		@today_grade = TodayGrade.find_by(date:@shop.today.date)
-		@mounth_grade = @today_grade.mounth_grade
 		@payments = @today_grade.payments
 		@payment = Payment.new
 
 	end
 
 	def create
-		@shop = Shop.find(params[:shop_id])
-		@today_grade = TodayGrade.find_by(date:@shop.today.date)
 		@mounth_grade = @today_grade.mounth_grade
 		Payment.create(payment_params)
 		redirect_to shop_mounth_grade_today_grade_payments_path(@shop.id,@mounth_grade.id,@today_grade.id)

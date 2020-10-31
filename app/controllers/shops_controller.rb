@@ -80,19 +80,15 @@ class ShopsController < ApplicationController
 	end
 
 	def top
-		if @shop.today != nil
-			if @shop.today.today_girls != nil
-				@today_girls = @shop.today.today_girls.where(attendance_status: 1)
-			end
-			@tables = @shop.today.tables
 
+		@tables = @shop.today.tables
 		@costomers = 0
 		@tables.each do |table|
 			@costomers += table.member
-		end
+
 		@mounth_grade = MounthGrade.find_by(id:@shop.today.mounth_grade_id)
-		@today_grade = TodayGrade.find_by(date:@shop.today.date)
-		end
+		@today_grade = @mounth_grade.today_grades.find_by(date:@shop.today.date)
+
 	end
 
 	def roll
