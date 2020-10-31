@@ -22,10 +22,10 @@ class ShopsController < ApplicationController
 
 	def create
 		if params[:passward] == params[:passward_verification]
-			ActiveRecord::Base.transaction do
 				#店舗情報の保存
 				@shop=Shop.new(shop_params)
-				@shop.save! # true/false
+				@shop.save
+				# true/false
 				#オーナーと紐づく中間テーブルの作成
 				owner_shop=OwnerShop.new(owner_id:current_owner.id,shop_id:@shop.id,is_authority:true)
 				owner_shop.save
@@ -35,8 +35,6 @@ class ShopsController < ApplicationController
 				today = Today.new(shop_id:@shop.id,date:Date.today.day,mounth_grade_id:mounth.id)
 				today.save
 				TodayGrade.create(mounth_grade_id:mounth.id,date:today.date,sale:0,card_sale:0)
-			rescue
-			end
 
 			redirect_to shop_detial_path(@shop.id)
 		else
@@ -85,6 +83,7 @@ class ShopsController < ApplicationController
 		@costomers = 0
 		@tables.each do |table|
 			@costomers += table.member
+		end
 
 		@mounth_grade = MounthGrade.find_by(id:@shop.today.mounth_grade_id)
 		@today_grade = @mounth_grade.today_grades.find_by(date:@shop.today.date)

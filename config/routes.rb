@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   }
 
   root :to => "tops#about"
+  delete 'destroy_all' => "tops#destroy_all", as:'destroy_all'
 
   concern :today_girl do
     resources :today_girls, only:[:edit,:update]

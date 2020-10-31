@@ -10,6 +10,7 @@ class Shop < ApplicationRecord
 	has_many :catchs, dependent: :destroy
 	has_many :staffs, dependent: :destroy
 	has_many :mounth_grades, dependent: :destroy
+	validates :shop_id, uniqueness: true
 
 	#belongs_to :customer
 end

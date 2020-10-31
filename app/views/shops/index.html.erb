@@ -21,6 +21,9 @@
 	</div>
 	<div class="have-shops row">
 		<div class="col-md-9 col-md-offset-2">
+			<% if @owner.owner_shops == [] %>
+				<div class="nothing-shops">登録店舗がありません</div>
+				<% end %>
 		<% @owner.owner_shops.each do |owner_shop| %>
 			<%= link_to shop_top_path(owner_shop.shop_id) do %>
 				<div class="shop-name">
