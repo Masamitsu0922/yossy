@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_28_130837) do
+ActiveRecord::Schema.define(version: 2020_10_31_113849) do
 
   create_table "catches", force: :cascade do |t|
     t.integer "shop_id"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 2020_10_28_130837) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "shop_id_for_sign"
+    t.string "password"
   end
 
   create_table "table_girls", force: :cascade do |t|
