@@ -128,6 +128,7 @@ class AccountingsController < ApplicationController
 		if staff_signed_in?
 			unless current_staff.is_authority ==true
 				redirect_to shop_top_path(params[:id])
+				flash[:alert] = "権限がありません"
 			end
 		end
 
@@ -137,6 +138,7 @@ class AccountingsController < ApplicationController
 		if owner_signed_in?
 			unless current_owner.owner_shops.find_by(shop_id:params[:id]).is_authority == true
 				redirect_to shops_path(current_owner.id)
+				flash[:alert] = "権限がありません"
 			end
 		end
 	end

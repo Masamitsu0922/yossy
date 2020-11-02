@@ -46,6 +46,7 @@ class ProductsController < ApplicationController
 		if owner_signed_in?
 			unless current_owner.owner_shops.find_by(shop_id:params[:shop_id]).is_authority == true
 				redirect_to shops_path(current_owner.id)
+				flash[:alert] = "権限がありません"
 			end
 		end
 	end

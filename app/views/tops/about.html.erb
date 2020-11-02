@@ -8,7 +8,21 @@
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="introduction-box">
-				<%= link_to "全て消去（開発テスト用）",destroy_all_path, method: :delete %>
+				<div class="introduction-box-in">
+					<div class="introduction-head alert">
+						<i class="far fa-lightbulb"></i>使い方
+					</div>
+					<div class="introduction-script">
+						テストユーザー<br>
+						オーナーログイン => email: test@test、password: testtest<br>
+						スタッフリーダー => ID: 0000、 name:テスト、 password: testtest<br>
+						スタッフ => ID: 0000、 name:テストスタッフ、 password: testtest<br>
+
+						テスト用の店舗が登録されています。開店準備→出勤一覧→（表の一番右の列）出勤の手順で<br>
+						入店から売り上げの計算、記録の確認が行えます。
+					</div>
+				</div>
+
 				<div class="introduction-box-in">
 					<div class="introduction-head">
 						<i class="far fa-lightbulb"></i>店内状況が一目でわかる
