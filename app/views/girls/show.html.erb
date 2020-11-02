@@ -1,0 +1,46 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<h2 class="shops_index"><%= @girl.name %>詳細</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-7 col-md-offset-2">
+			<div class="girls-index">
+			<table class="table table-bordered">
+				<tr><th>時給</th><th>送り先</th><th>今月の売り上げ</th><th>送り先</th></tr>
+					<% girl_grade = 0 %>
+					<% @girl_grades.each do |grade| %>
+						<% if grade.sale != nil %>
+							<% girl_grade += grade.sale %>
+						<% end %>
+					<% end %>
+					<tr>
+						<td><%= @girl.name %></td>
+						<td><%= @girl.wage %>円/時</td>
+						<td><%= girl_grade %>円</td>
+						<td><%= @girl.destination %></td>
+					</tr>
+			</table>
+		</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<h2 class="shops_index"><%= @mounth_grade.mounth %>月 売り上げ詳細</h2>
+			<table class="table table-bordered">
+				<tr><th>日付</th><th>売り上げ</th><th>給料</th></tr>
+					<% @girl_grades.each do |grade| %>
+					<tr>
+						<td><%= grade.date %>日</td>
+						<td><%= grade.sale %>円</td>
+						<td><%= grade.payment %>円</td>
+					</tr>
+					<% end %>
+					<tr>
+						<td>合計</td><td><%= @sale %>円</td><td><%= @payment %>円</td>
+					</tr>
+			</table>
+		</div>
+	</div>
+</div>

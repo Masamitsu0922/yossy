@@ -11,6 +11,7 @@ class Shop < ApplicationRecord
 	has_many :staffs, dependent: :destroy
 	has_many :mounth_grades, dependent: :destroy
 	validates :shop_id, uniqueness: true
+	validates :name,presence: true
 
 	#belongs_to :customer
 end

@@ -1,5 +1,10 @@
 <div class="container">
     <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="error-message"><%= flash[:alert] %></div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-8 col-md-offset-3">
             <h2 class="shops_index">店舗新規登録</h2>
         </div>
@@ -9,7 +14,7 @@
                 <%= form_with model: @shop, local: true do |f| %>
                     <table class="table">
                         <tr>
-                            <td><%= f.label :name, "店舗名" %></td>
+                            <td><%= f.label :name, "店舗名※必須入力" %></td>
                             <td><%= f.text_field :name %></td>
                         </tr>
                         <tr>

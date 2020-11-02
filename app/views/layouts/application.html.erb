@@ -50,6 +50,7 @@
               <%= link_to "キャスト一覧",shop_girls_path(@shop.id),class:"menu-text" %>
               <%= link_to "商品登録", new_shop_product_path(@shop.id),class:"menu-text" %>
               <%= link_to "日報", shop_mounth_grade_today_grade_path(@shop.id,@mounth_grade.id,@today_grade.id),class:"menu-text" %>
+              <%= link_to "月報", shop_mounth_grades_path(@shop.id),class:"menu-text" %>
               <%= link_to "スタッフ一覧", shop_staffs_path(@shop.id),class:"menu-text" %>
             <% end %>
           <% end %>

@@ -1,0 +1,36 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+            <div class="error-message"><%= flash[:alert] %></div>
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<h2 class="shops_index"><%= @mounth_grade.mounth %>月 詳細</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-7 col-md-offset-2">
+			<div class="girls-index">
+			<table class="table table-bordered">
+				<tr><th>日付</th><th>現金売り</th><th>カード売り</th><th>売り上げ合計</th><th>支出</th><th>収支</th></tr>
+				<% @day_grades.each do |grade| %>
+					<% day_payment = 0 %>
+					<% grade.payments.each do |payment| %>
+						<% day_payment += payment.price %>
+					<% end %>
+					<tr>
+						<td><%= grade.date %>日</td>
+						<td><%= grade.sale %>円</td>
+						<td><%= grade.card_sale %>円</td>
+						<td><%= grade.sale + grade.card_sale %>円</td>
+						<td><%= day_payment %>円</td>
+						<td><%= grade.sale + grade.card_sale - day_payment %>円</td>
+					</tr>
+
+				<% end %>
+			</table>
+		</div>
+		</div>
+	</div>
+</div>

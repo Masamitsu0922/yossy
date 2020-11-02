@@ -1,5 +1,10 @@
 <div class="container">
 	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+            <div class="error-message"><%= flash[:alert] %></div>
+        </div>
+    </div>
+	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<h2 class="shops_index">キャスト新規登録</h2>
 		</div>
@@ -45,7 +50,14 @@
 							<% girl_grade += grade.sale %>
 						<% end %>
 					<% end %>
-					<tr><td><%= girl.name %></td><td><%= girl.wage %>円/時</td><td><%= girl.destination %></td><td><%= girl_grade %>円</td></tr>
+					<tr>
+						<td><%= link_to shop_girl_path(@shop.id,girl.id) do %>
+								<%= girl.name %>
+							<% end %></td>
+						<td><%= girl.wage %>円/時</td>
+						<td><%= girl.destination %></td>
+						<td><%= girl_grade %>円</td>
+					</tr>
 
 				<% end %>
 			</table>
