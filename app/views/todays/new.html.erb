@@ -7,7 +7,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<%= form_with model:@today, url:shop_todays_path,method: :post do |f| %>
-				<%= @today.mounth_grade.mounth %>月
+				<%= Date.today.month %>月
 				<%= f.collection_select :date, Date.new(Date.today.year, Date.today.month, 1)..Date.new(Date.today.year, Date.today.month, -1), :day, :day, selected: @today.date %>日<br>
 				<h4><i class="fas fa-house-user"></i>在籍キャスト</h4>
 				<table class="table">

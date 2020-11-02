@@ -1,5 +1,10 @@
 <div class="container">
 	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+            <div class="error-message"><%= flash[:alert] %></div>
+        </div>
+    </div>
+	<div class="row">
 		<div class="col-md-8 col-md-offset-1">
 			<h2 class="shops_index"><%= @table.number %>卓 会計確認画面</h2>
 		</div>
@@ -68,7 +73,7 @@
 						<% order_shots = @table.orders.where(product_id: shots.pluck(:id)) %>
 						<% shot_total_quantity = 0 %>
 						<% order_shots.each do |shot| %>
-							<% total_quantity += shot.quantity %>
+							<% shot_total_quantity += shot.quantity %>
 						<% end %>
 						<%= @shop.shot %>円×<%= shot_total_quantity %>杯
 					</td>
@@ -95,10 +100,36 @@
 					<% anys= Product.where(category_id: any_category.id) %>
 					<% order_anys = @table.orders.where(product_id: anys.pluck(:id)) %>
 					<% order_anys.each do |order| %>
+						<tr>
+							<th></th>
+							<td><%= order.product.name %>×<%= order.quantity %></td>
+							<td><%= order.product.price * order.quantity %></td>
+						</tr>
+					<% end %>
+					<tr>
+						<th>指名料</th>
+						<td></td>
+						<td></td>
+					</tr>
+					<% @table.nameds.each do |named| %>
 					<tr>
 						<th></th>
-						<td><%= order.product.name %>×<%= order.quantity %></td>
-						<td><%= order.product.price * order.quantity %></td>
+						<td>
+							<%= named.today_girl.name %>
+							<% if named.named_status == 0 %>
+							<!-- 本指名 -->
+								(本指名):<%= @shop.name_price %>円×<%= named.count %>セット</td>
+								<td><%= @shop.name_price * named.count %>円</td>
+							<% elsif named.named_status == 1 %>
+							<!-- 同伴 -->
+
+							(同伴料金):<%= @shop.accompany %>円</td>
+								<td><%= @shop.accompany %>円</td>
+							<% elsif named.named_status == 2 %>
+							<!-- 場内 -->
+							(場内指名):<%= @shop.hall_price %>円×<%= named.count %>セット</td>
+								<td><%= @shop.hall_price * named.count %>円</td>
+							<% end %>
 					</tr>
 					<% end %>
 				<tr>
@@ -120,6 +151,9 @@
 				<% end %>
 			</table>
 
+			<% all_cash_payment = (@tax + @payment).round.to_i %>
+			<% all_card_payment = (@card_payment + @card_tax + @card_fee).round.to_i %>
+
 			<% if @table.payment_method == 0 %>
 			</div>
 			<div class="col-md-3 col-md-offset-6">
@@ -128,7 +162,7 @@
 					<td>合計金額</td>
 				</tr>
 				<tr>
-					<td><%= (@tax + @payment).round.to_i %>
+					<td><%= all_cash_payment %>
 						<%= link_to shop_table_edit_accounting_path(@shop.id,@table.id) do %>
 						<span class="edit-all-payment">編集</span>
 						<% end %>
@@ -146,7 +180,7 @@
 					<td>合計金額</td>
 				</tr>
 				<tr>
-					<td><%= (@card_payment + @card_tax + @card_fee).round.to_i %>
+					<td><%= all_card_payment %>
 						<%= link_to shop_table_edit_accounting_path(@shop.id,@table.id) do %>
 						<span class="edit-all-payment">編集</span>
 						<% end %>
@@ -164,9 +198,9 @@
 						<td>現金会計金額</td><td>カード会計金額</td><td>合計金額</td>
 					</tr>
 					<tr>
-						<td><%= (@tax + @payment).round.to_i %></td>
-						<td><%= (@card_payment + @card_tax + @card_fee).round.to_i %></td>
-						<td><%= (@card_payment + @card_tax + @payment + @card_fee + @tax).round.to_i   %>
+						<td><%= all_cash_payment %></td>
+						<td><%= all_card_payment %></td>
+						<td><%= all_cash_payment + all_card_payment %>
 							<%= link_to shop_table_edit_accounting_path(@shop.id,@table.id) do %>
 							<span class="edit-all-payment">編集</span>
 							<% end %>
@@ -174,7 +208,6 @@
 					</tr>
 				</table>
 			<% end %>
-
 			<%= link_to shop_table_accountings_path(@shop.id,@table.id),method: :post do %>
 			<div class="payment-confirm">会計確定</div>
 			<% end %>

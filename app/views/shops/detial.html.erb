@@ -1,5 +1,10 @@
 <div class="container">
     <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="error-message"><%= flash[:alert] %></div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <h2 class="shops_index">店舗初期設定</h2>
         </div>
@@ -23,6 +28,10 @@
                     <td><%= f.text_field :girl_wage %>円</td></tr>
                     <tr><td><%= f.label :staff_wage, "スタッフ時給（デフォルト）" %></td>
                     <td><%= f.text_field :staff_wage %>円</td></tr>
+                    <tr><td><%= f.label :payment_date, "キャス給料支払日" %></td>
+                    <td><%= f.text_field :payment_date %>日</td></tr>
+                    <tr><td><%= f.label :deadline, "キャスト給料締め日" %></td>
+                    <td><%= f.text_field :deadline %>日</td></tr>
                     <tr><td><%= f.label :drink, "キャストドリンク料金" %></td>
                     <td><%= f.text_field :drink %>円</td></tr>
                     <tr><td><%= f.label :shot, "キャストショット料金" %></td>
@@ -41,7 +50,7 @@
                     <td><%= f.text_field :hall_price %>円/セット</td></tr>
                     <tr><td><%= f.label :accompany, "同伴料金" %></td>
                     <td><%= f.text_field :accompany %>円</td></tr>
-                    <td><%= f.radio_button :accompany_system, 0 %>
+                    <td><%= f.radio_button :accompany_system, 0,checked: true %>
                     <%= f.label :accompany_system, "同伴料金に指名料を含める（ファーストセットのみ）" %></td>
                     <td><%= f.radio_button :accompany_system, 1 %>
                     <%= f.label :accompany_system, "同伴料金と指名料別" %></td></tr>
@@ -61,6 +70,8 @@
                     <td><%= f.text_field :name_back %>円</td></tr>
                     <tr><td><%= f.label :hall_back, "場内バック" %></td>
                     <td><%= f.text_field :hall_back %>円</td></tr>
+                    <tr><td><%= f.label :accompany_back, "同伴バック" %></td>
+                    <td><%= f.text_field :accompany_back %>円</td></tr>
                     <tr><td><%= f.label :slide_line, "売り上げスライド" %></td>
                     <td><%= f.text_field :slide_line %>円ごとに</td></tr>
                     <tr><td></td><td><%= f.text_field :slide_wage %>円/時給 アップ</td></tr>

@@ -18,7 +18,10 @@
 					なし
 					<% else %>
 					<% table.nameds.each do |named| %>
-					<%= named.today_girl.name %>、
+					<%= named.today_girl.name %>
+					<% if named.named_status == 1 %>
+					(同伴)
+					<% end %>、
 					<% end %>
 					<% end %><br>
 					<%= f.fields_for :tables do |t| %>

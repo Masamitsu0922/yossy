@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_31_113849) do
+ActiveRecord::Schema.define(version: 2020_11_01_175007) do
 
   create_table "catches", force: :cascade do |t|
     t.integer "shop_id"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2020_10_31_113849) do
     t.integer "named_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "count", default: 1
   end
 
   create_table "orders", force: :cascade do |t|
@@ -146,6 +147,7 @@ ActiveRecord::Schema.define(version: 2020_10_31_113849) do
     t.datetime "updated_at", null: false
     t.integer "extension"
     t.integer "extension_price"
+    t.integer "accompany_back"
   end
 
   create_table "staffs", force: :cascade do |t|
@@ -167,7 +169,6 @@ ActiveRecord::Schema.define(version: 2020_10_31_113849) do
   create_table "table_girls", force: :cascade do |t|
     t.integer "today_girl_id"
     t.integer "table_id"
-    t.integer "name_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -42,32 +42,77 @@ class AccountingsController < ApplicationController
 	end
 
 	def create
+
+		#会計情報を日別成績モデルに保存する
 		table = Table.find(params[:table_id])
+
+		payment = table.payment
+		#現金会計税抜き
+		card_payment = table.card_payment
+		#カード会計税抜き
+		tax = payment * @shop.tax
+		#現金会計金額のTAX
+		card_tax = card_payment * @shop.tax
+		#カード会計のTAX
+		card_fee = (card_payment + card_tax) * @shop.card_tax
+
+		all_cash_payment = (payment + tax).round.to_i
+		#現金会計総合計
+		all_card_payment = (card_payment + card_tax + card_fee).round.to_i
+		#カード会計総合計（手数料込み）
+
 		today = table.today
+		#紐づく日付レコードを所得
 		mounth = today.mounth_grade
-		today_grade = TodayGrade.find_by(mounth_grade_id:mounth.id,date: today.date)
+		#間接的に紐づく月成績レコードを所得
+		today_grade = mounth.today_grades.find_by(date:today.date)
+		#月成績に紐づく日別成績を所得
 
 
-		cash_sale = table.payment * @shop.tax + table.payment + today_grade.sale.to_f
-		card_sale = (table.card_payment * @shop.tax + table.card_payment) * @shop.card_tax + table.card_payment + today_grade.card_sale.to_f
-		#日別集計に売り上げを保存
-		today_grade.update(sale:cash_sale,card_sale:card_sale)
 
-		table.table_girls.each do |girl|
-			unless girl.name_status == 0
-				total_sale = girl.today_girl.sale + cash_sale + card_sale
-				girl.today_girl.update(sale:total_sale)
-				if girl.today_girl.sale > @shop.slide_line
-					slide_count = girl.sale / @shop.slide_line
-					girl.slide_wage == girl.girl.wage + (@shop.slide_wage * slide_count)
-					girl.update
+		ActiveRecord::Base.transaction do
+
+			cash_sale = all_cash_payment + today_grade.sale
+			card_sale = all_card_payment + today_grade.card_sale
+			all_sale = all_cash_payment + all_card_payment
+			#日別集計に売り上げを保存
+			today_grade.update!(sale:cash_sale,card_sale:card_sale)
+			#日別成績を更新
+
+			today_girls = today.today_girls
+			#出勤キャスト配列
+			#下記から、指名キャストに売り上げデータを保存する処理
+			today_girls.each do |girl|
+			#出勤キャストごとに指定のテーブルで指名があるか確認（同一キャストが同一テーブル内で指名レコードを複数持つことがあるためtoday_girlsからの処理）
+				nameds = girl.nameds
+				unless nameds == []
+					table_named = girl.nameds.find_by(table_id:table.id)
+					#指定テーブル内に少なくとも１つ指名レコードを持っていることの確認
+					unless table_named == nil
+						#指名を受けていた場合、売り上げ情報の更新処理
+						add_sale = girl.sale + all_sale
+						girl.update!(sale:add_sale)
+						 if girl.sale > @shop.slide_line
+						 	#出勤キャストの今日の売り上げが、スライドラインを超えていた場合
+						 	slide_count = (girl.sale / @shop.slide_line).floor
+						 	#スライドカウントを計算（何回スライドするかの回数）
+							sliding_wage = girl.slide_wage + (@shop.slide_wage * slide_count)
+							#スライド後の時給を計算
+							girl.update!(slide_wage:sliding_wage)
+							#変更の更新
+						end
+					end
 				end
 			end
+			#テーブル情報を削除
+			table.destroy
 		end
 
-		#テーブル情報を削除
-		table.destroy
 		redirect_to shop_top_path(@shop.id)
+
+		rescue => e
+			redirect_to new_shop_table_accounting_path(params[:shop_id],params[:table_id])
+			flash[:alert] = "正常に処理できませんでした。サポートセンターにお問い合わせください"
 	end
 
 	private

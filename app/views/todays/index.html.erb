@@ -5,11 +5,11 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-8 col-md-offset-1">
+		<div class="col-md-10 col-md-offset-1">
 
 			<table class="table table-bordered">
 				<tr>
-					<th>名前</th><th>出勤予定時間</th><th>退勤予定時間</th><th>日払い</th><th>送り先</th><th>出勤ステータス</th>
+					<th>名前</th><th>出勤予定時間</th><th>退勤予定時間</th><th>今日の売り上げ</th><th>スライド時給</th><th>バック</th><th>日払い</th><th>送り先</th><th>出勤ステータス</th>
 				</tr>
 				<% @today_girls.each do |girl| %>
 				<tr>
@@ -21,6 +21,15 @@
 					</td>
 					<td>
 						<%= girl.end_time.strftime('%H:%M') %>
+					</td>
+					<td>
+						<%= girl.sale %>円
+					</td>
+					<td>
+						<%= girl.slide_wage %>円
+					</td>
+					<td>
+						<%= girl.back_wage %>円
 					</td>
 					<td>
 						<% if girl.is_all_today == true %>

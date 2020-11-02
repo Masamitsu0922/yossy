@@ -1,5 +1,10 @@
 <div class="container">
 	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+            <div class="error-message"><%= flash[:alert] %></div>
+        </div>
+    </div>
+    <div class="row">
 		<div class="col-md-4 col-md-offset-1">
 			<h2 class="shops_index"><%= @shop.name %> 店舗トップ</h2>
 		</div>
@@ -10,7 +15,7 @@
 				<tr><td>出勤</td><td><%= @today_girls.count %>人</td></tr>
 				<tr><td>客数</td><td><%= @costomers%>人</td></tr>
 				<tr><td>プラマイ</td><td><%= @today_girls.count - @costomers%></td></tr>
-				<tr><td>現売り</td><td><%= @today_grade.sale %>円</td></tr>
+				<tr><td>現売り</td><td><%= @today_grade.sale + @progress_sale %>円</td></tr>
 			</table>
 		</div>
 	</div>
@@ -82,7 +87,7 @@
 					<% if table.table_girls != []  %>
 						<span class="outtime">
 							<i class="fas fa-clock"></i>
-							最短アウト時刻: <%= (table.time + (table.set_time * 60)).strftime('%H:%M') %>
+							最短アウト時刻: <%= (table.time + (table.set_time * 60) + (3600 * (table.set_count-1))).strftime('%H:%M') %>
 						</span>
 					<% end %>
 					</span>
@@ -108,24 +113,27 @@
 								<i class="fas fa-female"></i>
 								<%= table_girl.today_girl.name %>
 							</span>
-								<% if table_girl.name_status == 0 %>
-
+								<% if table.nameds.find_by(today_girl_id:table_girl.today_girl_id) != nil %>
+								<!-- 指名されていた場合 -->
+									<% named_girl = table.nameds.find_by(today_girl_id:table_girl.today_girl_id) %>
+									<% if named_girl.named_status == 0 %>
+										<span class="name-status">
+											(本指名)
+										</span>
+									<% elsif named_girl.named_status == 1 %>
+									<span class="name-status">
+										(同伴)
+									</span>
+									<% elsif named_girl.named_status == 2 %>
+										<span class="name-status">
+											(場内)
+										</span>
+									<% end %>
+								<% else %>
 									<%= link_to shop_table_table_girl_path(@shop.id,table.id,table_girl.id),method: :patch do %>
 										<span class="hall-name-action">場内指名</span>
 									<% end %>
-										<% elsif table_girl.name_status == 1 %>
-											<span class="name-status">
-											(本指名)
-											</span>
-										<% elsif table_girl.name_status == 2 %>
-											<span class="name-status">
-											(場内)
-											</span>
-										<% elsif table_girl.name_status == 3 %>
-											<span class="name-status">
-											(同伴)
-											</span>
-									<% end %>
+								<% end %>
 							<% end %>
 						<% end %>
 					</div>

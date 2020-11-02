@@ -7,13 +7,29 @@ class TableGirlsController < ApplicationController
 	#マスターオーナーであるか確認
 
 	def update
-		shop = Shop.find(params[:shop_id])
-		table_girl = TableGirl.find(params[:id])
-		table_girl.update(name_status:2)
-		today_girl = table_girl.today_girl
-		hall_back =today_girl.back_wage + shop.hall_back
-		today_girl.update(back_wage:hall_back)
+		#場内指名アクション
+		ActiveRecord::Base.transaction do
+			shop = Shop.find(params[:shop_id])
+			table_girl = TableGirl.find(params[:id])
+			today_girl = table_girl.today_girl
+			table = table_girl.table
+			Named.create!(today_girl_id:today_girl.id,table_id:table.id,named_status:2)
+			#新規指名レコードを作成
+
+			#指名に伴う場内バックの計算
+			add_hall_back =today_girl.back_wage + shop.hall_back
+			today_girl.update!(back_wage:add_hall_back)
+
+			#場内指名料金を会計に加算
+			add_hall_price = table.payment + shop.hall_price
+			table.update!(payment:add_hall_price)
+		end
+
 		redirect_to shop_top_path(params[:shop_id])
+
+		rescue => e
+			redirect_to redirect_to shop_top_path(params[:shop_id])
+			flash[:alert] = "場内処理が正常に行われませんでした"
 	end
 
 	private

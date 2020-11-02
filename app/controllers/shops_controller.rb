@@ -22,6 +22,8 @@ class ShopsController < ApplicationController
 
 	def create
 		if params[:passward] == params[:passward_verification]
+
+			ActiveRecord::Base.transaction do
 				#店舗情報の保存
 				@shop=Shop.new(shop_params)
 				@shop.save
@@ -35,6 +37,7 @@ class ShopsController < ApplicationController
 				today = Today.new(shop_id:@shop.id,date:Date.today.day,mounth_grade_id:mounth.id)
 				today.save
 				TodayGrade.create(mounth_grade_id:mounth.id,date:today.date,sale:0,card_sale:0)
+			end
 
 			redirect_to shop_detial_path(@shop.id)
 		else
@@ -48,16 +51,24 @@ class ShopsController < ApplicationController
 	def setting
 		@shop.tax = params[:shop][:tax_percentage].to_f / 100
 		@shop.card_tax = params[:shop][:card_tax_percentage].to_f / 100
-		@shop.update(shop_params)
-		drink_category=Category.create(shop_id: @shop.id,name: "ドリンク")
-		shot_category=Category.create(shop_id: @shop.id,name: "ショット")
-		bottle_category=Category.create(shop_id: @shop.id,name: "ボトル")
-		any_category=Category.create(shop_id: @shop.id,name: "その他")
+		binding.pry
 
-		Product.create(category_id: drink_category.id, name: "キャストドリンク", back_wage:@shop.drink_back, price: @shop.drink)
-		Product.create(category_id: shot_category.id, name: "ショット", back_wage:@shop.shot_back, price: @shop.shot)
+		ActiveRecord::Base.transaction do
+			@shop.update!(shop_params)
+			drink_category=Category.create!(shop_id: @shop.id,name: "ドリンク")
+			shot_category=Category.create!(shop_id: @shop.id,name: "ショット")
+			bottle_category=Category.create!(shop_id: @shop.id,name: "ボトル")
+			any_category=Category.create!(shop_id: @shop.id,name: "その他")
+
+			Product.create!(category_id: drink_category.id, name: "キャストドリンク", back_wage:@shop.drink_back, price: @shop.drink)
+			Product.create!(category_id: shot_category.id, name: "ショット", back_wage:@shop.shot_back, price: @shop.shot)
+		end
 
 		redirect_to shops_path(current_owner.id)
+
+		rescue => e
+			redirect_to shop_detial_path(@shop.id)
+			flash[:alert] = "入力情報に誤りがあります"
 	end
 
 	def add
@@ -81,9 +92,15 @@ class ShopsController < ApplicationController
 
 		@tables = @shop.today.tables
 		@costomers = 0
+		@progress_sale = 0
 		@tables.each do |table|
+			#店内の客数を計算
 			@costomers += table.member
+			#未会計のテーブルの現状会計の合計を計算
+			@progress_sale += table.payment.to_i
 		end
+
+
 
 		@mounth_grade = MounthGrade.find_by(id:@shop.today.mounth_grade_id)
 		@today_grade = @mounth_grade.today_grades.find_by(date:@shop.today.date)
@@ -159,8 +176,8 @@ class ShopsController < ApplicationController
 
 	def shop_params
 		params.require(:shop).permit(:name,:postal_code,:address,:email,:shop_id,:password,:girl_wage,
-			:staff_wage,:set_price,:extension_price,:name_price,:hall_price,:accompany,:drink,:shot,:tax,:acconpany_system,
-			:table,:vip,:drink_back,:shot_back,:bottle_back,:name_back,:hall_back,:slide_line,:slide_wage,
+			:staff_wage,:set_price,:extension_price,:name_price,:hall_price,:accompany,:drink,:shot,:tax,:accompany_system,
+			:table,:vip,:drink_back,:shot_back,:bottle_back,:name_back,:hall_back,:accompany_back,:slide_line,:slide_wage,
 			:deadline,:payment_date,owner_shops_attributes: [:id, :shop_id, :owner_id ,:is_authority])
 	end
 
