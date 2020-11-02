@@ -182,12 +182,12 @@ class ShopsController < ApplicationController
 	def shop_params
 		params.require(:shop).permit(:name,:postal_code,:address,:email,:shop_id,:password,:girl_wage,
 			:staff_wage,:set_price,:extension_price,:name_price,:hall_price,:accompany,:drink,:shot,:tax,:accompany_system,
-			:table,:vip,:drink_back,:shot_back,:bottle_back,:name_back,:hall_back,:accompany_back,:slide_line,:slide_wage,
+			:table,:vip,:vip_price,:drink_back,:shot_back,:bottle_back,:name_back,:hall_back,:accompany_back,:slide_line,:slide_wage,
 			:deadline,:payment_date,owner_shops_attributes: [:id, :shop_id, :owner_id ,:is_authority])
 	end
 
 	def check_detial
-        if @shop.set_price == nil ||  @shop.name_price == nil || @shop.hall_price == nil || @shop.accompany == nil || @shop.drink == nil ||  @shop.shot == nil ||  @shop.tax == nil ||  @shop.card_tax == nil ||  @shop.accompany_system == nil ||  @shop.table == nil ||  @shop.vip == nil ||  @shop.vip_price == nil ||  @shop.drink_back == nil ||  @shop.shot_back == nil ||  @shop.bottle_back == nil ||  @shop.name_back == nil ||  @shop.hall_back == nil ||  @shop.slide_line == nil ||  @shop.slide_wage == nil ||  @shop.deadline == nil ||  @shop.payment_date == nil ||  @shop.extension == nil ||  @shop.extension_price == nil ||  @shop.accompany_back == nil
+        if @shop.set_price == nil ||  @shop.name_price == nil || @shop.hall_price == nil || @shop.accompany == nil || @shop.drink == nil ||  @shop.shot == nil ||  @shop.tax == nil ||  @shop.card_tax == nil ||  @shop.accompany_system == nil ||  @shop.table == nil ||  @shop.vip == nil ||  @shop.vip_price == nil ||  @shop.drink_back == nil ||  @shop.shot_back == nil ||  @shop.bottle_back == nil ||  @shop.name_back == nil ||  @shop.hall_back == nil ||  @shop.slide_line == nil ||  @shop.slide_wage == nil ||  @shop.deadline == nil ||  @shop.payment_date == nil ||  @shop.extension_price == nil ||  @shop.accompany_back == nil
             redirect_to shop_detial_path(@shop.id)
             flash[:alert] = "未入力項目があります※半角入力（使用しない値には0を入力してください)"
         end
