@@ -11,12 +11,34 @@ class AccountingsController < ApplicationController
 		#現金会計税抜き
 		@card_payment = @table.card_payment
 		#カード会計税抜き
-		@tax = @payment * @shop.tax
-		#現金会計金額のTAX
-		@card_tax = @card_payment * @shop.tax
-		#カード会計のTAX
-		@card_fee = (@card_payment + @card_tax) * @shop.card_tax
-		#カード会計時のカード手数料
+		if @table.tax == false
+			@tax = @payment * @shop.tax
+			#現金会計金額のTAX
+			@card_tax = @card_payment * @shop.tax
+			#カード会計のTAX
+			@card_fee = (@card_payment + @card_tax) * @shop.card_tax
+			#カード会計時のカード手数料
+		elsif @table.tax == true
+			if @table.payment_method == 2
+				#タックスカットの場合
+				@tax = (@payment - (@table.price * @table.member)) * @shop.tax
+				@card_tax = @card_payment * @shop.tax
+				@card_fee = (@card_payment + @card_tax) * @shop.card_tax
+
+			else
+				@tax = (@payment - (@table.price * @table.member)) * @shop.tax
+				#ファーストセットのタックスを減算
+				@card_tax = (@card_payment - (@table.price * @table.member)) * @shop.tax
+				@card_fee = (@card_payment + @card_tax) * @shop.card_tax
+
+				if @tax < 0
+					@tax = 0
+				elsif @card_tax < 0
+					@card_tax = 0
+					@card_fee = 0
+				end
+			end
+		end
 	end
 
 	def edit
@@ -50,11 +72,34 @@ class AccountingsController < ApplicationController
 		#現金会計税抜き
 		card_payment = table.card_payment
 		#カード会計税抜き
-		tax = payment * @shop.tax
-		#現金会計金額のTAX
-		card_tax = card_payment * @shop.tax
-		#カード会計のTAX
-		card_fee = (card_payment + card_tax) * @shop.card_tax
+
+		if table.tax == false
+			tax = payment * @shop.tax
+			#現金会計金額のTAX
+			card_tax = card_payment * @shop.tax
+			#カード会計のTAX
+			card_fee = (card_payment + card_tax) * @shop.card_tax
+		elsif table.tax == true
+			if table.payment_method == 2
+				#タックスカットの場合
+				tax = (payment - (table.price * table.member)) * @shop.tax
+				card_tax = card_payment * @shop.tax
+				card_fee = (card_payment + card_tax) * @shop.card_tax
+
+			else
+				tax = (payment - (table.price * table.member)) * @shop.tax
+				#ファーストセットのタックスを減算
+				card_tax = (card_payment - (table.price * table.member)) * @shop.tax
+				card_fee = (card_payment + card_tax) * @shop.card_tax
+
+				if tax < 0
+					tax = 0
+				elsif card_tax < 0
+					card_tax = 0
+					card_fee = 0
+				end
+			end
+		end
 
 		all_cash_payment = (payment + tax).round.to_i
 		#現金会計総合計

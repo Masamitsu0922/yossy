@@ -168,7 +168,7 @@ class TablesController < ApplicationController
 
 			if shop.accompany_system == 0
 				#同伴料金に指名料も含んでいる場合、料金、バック計算用の本指名テーブルを作成する
-				if @table.set_count == 1
+				if table.set_count == 1
 					#セットカウントが１の時のみ新規作成処理
 					accompany_nameds = table.nameds.where(named_status:1)
 					#同伴テーブルを全て取得
