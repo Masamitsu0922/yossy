@@ -65,6 +65,12 @@ class TodaysController < ApplicationController
 
 	def destroy
 
+		if @shop.today.today_girls.find_by(attendance_status:1) != nil
+			redirect_to shop_todays_index_path(@shop.id)
+			flash[:alert] = "退勤処理が終わっていないキャストがいます"
+
+		else
+		ActiveRecord::Base.transaction do
 		if Date.today.day != @shop.today.date
 			#営業中に日付が変わった場合
 			day = Date.today.day
@@ -99,8 +105,11 @@ class TodaysController < ApplicationController
 
 		Today.create(shop_id:@shop.id, date:day,mounth_grade_id:mounth.id)
 		TodayGrade.create(mounth_grade_id:mounth.id,date:day,sale:0,card_sale:0)
+		end
 
 		redirect_to shop_top_path(@shop.id)
+		end
+
 	end
 
 	private
