@@ -69,6 +69,10 @@ class TodaysController < ApplicationController
 			redirect_to shop_todays_index_path(@shop.id)
 			flash[:alert] = "退勤処理が終わっていないキャストがいます"
 
+		elsif @shop.today.tables != []
+			redirect_to shop_top_path(@shop.id)
+			flash[:alert] = "未会計のテーブルがあります"
+
 		else
 		ActiveRecord::Base.transaction do
 		if Date.today.day != @shop.today.date
