@@ -22,7 +22,7 @@
 	<div class="row">
 
 		<% if owner_signed_in? %>
-			<% if current_owner.owner_shops.find_by(shop_id:@shop.id).is_authority == true %>
+			<% if current_owner.owner_shops.find_by(shop_id:@shop.id).is_authority_i18n == "マスターオーナー" %>
 				<% if @shop.today.today_girls == [] %>
 					<div class="roll-come col-md-10 col-md-offset-1">
 					<div class="open-set payment-confirm">
@@ -41,7 +41,7 @@
 				<% end %>
 			<% end %>
 		<% elsif staff_signed_in? %>
-			<% if current_staff.is_authority == true %>
+			<% if current_staff.is_authority_i18n == "スタッフリーダー" %>
 				<% if @shop.today.today_girls == [] %>
 					<div class="roll-come col-md-10 col-md-offset-1">
 					<div class="open-set payment-confirm">
@@ -116,15 +116,15 @@
 								<% if table.nameds.find_by(today_girl_id:table_girl.today_girl_id) != nil %>
 								<!-- 指名されていた場合 -->
 									<% named_girl = table.nameds.find_by(today_girl_id:table_girl.today_girl_id) %>
-									<% if named_girl.named_status == 0 %>
+									<% if named_girl.named_status_i18n == "本指名" %>
 										<span class="name-status">
 											(本指名)
 										</span>
-									<% elsif named_girl.named_status == 1 %>
+									<% elsif named_girl.named_status_i18n == "同伴" %>
 									<span class="name-status">
 										(同伴)
 									</span>
-									<% elsif named_girl.named_status == 2 %>
+									<% elsif named_girl.named_status_i18n == "場内" %>
 										<span class="name-status">
 											(場内)
 										</span>

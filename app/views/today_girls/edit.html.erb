@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="row">
-		<% if @today_girl.attendance_status == 0 %>
+		<% if @today_girl.attendance_status_i18n == "未出勤" %>
 		<div class="col-md-8 col-md-offset-3">
 			<h2 class="shops_index">出勤情報編集メニュー</h2>
 			<%= form_with model:@today_girl,url:shop_todays_today_girl_path(@shop.id,@today_girl.id) do |f| %>
@@ -16,7 +16,7 @@
 
 
 
-		<% elsif @today_girl.attendance_status == 1 %>
+		<% elsif @today_girl.attendance_status_i18n == "出勤済み" %>
 			<div class="col-md-8 col-md-offset-3">
 				<h2 class="shops_index">退勤編集メニュー</h2>
 				<%= form_with model:@today_girl,url:shop_todays_today_girl_path(@shop.id,@today_girl.id) do |f| %>

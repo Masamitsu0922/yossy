@@ -12,7 +12,7 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-1">
 			<div class="payment-method-box">
-				<% if @table.payment_method == 0 %>
+				<% if @table.payment_method_i18n == "現金払い" %>
 					<%= link_to shop_table_and_card_path(@shop.id,@table.id) do %>
 						<span class="swich with-card">カード併用</span>
 					<% end %>
@@ -116,16 +116,16 @@
 						<th></th>
 						<td>
 							<%= named.today_girl.name %>
-							<% if named.named_status == 0 %>
+							<% if named.named_status_i18n == "本指名" %>
 							<!-- 本指名 -->
 								(本指名):<%= @shop.name_price %>円×<%= named.count %>セット</td>
 								<td><%= @shop.name_price * named.count %>円</td>
-							<% elsif named.named_status == 1 %>
+							<% elsif named.named_status_i18n == "同伴" %>
 							<!-- 同伴 -->
 
 							(同伴料金):<%= @shop.accompany %>円</td>
 								<td><%= @shop.accompany %>円</td>
-							<% elsif named.named_status == 2 %>
+							<% elsif named.named_status_i18n == "場内" %>
 							<!-- 場内 -->
 							(場内指名):<%= @shop.hall_price %>円×<%= named.count %>セット</td>
 								<td><%= @shop.hall_price * named.count %>円</td>
@@ -142,7 +142,7 @@
 					<td></td>
 					<td><%= (@card_tax + @tax).round.to_i %></td>
 				</tr>
-				<% if @table.payment_method != 0 %>
+				<% if @table.payment_method_i18n != "現金払い" %>
 				<tr>
 					<th>カード決済手数料</th>
 					<td></td>
@@ -154,7 +154,7 @@
 			<% all_cash_payment = (@tax + @payment).round.to_i %>
 			<% all_card_payment = (@card_payment + @card_tax + @card_fee).round.to_i %>
 
-			<% if @table.payment_method == 0 %>
+			<% if @table.payment_method_i18n == "現金払い" %>
 			</div>
 			<div class="col-md-3 col-md-offset-6">
 			<table class="all-payment table table-bordered">
@@ -172,7 +172,7 @@
 			</div>
 			<div class="col-md-8 col-md-offset-1">
 
-			<% elsif @table.payment_method == 1 %>
+			<% elsif @table.payment_method_i18n == "カード払い" %>
 			</div>
 			<div class="col-md-3 col-md-offset-6">
 			<table class="all-payment table table-bordered">
@@ -190,7 +190,7 @@
 			</div>
 			<div class="col-md-8 col-md-offset-1">
 
-			<% elsif @table.payment_method == 2 %>
+			<% elsif @table.payment_method_i18n == "カード併用" %>
 			</div>
 			<div class="col-md-8 col-md-offset-1">
 				<table class="withcard-payment table table-bordered">

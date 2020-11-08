@@ -16,11 +16,7 @@
 					<% unless @table.nameds == [] %>
 						<% @table.nameds.each do |named| %>
 							<span><%= named.today_girl.name %><span>
-							<% if named.named_status == 0 %>
-							<span>(本指名）</span>
-							<% elsif named.named_status ==1 %>
-							<span>(同伴）</span>
-							<% end %>
+							<span><%= named.named_status_i18n %></span>
 						<% end %>
 					<% else %>
 						なし

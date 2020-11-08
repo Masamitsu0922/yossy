@@ -24,28 +24,19 @@ class ShopsController < ApplicationController
 	end
 
 	def create
-		#password確認して
+		#password確認
 		ActiveRecord::Base.transaction do
 			if params[:shop][:password] == params[:shop][:password_verification]
-					#店舗情報の保存
-					@shop=Shop.new(shop_params)
-					@shop.save!
-					# true/false
-					#オーナーと紐づく中間テーブルの作成
-					owner_shop=OwnerShop.new(owner_id:current_owner.id,shop_id:@shop.id,is_authority:true)
-					owner_shop.save!
-					#初期設定：店舗に紐づく月度成績と日付テーブルの作成
-					mounth = MounthGrade.new(shop_id:@shop.id,mounth: Date.today.month)
-					mounth.save!
-					today = Today.new(shop_id:@shop.id,date:Date.today.day,mounth_grade_id:mounth.id)
-					today.save!
-					TodayGrade.create!(mounth_grade_id:mounth.id,date:today.date,sale:0,card_sale:0)
-				redirect_to shop_detial_path(@shop.id)
+				owner = current_owner
+				shop_id = Shop.create_shop(owner,shop_params)
+				#店舗新規作成メソッド,新規作成した店舗のidを返す
+				redirect_to shop_detial_path(shop_id)
 			else
 				redirect_to new_shop_path
 				flash[:alert] = "パスワードが一致しません"
 			end
 		end
+
 		rescue => e
 			redirect_to new_shop_path
 			flash[:alert] = "店舗の作成に失敗しました。ヒント:IDを別の文字列でお試しください 数字は半角入力のみ有効です"
@@ -59,14 +50,7 @@ class ShopsController < ApplicationController
 		@shop.card_tax = params[:shop][:card_tax_percentage].to_f / 100
 
 		ActiveRecord::Base.transaction do
-			@shop.update!(shop_params)
-			drink_category=Category.create!(shop_id: @shop.id,name: "ドリンク")
-			shot_category=Category.create!(shop_id: @shop.id,name: "ショット")
-			bottle_category=Category.create!(shop_id: @shop.id,name: "ボトル")
-			any_category=Category.create!(shop_id: @shop.id,name: "その他")
-
-			Product.create!(category_id: drink_category.id, name: "キャストドリンク", back_wage:@shop.drink_back, price: @shop.drink)
-			Product.create!(category_id: shot_category.id, name: "ショット", back_wage:@shop.shot_back, price: @shop.shot)
+			Shop.setting_shop_detial(@shop,shop_params)
 		end
 
 		redirect_to shops_path(current_owner.id)
@@ -83,7 +67,7 @@ class ShopsController < ApplicationController
 	def adding
 		if shop = Shop.find_by(shop_id:params[:owner_shop][:shop_id])
 			if shop.password == params[:owner_shop][:password]
-				OwnerShop.create(owner_id:current_owner.id,shop_id:shop.id,is_authority: false)
+				OwnerShop.create(owner_id:current_owner.id,shop_id:shop.id,is_authority: "looking_owner")
 				redirect_to shops_path
 			else
 				redirect_to shops_add_path
@@ -115,7 +99,7 @@ class ShopsController < ApplicationController
 	def roll
 		@today = @shop.today
 		@tables = @shop.today.tables
-		@girls = @shop.today.today_girls.where(attendance_status: 1)
+		@girls = @shop.today.today_girls.where(attendance_status: "attend")
 		@table_girls = @tables.map(&:table_girls)
 	end
 
@@ -153,7 +137,7 @@ class ShopsController < ApplicationController
 
 	def check_staff_leader
 		if staff_signed_in?
-			unless current_staff.is_authority ==true
+			unless current_staff.is_authority_i18n == "スタッフリーダー"
 				redirect_to shop_top_path(params[:id])
 				flash[:alert] = "権限がありません"
 			end
@@ -163,7 +147,7 @@ class ShopsController < ApplicationController
 
 	def check_master_owner
 		if owner_signed_in?
-			unless current_owner.owner_shops.find_by(shop_id:params[:id]).is_authority == true
+			unless current_owner.owner_shops.find_by(shop_id:params[:id]).is_authority_i18n == "マスターオーナー"
 				redirect_to shops_path(current_owner.id)
 				flash[:alert] = "権限がありません"
 			end

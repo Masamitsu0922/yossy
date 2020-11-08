@@ -1,0 +1,36 @@
+ja:
+  enums:
+    shop:
+      accompany_system:
+        with_name: "同伴料金に指名料を含める"
+        without_name: "同伴料金と指名料別"
+    owner_shop:
+      is_authority:
+        master_owner: "マスターオーナー"
+        looking_owner: "閲覧者"
+    table:
+      tax:
+        tax_cat: "TAXカット"
+        with_tax: "TAX別"
+      payment_method:
+        cash: "現金払い"
+        card: "カード払い"
+        and_card: "カード併用"
+    today_girl:
+      girl_status:
+        registry: "在籍"
+        dispatch: "派遣"
+        experience: "体入"
+      attendance_status:
+        not_yet: "未出勤"
+        attend: "出勤済み"
+        end: "退勤済み"
+    named:
+      named_status:
+        named: "本指名"
+        accompany: "同伴"
+        hall: "場内"
+    staff:
+        is_authority:
+            leader: "スタッフリーダー"
+            staff: "スタッフ"

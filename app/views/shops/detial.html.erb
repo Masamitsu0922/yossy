@@ -50,9 +50,9 @@
                     <td><%= f.text_field :hall_price %>円/セット</td></tr>
                     <tr><td><%= f.label :accompany, "同伴料金" %></td>
                     <td><%= f.text_field :accompany %>円</td></tr>
-                    <td><%= f.radio_button :accompany_system, 0,checked: true %>
+                    <td><%= f.radio_button :accompany_system, "with_name",checked: true %>
                     <%= f.label :accompany_system, "同伴料金に指名料を含める（ファーストセットのみ）" %></td>
-                    <td><%= f.radio_button :accompany_system, 1 %>
+                    <td><%= f.radio_button :accompany_system, "without_name" %>
                     <%= f.label :accompany_system, "同伴料金と指名料別" %></td></tr>
                     <tr><td><%= f.label :table, "席数(VIPを含めない）" %></td>
                     <td><%= f.text_field :table %>席</td></tr>

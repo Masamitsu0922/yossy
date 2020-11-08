@@ -30,7 +30,7 @@
 					<%=owner_shop.shop.name %>
 				</div>
 			<% end %>
-			<% if owner_shop.is_authority == true %>
+			<% if owner_shop.is_authority_i18n == "マスターオーナー" %>
 				<%= link_to shop_path(owner_shop.shop_id),method: :delete  do %>
 					<div class="delete-link">削除</div>
 				<% end %>

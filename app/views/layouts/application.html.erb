@@ -46,7 +46,7 @@
           <% end %>
 
           <% if owner_signed_in? %>
-            <% if current_owner.owner_shops.find_by(shop_id:@shop.id).is_authority == true %>
+            <% if current_owner.owner_shops.find_by(shop_id:@shop.id).is_authority_i18n == "マスターオーナー" %>
               <%= link_to "キャスト一覧",shop_girls_path(@shop.id),class:"menu-text" %>
               <%= link_to "商品登録", new_shop_product_path(@shop.id),class:"menu-text" %>
               <%= link_to "日報", shop_mounth_grade_today_grade_path(@shop.id,@mounth_grade.id,@today_grade.id),class:"menu-text" %>

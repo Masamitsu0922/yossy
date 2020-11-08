@@ -48,40 +48,28 @@
 					</td>
 					<td>
 						<% if owner_signed_in? %>
-							<% if current_owner.owner_shops.find_by(shop_id:@shop.id).is_authority == true %>
-								<% if girl.attendance_status == 0 %>
+							<% if current_owner.owner_shops.find_by(shop_id:@shop.id).is_authority_i18n == "マスターオーナー" %>
+								<% if girl.attendance_status_i18n == "未出勤" %>
 									<%= link_to "出勤",edit_shop_todays_today_girl_path(@shop.id,girl.id) %>
-								<% elsif girl.attendance_status == 1 %>
+								<% elsif girl.attendance_status_i18n == "出勤済み" %>
 									<%= link_to "退勤",edit_shop_todays_today_girl_path(@shop.id,girl.id) %>
-								<% elsif girl.attendance_status == 2 %>
+								<% elsif girl.attendance_status_i18n == "退勤済み" %>
 									退勤済み
 								<% end %>
 							<% else %>
-								<% if girl.attendance_status == 0 %>
-									出勤待ち
-								<% elsif girl.attendance_status == 1 %>
-									出勤中
-								<% elsif girl.attendance_status == 2 %>
-									退勤済み
-								<% end %>
+								<%= girl.attendance_status_i18n %>
 							<% end %>
 						<% elsif staff_signed_in? %>
-							<% if current_staff.is_authority == true %>
-								<% if girl.attendance_status == 0 %>
+							<% if current_staff.is_authority_i18n == "スタッフリーダー" %>
+								<% if girl.attendance_status_i18n == "未出勤" %>
 									<%= link_to "出勤",edit_shop_todays_today_girl_path(@shop.id,girl.id) %>
-								<% elsif girl.attendance_status == 1 %>
+								<% elsif girl.attendance_status_i18n == "出勤済み" %>
 									<%= link_to "退勤",edit_shop_todays_today_girl_path(@shop.id,girl.id) %>
-								<% elsif girl.attendance_status == 2 %>
+								<% elsif girl.attendance_status == "退勤済み" %>
 									退勤済み
 								<% end %>
 							<% else %>
-								<% if girl.attendance_status == 0 %>
-									出勤待ち
-								<% elsif girl.attendance_status == 1 %>
-									出勤中
-								<% elsif girl.attendance_status == 2 %>
-									退勤済み
-								<% end %>
+								<%= girl.attendance_status_i18n %>
 							<% end %>
 						<% end %>
 					</td>
