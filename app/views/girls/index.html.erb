@@ -44,12 +44,7 @@
 			<table class="table table-bordered">
 				<tr><th>源氏名</th><th>時給</th><th>送り先</th><th>今月の売り上げ</th></tr>
 				<% @girls.each do |girl| %>
-					<% girl_grade = 0 %>
-					<% girl.girl_grades.where(mounth_grade_id:@mounth_grade.id).each do |grade| %>
-						<% if grade.sale != nil %>
-							<% girl_grade += grade.sale %>
-						<% end %>
-					<% end %>
+					<% girl_grade = set_girl_grade(girl,@mounth_grade) %>
 					<tr>
 						<td><%= link_to shop_girl_path(@shop.id,girl.id) do %>
 								<%= girl.name %>

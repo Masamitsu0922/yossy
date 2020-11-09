@@ -9,12 +9,7 @@
 			<div class="girls-index">
 			<table class="table table-bordered">
 				<tr><th>時給</th><th>送り先</th><th>今月の売り上げ</th><th>送り先</th></tr>
-					<% girl_grade = 0 %>
-					<% @girl_grades.each do |grade| %>
-						<% if grade.sale != nil %>
-							<% girl_grade += grade.sale %>
-						<% end %>
-					<% end %>
+					<% girl_grade = set_girl_grade(@girl,@mounth_grade) %>
 					<tr>
 						<td><%= @girl.name %></td>
 						<td><%= @girl.wage %>円/時</td>

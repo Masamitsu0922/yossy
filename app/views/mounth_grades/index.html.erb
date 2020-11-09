@@ -15,10 +15,7 @@
 			<table class="table table-bordered">
 				<tr><th>日付</th><th>現金売り</th><th>カード売り</th><th>売り上げ合計</th><th>支出</th><th>収支</th></tr>
 				<% @day_grades.each do |grade| %>
-					<% day_payment = 0 %>
-					<% grade.payments.each do |payment| %>
-						<% day_payment += payment.price %>
-					<% end %>
+					<% day_payment = day_payment_set(grade) %>
 					<tr>
 						<td><%= grade.date %>日</td>
 						<td><%= grade.sale %>円</td>
