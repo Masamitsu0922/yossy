@@ -54,7 +54,7 @@ class TodaysController < ApplicationController
 
 		rescue => e
 			redirect_to shop_top_path(@shop.id)
-			flash[:notice] = "何らかの問題が発生しました"
+			flash[:alert] = "何らかの問題が発生しました"
 
 	end
 

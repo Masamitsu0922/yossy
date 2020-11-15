@@ -44,9 +44,9 @@
 			<% if current_staff.is_authority_i18n == "スタッフリーダー" %>
 				<% if @shop.today.today_girls == [] %>
 					<div class="roll-come col-md-10 col-md-offset-1">
-					<div class="open-set payment-confirm">
-					<%= link_to "開店準備", new_shop_todays_path(@shop.id) %>
-					</div>
+					<%= link_to new_shop_todays_path(@shop.id) do %>
+						<div class="open-set payment-confirm">開店準備</div>
+					<% end %>
 				<% else %>
 					<div class="roll-come col-md-5 col-md-offset-7">
 					<span class="customer-come">

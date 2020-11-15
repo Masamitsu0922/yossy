@@ -42,14 +42,14 @@ class Today < ApplicationRecord
 	end
 
 	def self.finish(shop)
-		if Date.today.day != @shop.today.date
+		if Date.today.day != shop.today.date
 			#営業中に日付が変わった場合
 			day = Date.today.day
 
 				if shop.mounth_grades.find_by(mounth:Date.today.month) == []
 					#アクション中の日付を参照し対応する月度成績テーブルがなかった場合
-					mounth = MounthGrade.new(shop_id:@shop.id,mounth:Date.today.month)
-					mounth.save
+					mounth = MounthGrade.new(shop_id:shop.id,mounth:Date.today.month)
+					mounth.save!
 					shop.mounth_grades.find_by(mounth:Date.today.month - 4).destroy
 				else
 					mounth = shop.mounth_grades.find_by(mounth:Date.today.month)
@@ -59,8 +59,8 @@ class Today < ApplicationRecord
 			#営業中に日付が変わらなかった場合
 				if shop.mounth_grades.find_by(mounth:Date.tomorrow.month) == []
 					#アクション中の翌日の日付を参照し対応する月度成績テーブルがなかった場合
-					mounth = Mounth.new(shop_id:@shop.id,mounth:Date.today.month)
-					mounth.save
+					mounth = Mounth.new(shop_id:shop.id,mounth:Date.today.month)
+					mounth.save!
 					day = 1
 					shop.mounth_grades.find_by(mounth:Date.tomorrow.month - 4).destroy
 				else
@@ -69,7 +69,6 @@ class Today < ApplicationRecord
 				end
 			#month = Date.today.month
 		end
-
 
 		shop.today.destroy
 
