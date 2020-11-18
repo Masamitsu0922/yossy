@@ -63,115 +63,126 @@
 		</div>
 	</div>
 
-	<div class="table-info row">
+	<div class="row">
 		<div class="col-md-12">
+			<div class="table-info">
 			<% @shop.table.times do |i| %>
 			<% table = @shop.today.tables.find_by(number: i+1) %>
 			<div class="customer-box">
 				<div class="numbers">
-				<% if table != nil %>
-					<span class="table-number">
-						<%=link_to shop_table_path(@shop.id,@shop.today.tables.find_by(number: i+1).id) do %>
-							<%= i+1 %>卓
+					<% if table != nil %>
+						<span class="table-number">
+							<%=link_to shop_table_path(@shop.id,@shop.today.tables.find_by(number: i+1).id) do %>
+								<%= i+1 %>卓
+							<% end %>
+						</span>
+						<span class="customer-name">
+							名前: <%= table.name %><br>
+						</span>
+						<span class="time-member">
+						<span class="table-member">
+							<i class="fas fa-male"></i>
+							客数: <%=table.member %>
+						</span>
+						<% if table.table_girls != []  %>
+							<span class="outtime">
+								<i class="fas fa-clock"></i>
+								最短アウト時刻: <%= (table.time + (table.set_time * 60) + (3600 * (table.set_count-1))).strftime('%H:%M') %>
+							</span>
 						<% end %>
-					</span>
-					<span class="customer-name">
-						名前: <%= table.name %><br>
-						メモ: <%= table.memo %>
-					</span>
-					<span class="time-member">
-					<span class="table-member">
-						<i class="fas fa-male"></i>
-						客数: <%=table.member %>
-					</span>
-					<% if table.table_girls != []  %>
-						<span class="outtime">
-							<i class="fas fa-clock"></i>
-							最短アウト時刻: <%= (table.time + (table.set_time * 60) + (3600 * (table.set_count-1))).strftime('%H:%M') %>
+						</span>
+						<div class="customer-memo">メモ: <%= table.memo %></div>
+
+						<% else %>
+						<span class="table-number">
+							<%= i+1 %>卓
 						</span>
 					<% end %>
-					</span>
+				</div>
 
-					<% else %>
-					<span class="table-number">
-						<%= i+1 %>卓
-					</span>
-				<% end %>
-			</div>
-
-				<% if table != nil %>
-					<% if table.table_girls != [] %>
-					<!-- すでに発生していた場合の処理 -->
-					<div class="girl-box">
-						<span class="girl-head">
-						キャスト:
-						</span>
-						<% table.table_girls.each do |table_girl| %>
-							<% if table_girl.today_girl_id != nil %>
-							<!-- テーブルにキャストがついていたら名前を表示 -->
-							<span class="girl-name">
-								<i class="fas fa-female"></i>
-								<%= table_girl.today_girl.name %>
+					<% if table != nil %>
+						<% if table.table_girls != [] %>
+						<!-- すでに発生していた場合の処理 -->
+						<div class="col-xs-12 girl-box">
+							<span class="col-xs-12 girl-head">
+							キャスト:
 							</span>
-								<% if table.nameds.find_by(today_girl_id:table_girl.today_girl_id) != nil %>
-								<!-- 指名されていた場合 -->
-									<% named_girl = table.nameds.find_by(today_girl_id:table_girl.today_girl_id) %>
-									<% if named_girl.named_status_i18n == "本指名" %>
+							<% table.table_girls.each do |table_girl| %>
+								<% if table_girl.today_girl_id != nil %>
+								<!-- テーブルにキャストがついていたら名前を表示 -->
+								<div class="col-xs-6">
+									<div class="girl-card">
+										<div class="col-xs-7">
+									<div class="girl-name">
+										<i class="fas fa-female"></i>
+										<%= table_girl.today_girl.name %>
+									</div>
+								</div>
+								<div class="col-xs-5">
+									<% if table.nameds.find_by(today_girl_id:table_girl.today_girl_id) != nil %>
+									<!-- 指名されていた場合 -->
+										<% named_girl = table.nameds.find_by(today_girl_id:table_girl.today_girl_id) %>
+										<% if named_girl.named_status_i18n == "本指名" %>
+											<span class="name-status">
+												(本指名)
+											</span>
+										<% elsif named_girl.named_status_i18n == "同伴" %>
 										<span class="name-status">
-											(本指名)
+											(同伴)
 										</span>
-									<% elsif named_girl.named_status_i18n == "同伴" %>
-									<span class="name-status">
-										(同伴)
-									</span>
-									<% elsif named_girl.named_status_i18n == "場内" %>
-										<span class="name-status">
-											(場内)
-										</span>
+										<% elsif named_girl.named_status_i18n == "場内" %>
+											<div class="name-status">
+												(場内済み)
+											</div>
+										<% end %>
+									<% else %>
+										<%= link_to shop_table_table_girl_path(@shop.id,table.id,table_girl.id),method: :patch do %>
+											<div class="hall-name-action">場内指名</div>
+										<% end %>
 									<% end %>
-								<% else %>
-									<%= link_to shop_table_table_girl_path(@shop.id,table.id,table_girl.id),method: :patch do %>
-										<span class="hall-name-action">場内指名</span>
-									<% end %>
-								<% end %>
+								</div>
+								</div>
+							</div>
 							<% end %>
 						<% end %>
 					</div>
-
+					<div class="col-xs-12">
 						<div class="order-accounting-link">
-						<span>
+							<div>
 
-							<%= link_to new_shop_table_accounting_path(@shop.id,table.id), class:"accounting-link" do %>
-							<i class="fas fa-cash-register"></i>
-							会計
-							<% end %>
-						</span>
-						<span>
-							<%= link_to new_shop_table_order_path(@shop.id,table.id),class:"order-link" do %>
-							<i class="far fa-hand-paper"></i>
-							オーダー
+								<%= link_to new_shop_table_accounting_path(@shop.id,table.id), class:"accounting-link" do %>
+								<i class="fas fa-cash-register"></i>
+								会計
+								<% end %>
+							</div>
+							<div>
+								<%= link_to new_shop_table_order_path(@shop.id,table.id),class:"order-link" do %>
+								<i class="far fa-hand-paper"></i>
+								オーダー
 
-							<% end %>
-						</span>
-						<span>
-							<%= link_to shop_table_extension_path(@shop.id,table.id),class:"extension-link" do %>
-							<i class="fas fa-plus"></i>
-							延長
-							<% end %>
-						</span>
+								<% end %>
+							</div>
+							<div>
+								<%= link_to shop_table_extension_path(@shop.id,table.id),class:"extension-link" do %>
+								<i class="fas fa-plus"></i>
+								延長
+								<% end %>
+							</div>
+						</div>
 					</div>
 
 					<% else %>
-					<div class="occurrence-box">
-						<span class="occurrence-action">
-							<i class="fas fa-address-book"></i>
-							<%= link_to "発生",shop_table_occurrence_path(@shop.id,table.id),class:"occurrence-text" %>
-						</span>
-					</div>
+						<div class="occurrence-box">
+							<span class="occurrence-action">
+								<i class="fas fa-address-book"></i>
+								<%= link_to "発生",shop_table_occurrence_path(@shop.id,table.id),class:"occurrence-text" %>
+							</span>
+						</div>
 					<% end %>
 				<% end %><br>
 			</div>
 			<% end %>
+		</div>
 		</div>
 	</div>
 </div>

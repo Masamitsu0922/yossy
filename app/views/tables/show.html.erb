@@ -5,23 +5,27 @@
 			<h2 class="shops_index"><%= @table.number %>卓 詳細画面</h2>
 				<div class="table-show-box">
 					<div class="table-girl">
-						<span>接客中キャスト:</span>
+						<div class="col-xs-12">
+							<span>接客中キャスト:</span>
+						</div>
 						<% @table_girls.each do |table_girl| %>
 							<% if table_girl.today_girl_id != nil %>
-								<span class="girl-name">
+							<div class="col-xs-6">
+								<div class="girl-name">
 									<i class="fas fa-female"></i>
 									<% today_girl = table_girl.today_girl %>
 									<%= today_girl.name %>
-								</span>
+								</div>
 
 								<% unless today_girl.nameds.find_by(table_id:@table.id) == nil %>
 									<% named_status = today_girl.nameds.find_by(table_id:@table.id).named_status_i18n %>
-										<span class="name-status">(<%= named_status %>)</span>
+										<div class="name-status">(<%= named_status %>)</div>
 								<% else %>
 										<%= link_to shop_table_table_girl_path(@shop.id,@table.id,table_girl.id),method: :patch do %>
-											<span class="hall-name-action">場内指名</span>
+											<div class="hall-name-action">場内指名</div>
 										<% end %>
 								<% end %>
+							</div>
 							<% end %>
 						<% end %>
 					</div>
@@ -60,8 +64,8 @@
 				</div>
 			</div>
 		</div>
-	</div>
-
+	<div class="row">
+	<div class="col-md-8 col-md-offset-1">
 	<div class="table-show-link-box order-accounting-link">
 		<span>
 			<%= link_to new_shop_table_accounting_path(@shop.id,@table.id), class:"accounting-link" do %>
@@ -83,5 +87,6 @@
 			<% end %>
 		</span>
 	</div>
+</div>
 </div>
 
