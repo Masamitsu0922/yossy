@@ -19,7 +19,7 @@ class TablesController < ApplicationController
 
 	def create
 		ActiveRecord::Base.transaction do
-			Table.table_create(@shop,params)
+			Table.table_create(@shop,params,table_params)
 		end
 
 		redirect_to shop_top_path(@shop.id)

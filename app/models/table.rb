@@ -22,12 +22,13 @@ class Table < ApplicationRecord
 		and_card:2
 	}
 
-	def self.table_create(shop,params)
+	def self.table_create(shop,params,table_params)
 		#入店処理
 		if  params[:table][:nameds_attributes].values[0].value?("")
 			#指名がなかった場合
 			table = Table.new(number:params[:table][:number],member:params[:table][:member],price:params[:table][:price],tax:params[:table][:tax],set_time:params[:table][:set_time],name:params[:table][:name],memo:params[:table][:memo])
 		else
+			binding.pry
 			table = Table.new(table_params)
 		end
 		table.today_id = shop.today.id

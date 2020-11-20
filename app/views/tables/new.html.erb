@@ -27,7 +27,7 @@
 					<!-- 本指名情報、同伴情報の入力 -->
 							<%= t.label :today_girl_id, "指名",class:"heading" %>
 							<%= t.collection_select(:today_girl_id,@girls,:id,:name, prompt: "フリー",class:"inputo-form") %>
-							<%= t.check_box :named_status,class:"check-box" %>同伴
+							<%= t.check_box :named_status,{class:"check-box"},"accompany","named" %>同伴
 					<% end %>
 				</li><br>
 
