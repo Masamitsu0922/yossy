@@ -19,12 +19,13 @@ class TodayGirlsController < ApplicationController
 		@today_girl = TodayGirl.find(params[:id])
 
 		ActiveRecord::Base.transaction do
-			TodayGirl.attendance_update(shop,params,@today_girl)
+			TodayGirl.attendance_update(shop,params,@today_girl,@today_grade)
 		end
 		redirect_to shop_todays_index_path(params[:shop_id])
 
 		rescue
 			redirect_to shop_todays_index_path(@shop.id)
+			flash[:alert] = "何らかの問題が発生しました"
 	end
 
 	private

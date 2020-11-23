@@ -15,7 +15,7 @@ class TodayGirl < ApplicationRecord
 		attend:1,
 		end:2
 	}
-	def self.attendance_update(shop,params,today_girl)
+	def self.attendance_update(shop,params,today_girl,today_grade)
 		if today_girl.attendance_status_i18n == "未出勤"
 			start_time = Time.local(params[:today_girl][:"start_time(1i)"],params[:today_girl][:"start_time(2i)"],params[:today_girl][:"start_time(3i)"],params[:today_girl][:"start_time(4i)"],params[:today_girl][:"start_time(5i)"])
 			today_girl.update(start_time:start_time,attendance_status: "attend")
