@@ -45,19 +45,17 @@ class TodayGirl < ApplicationRecord
 			girl_grade = GirlGrade.new(girl_id:today_girl.girl_id,mounth_grade_id:shop.today.mounth_grade_id,date:shop.today.date,sale:today_girl.sale,payment:total_wage)
 			girl_grade.save
 
-			if today_girl.today_payment != 0 && today_girl.today_payment != nil
-				#日払いがある場合
-				if today_girl.is_all_today == true
-					Payment.create(today_grade_id:@today_grade.id,item:"人件費",name:today_girl.name,price:total_wage)
-					girl_grade.update(payment:0)
-				else
-					Payment.create(today_grade_id:@today_grade.id,item:"人件費（日払い）",name:today_girl.name,price:today_girl.today_payment)
-					payment_without = girl_grade.payment - today_girl.today_payment
-					#キャスト成績の給料の値から日払い金額を引く
-					girl_grade.update(payment:payment_without)
-				end
+			if today_girl.is_all_today == true
+				#全日の場合
+				Payment.create(today_grade_id:today_grade.id,item:"人件費",name:today_girl.name,price:total_wage)
+				girl_grade.update(payment:0)
+			elsif today_girl.today_payment != 0 && today_girl.today_payment != nil
+				#日払いが発生する場合
+				Payment.create(today_grade_id:today_grade.id,item:"人件費（日払い）",name:today_girl.name,price:today_girl.today_payment)
+				payment_without = girl_grade.payment - today_girl.today_payment
+				#キャスト成績の給料の値から日払い金額を引く
+				girl_grade.update(payment:payment_without)
 			end
-
 		end
 	end
 
