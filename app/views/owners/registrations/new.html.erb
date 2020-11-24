@@ -10,34 +10,34 @@
               <div class="row">
                 <div class="col-xs-ofset-1 col-xs-10">
                   <div class="form-message-box">
-                    <p class="form-message">登録情報を入力してください。</p>
+                    <p class="form-message">現在新規登録は閉鎖しております。</p>
                 </div>
               </div>
             </div>
 
-            <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-              <div class="form-group has-icon">
-                  <label class="control-label sr-only" for="inputEmail">名前</label>
-                   <%= f.text_field :name, autofocus: true, autocomplete: true,class:"form-control", placeholder: "名前" %>
-              </div>
+            <%= #form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+              <!-- <div class="form-group has-icon"> -->
+                  <!-- <label class="control-label sr-only" for="inputEmail">名前</label> -->
+                   <%= #f.text_field :name, autofocus: true, autocomplete: true,class:"form-control", placeholder: "名前" %>
+              <!-- </div> -->
 
-              <div class="form-group has-icon">
-                <label class="control-label sr-only" for="inputEmail">Email</label>
-                <%= f.email_field :email, autofocus: true, class:"form-control", id:"inputEmail", placeholder: "メールアドレス" %>
-              </div>
+              <!-- <div class="form-group has-icon"> -->
+                <!-- <label class="control-label sr-only" for="inputEmail">Email</label> -->
+                <%= #f.email_field :email, autofocus: true, class:"form-control", id:"inputEmail", placeholder: "メールアドレス" %>
+              <!-- </div> -->
 
-              <div class="form-group has-icon">
-                <label class="control-label sr-only" for="inputEmail">Password</label>
-                <%= f.password_field :password, autocomplete: "off", class:"form-control", id:"inputEmail", placeholder: "パスワード" %>
-              </div>
+              <!-- <div class="form-group has-icon"> -->
+                <!-- <label class="control-label sr-only" for="inputEmail">Password</label> -->
+                <%= #f.password_field :password, autocomplete: "off", class:"form-control", id:"inputEmail", placeholder: "パスワード" %>
+              <!-- </div> -->
 
-              <div class="form-group has-icon">
-                <label class="control-label sr-only" for="inputEmail">Password</label>
-                <%= f.password_field :password_confirmation, autocomplete: "off", class:"form-control", id:"inputEmail", placeholder: "確認用パスワード" %>
-              </div>
+              <!-- <div class="form-group has-icon"> -->
+                <!-- <label class="control-label sr-only" for="inputEmail">Password</label> -->
+                <%= #f.password_field :password_confirmation, autocomplete: "off", class:"form-control", id:"inputEmail", placeholder: "確認用パスワード" %>
+              <!-- </div> -->
 
-              <%= f.submit "新規登録", class:"sign-in btn btn-lg btn-block btn-base-1 mt-20" %>
-            <% end %>
+              <%= #f.submit "新規登録", class:"sign-in btn btn-lg btn-block btn-base-1 mt-20" %>
+            <% #end %>
           </div>
         </div>
       </div>
